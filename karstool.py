@@ -116,8 +116,8 @@ def resolve_server_config(candidates, exact=None):
 
     return the_max
 
-def live_master_check(server_configuration):
-    with astool.astool_memo() as memo:
+def live_master_check(tag, server_configuration):
+    with astool.astool_memo(tag) as memo:
         uid = memo.get("user_id")
         pwd = memo.get("password")
         auc = memo.get("auth_count")
@@ -134,7 +134,7 @@ def live_master_check(server_configuration):
             ice.set_login(uid, pwd, ret.app_data.get("authorization_count") + 1)
             ice.api.login.login()
 
-    with astool.astool_memo() as memo:
+    with astool.astool_memo(tag) as memo:
         memo["master_version"] = ice.master_version
         memo["auth_count"] = ice.auth_count
         memo["resume_data"] = ice.save_session()
@@ -177,32 +177,36 @@ def download_one(user_agent, remote_root, local_root, file):
 
 def main(force: ("Download files even if they are valid", "flag", "f"),
          master: ("Master version to download against", "option", "m"),
-         bundle: ("Bundle version to download against", "option", "b")):
+         bundle: ("Bundle version to download against", "option", "b"),
+         server: ("Server to download against", "option", "r")):
     logging.basicConfig(level=logging.INFO)
     karsffi.init()
+
+    if not server or server not in astool.SERVER_CONFIG:
+        server = "jp"
 
     if iceapi is None and not master:
         print("You need to provide the master version (./karstool -m <version>).")
         return
 
     try:
-        server_configuration = resolve_server_config(astool.SERVER_CONFIG, bundle)
+        server_configuration = resolve_server_config(astool.SERVER_CONFIG[server], bundle)
     except ValueError as e:
         print(f"Failed to resolve server configuration: {str(e)}")
         return
 
     if not master:
         if os.getenv("LIVE_MASTER_CHECK_ALLOWED"):
-            mv = live_master_check(server_configuration)
+            mv = live_master_check(server, server_configuration)
         else:
-            with astool.astool_memo() as memo:
+            with astool.astool_memo(server) as memo:
                 mv = memo["master_version"]
     else:
         mv = master
 
     print(f"Master: {mv}, Application: {server_configuration['bundle_version']}")
     root = server_configuration["root"] + f"/static/{mv}"
-    local_store = os.path.join(os.getenv("ASTOOL_STORAGE", ""),
+    local_store = os.path.join(os.getenv("ASTOOL_STORAGE", ""), server,
         "masters", mv)
     os.makedirs(local_store, exist_ok=True)
 

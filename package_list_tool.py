@@ -97,7 +97,7 @@ def to_unsigned(i: int) -> int:
     return struct.unpack("<I", struct.pack("<i", i))[0]
 
 def external_asset_cache():
-    root = os.path.join(os.getenv("ASTOOL_STORAGE", ""), "cache")
+    root = os.path.join(os.getenv("ASTOOL_STORAGE", ""), astool.g_SI_TAG, "cache")
     package_prefixes = "0123456789abcdefghijklmnopqrstuvwxyz"
     packages = set()
     for letter in package_prefixes:
@@ -108,7 +108,7 @@ def execute_job_list(jobs, dest):
     url_list = astool.sign_package_urls(job.name for job in jobs)
     assert len(url_list) == len(jobs)
 
-    user_agent = astool.resolve_server_config(astool.SERVER_CONFIG)["user_agent"]
+    user_agent = astool.g_SI_DEFAULT["user_agent"]
     for jnum, (job, url) in enumerate(zip(jobs, url_list)):
         canon = job.name
         if job.is_meta:
@@ -136,22 +136,30 @@ def get_unreferenced_packages(have: Iterable[str], db: sqlite3.Connection):
     )
     return have - indexed
 
-SEARCH_PATHS = [
-    external_asset_cache(),
-]
+SEARCH_PATHS = []
 
 def main(master: ("Assume master version (that you already have an asset DB for)", "option", "m"),
+         server: ("Server version", "option", "r"),
          validate_only: ("Don't download anything, just validate.", "flag", "n"),
          validate_incomplete_only: ("When validating, print only incomplete packages.", "flag", "i"),
          subcmd: "Command: sync or gc",
         *packages: "Packages to validate or complete"):
     """package_list_tool maintains your local SIFAS asset cache."""
+    if not server or server not in astool.SERVER_CONFIG:
+        server = "jp"
+
+    astool.g_SI_TAG = server
+    astool.g_SI_DEFAULT = astool.resolve_server_config(astool.SERVER_CONFIG[server])
+
+    SEARCH_PATHS.append(external_asset_cache())
+
     if not master:
         with astool.astool_memo() as memo:
             master = memo["master_version"]
 
     print("Master:", master)
-    path = os.path.join(os.getenv("ASTOOL_STORAGE", ""), "masters", master, "asset_i_ja_0.db")
+    path = os.path.join(os.getenv("ASTOOL_STORAGE", ""), astool.g_SI_TAG, "masters",
+        master, "asset_i_ja_0.db")
     asset_db = sqlite3.connect(path)
 
     print("Building package list...", end=" ")

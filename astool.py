@@ -41,7 +41,8 @@ def resolve_server_config(candidates, exact=None):
 
     return the_max
 
-g_SI_DEFAULT = resolve_server_config(SERVER_CONFIG)
+g_SI_DEFAULT = None
+g_SI_TAG = None
 
 def calc_time_offset():
     utc = datetime.utcnow().timestamp()
@@ -49,8 +50,11 @@ def calc_time_offset():
     return local - utc
 
 @contextlib.contextmanager
-def astool_memo():
-    store = os.path.join(os.getenv("ASTOOL_STORAGE", ""), "astool_store.json")
+def astool_memo(si_tag=None):
+    if si_tag is None:
+        si_tag = g_SI_TAG
+
+    store = os.path.join(os.getenv("ASTOOL_STORAGE", ""), si_tag, "astool_store.json")
     try:
         with open(store, "r") as js:
             memo = json.load(js)
@@ -149,16 +153,24 @@ def command_bootstrap(argv):
 def command_sign_package_urls(argv):
     print(sign_package_urls(argv))
 
+def command_resolve_svc(argv):
+    print(g_SI_DEFAULT["bundle_version"])
+
 COMMANDS = {
     "bootstrap": command_bootstrap,
     "sign_package_urls": command_sign_package_urls,
-    "accept_tos": command_accept_tos
+    "accept_tos": command_accept_tos,
+    "resolve": command_resolve_svc,
 }
 def main():
-    print("astool start")
+    global g_SI_TAG, g_SI_DEFAULT
     logging.basicConfig(level=logging.INFO)
 
     args = sys.argv[1:]
+    si_tag = args.pop(0)
+    g_SI_TAG = si_tag
+    g_SI_DEFAULT = resolve_server_config(SERVER_CONFIG[g_SI_TAG])
+
     cmd = args.pop(0)
     if cmd not in COMMANDS:
         print("astool: Unrecognized command")

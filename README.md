@@ -22,19 +22,19 @@ stored. The default is the current directory, so it's recommended to choose a
 better place.
 
 Files:
-- astool_store.json - Contains the account credentials used by astool, as well
+- [server]/astool_store.json - Contains the account credentials used by astool, as well
   as the last known master version.
-- cache/pkg... - Encrypted asset packages. Assets are retrieved from them as needed.
-- masters/.../... - Contains asset databases. Each master version has its own folder
+- [server]/cache/pkg... - Encrypted asset packages. Assets are retrieved from them as needed.
+- [server]/masters/.../... - Contains asset databases. Each master version has its own folder
   with its collection of databases.
 
 ## astool
 
 astool is used to talk to the AS API server. Currently, it has two user commands:
 
-- `astool.py bootstrap` - Create an account and save its credentials. Needed for
+- `astool.py [server] bootstrap` - Create an account and save its credentials. Needed for
   all other commands.
-- `astool.py sign_package_urls [package_name] [other_package_name]...` -
+- `astool.py [server] sign_package_urls [package_name] [other_package_name]...` -
   Get a download link for the named package(s). These are signed CloudFront links
   that will eventually expire.
 
@@ -43,7 +43,7 @@ astool is used to talk to the AS API server. Currently, it has two user commands
 karstool is used to download master/asset databases. An account is not strictly
 required, but karstool can use it to automatically fetch the latest version.
 
-Usage: `karstool.py [-m optional_master_version] [-b optional_bundle_version]`
+Usage: `karstool.py [-r server_region] [-m optional_master_version] [-b optional_bundle_version]`
 * If you don't provide a master version, it either checks the API or uses the
   last recorded one from the astool memo.
 * Export `LIVE_MASTER_CHECK_ALLOWED=1` to allow karstool to do a master check
@@ -69,6 +69,7 @@ Flags:
   given, it'll use the version from the astool memo (**but it won't check online,
   you should run karstool first if you want to get the latest one**).
 - `-n/--validate-only`: Don't download anything. For `gc`, don't delete anything.
+- `-r/--server`: Same as karstool, choose the server to resolve against.
 
 ## Bootstrapping from zero
 
@@ -81,11 +82,11 @@ export ASTOOL_STORAGE=/mnt/storage/as-cache/data
 export LIVE_MASTER_CHECK_ALLOWED=1
 
 # Create account
-python3 astool.py bootstrap
+python3 astool.py jp bootstrap
 # Get master
-python3 karstool.py
+python3 karstool.py -r jp
 # Initial download (>1GB!)
-python3 package_list_tool.py sync main card:%
+python3 package_list_tool.py -r jp sync main card:%
 ```
 
 ## Decryption
