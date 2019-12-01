@@ -180,7 +180,7 @@ def main(force: ("Download files even if they are valid", "flag", "f"),
          bundle: ("Bundle version to download against", "option", "b"),
          server: ("Server to download against", "option", "r")):
     logging.basicConfig(level=logging.INFO)
-    karsffi.init()
+    karsffi.init(os.environ.get("AS_LIBPENGUIN_PATH"))
 
     if not server or server not in astool.SERVER_CONFIG:
         server = "jp"

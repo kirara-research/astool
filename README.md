@@ -4,6 +4,12 @@ Requires a recent version of Python 3.
 
 ## Changelog
 
+30/11/2019
+
+- New: AS_LIBPENGUIN_PATH for customizing libpenguin
+  dylib path
+- Fixed: Calls with empty payload would result in 403
+
 31/10/2019
 
 - New: multi-config support in karstool.

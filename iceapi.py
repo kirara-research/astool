@@ -234,9 +234,8 @@ class ICEBinder(object):
         q = self.query()
         destURL = self.api_host.rstrip("/") + f"{url}?{q}"
 
-        if payload:
-            headers["Content-Type"] = "application/json"
-            data = self.bless(f"{url}?{q}", json.dumps(payload, separators=(',', ':')))
+        headers["Content-Type"] = "application/json"
+        data = self.bless(f"{url}?{q}", json.dumps(payload, separators=(',', ':')))
 
         rsp = requests.post(destURL, headers=headers, data=data)
         return self.extract_response(rsp)
