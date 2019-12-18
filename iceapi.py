@@ -11,6 +11,8 @@ import logging
 import hmac
 import hashlib
 import cryptography
+import os
+import pprint
 from collections import namedtuple
 
 from cryptography.hazmat.primitives.asymmetric.padding import OAEP, MGF1
@@ -109,6 +111,8 @@ class ICEBinder(object):
         self.has_time = False
         self.device_token = None
 
+        self.is_fast_resume_in_progress = False
+
         self.api = ICEAPIThunk(self, "")
 
     def set_login(self, user_id: int = None,
@@ -130,7 +134,9 @@ class ICEBinder(object):
         self.has_time = False
         self.device_token = None
 
-    def resume_session(self, resume_info, skip_validity_check=False):
+        self.is_fast_resume_in_progress = False
+
+    def resume_session(self, resume_info, skip_validity_check=False, revalidate_immediately=False):
         if not resume_info:
             return False
 
@@ -141,10 +147,22 @@ class ICEBinder(object):
         self.has_session = True
         self.has_time = True
 
+        self.is_fast_resume_in_progress = False
+
+        if skip_validity_check and revalidate_immediately:
+            raise ValueError("You can't request both skip_validity_check and revalidate_immediately at once.")
+
         if skip_validity_check:
             APIBinderLog.info("Fast resume: picked up session without check")
             return True
 
+        if revalidate_immediately:
+            return self.fast_resume_validate(resume_info)
+
+        self.is_fast_resume_in_progress = True
+        return True
+
+    def fast_resume_validate(self, resume_info):
         try:
             response = self.api.bootstrap.fetchBootstrap({
                 "bootstrap_fetch_types": [2], # banner fetch type
@@ -177,6 +195,7 @@ class ICEBinder(object):
         }
         APIBinderLog.info("Save session: saved, this ICEBinder is no longer valid past this point")
         self.has_session = False
+        self.is_fast_resume_in_progress = False
         return data
 
     @property
@@ -215,6 +234,9 @@ class ICEBinder(object):
             payload = rsp.json()
         except json.JSONDecodeError:
             return api_return_t(rsp.headers, -1, None)
+        
+        if os.environ.get("ICEAPI_DEBUG_RESPONSES"):
+            pprint.pprint(payload)
 
         self.has_time = True
         self.master_version = payload[1]
@@ -223,25 +245,71 @@ class ICEBinder(object):
 
         return api_return_t(rsp.headers, payload[2], apidata)
 
-    def default_hit_api(self, url, payload=None, skip_session_key_check=False):
+    def default_hit_api(self, url, payload=None, skip_session_key_check=False, skip_fast_resume=False):
         if not skip_session_key_check and not self.has_session:
             raise ValueError("You need to establish a session before you do that.")
 
-        data = None
         headers = {}
         headers["User-Agent"] = self.user_agent
 
         q = self.query()
         destURL = self.api_host.rstrip("/") + f"{url}?{q}"
+        destJSON = json.dumps(payload, separators=(',', ':'))
 
         headers["Content-Type"] = "application/json"
-        data = self.bless(f"{url}?{q}", json.dumps(payload, separators=(',', ':')))
+        data = self.bless(f"{url}?{q}", destJSON)
+        
+        if os.environ.get("ICEAPI_DEBUG_REQUESTS"):
+            pprint.pprint(data)
 
-        rsp = requests.post(destURL, headers=headers, data=data)
-        return self.extract_response(rsp)
+        if self.is_fast_resume_in_progress and not skip_fast_resume:
+            master = self.master_version
+            rsp = requests.post(destURL, headers=headers, data=data)
+
+            if rsp.status_code == 403:
+                APIThunkLog.info("The session has gone invalid.")
+                rsp = self.relogin_and_retry(url, payload)
+
+            ret = self.extract_response(rsp)
+
+            if self.master_version != master:
+                APIThunkLog.info("Reestablishing session because master changed.")
+                self.relogin()
+
+            self.is_fast_resume_in_progress = False
+            return ret
+        else:
+            rsp = requests.post(destURL, headers=headers, data=data)
+            return self.extract_response(rsp)
 
     def apply_xorpad(self, a, b):
         return bytes(bytearray(aa ^ bb for aa, bb in zip(a, b)))
+
+    def relogin(self):
+        APIBinderLog.info("Retrying login...")
+        ret = self.api.login.login()
+        if ret.return_code != 0:
+            APIBinderLog.info("Login failed, trying to reset auth count...")
+            self.set_login(self.user_id, self.authorization_key, ret.app_data.get("authorization_count") + 1)
+            self.api.login.login()
+
+    def relogin_and_retry(self, url, payload):
+        self.relogin()
+
+        headers = {}
+        headers["User-Agent"] = self.user_agent
+        q = self.query()
+
+        destURL = self.api_host.rstrip("/") + f"{url}?{q}"
+        destJSON = json.dumps(payload, separators=(',', ':'))
+
+        headers["Content-Type"] = "application/json"
+        data = self.bless(f"{url}?{q}", destJSON)
+
+        if os.environ.get("ICEAPI_DEBUG_REQUESTS"):
+            pprint.pprint(data)
+
+        return requests.post(destURL, headers=headers, data=data)
 
     #####
 
@@ -280,7 +348,7 @@ class ICEBinder(object):
             "auth_count": self.auth_count,
             "mask": mask,
             "asset_state": DEFAULT_ASSET_STATE,
-        }, skip_session_key_check=True)
+        }, skip_session_key_check=True, skip_fast_resume=True)
 
         if result.app_data.get("session_key"):
             server_mixed = base64.b64decode(result.app_data.get("session_key"))
@@ -307,5 +375,5 @@ class ICEBinder(object):
         if payload:
             params.update(payload)
 
-        result = self.default_hit_api(url, params, skip_session_key_check=True)
+        result = self.default_hit_api(url, params, skip_session_key_check=True, skip_fast_resume=True)
         return result

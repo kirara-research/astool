@@ -127,7 +127,7 @@ def live_master_check(tag, server_configuration):
         raise ValueError("You need an account to do that.")
 
     ice = iceapi.ICEBinder(server_configuration, "iOS", uid, pwd, auc)
-    if not ice.resume_session(fast_resume):
+    if not ice.resume_session(fast_resume, revalidate_immediately=True):
         ret = ice.api.login.login()
         if ret.return_code != 0:
             print("Login failed, trying to reset auth count...")
