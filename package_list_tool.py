@@ -10,8 +10,15 @@ from collections import namedtuple
 import plac
 import requests
 
-from libpenguin import karsffi
-import astool
+if __name__ == "__main__":
+    from libpenguin import karsffi
+else:
+    from .libpenguin import karsffi
+
+if __name__ == "__main__":
+    import astool
+else:
+    from . import astool
 
 MetapackageDownloadTask = namedtuple("MetapackageDownloadTask", ("name", "splits", "is_meta"))
 PackageDownloadTask = namedtuple("PackageDownloadTask", ("name", "size", "offset", "is_meta"))

@@ -23,18 +23,27 @@ from itertools import zip_longest
 import requests
 import plac
 
-from libpenguin import karsffi
+try:
+    from .libpenguin import karsffi
+except ImportError:
+    from libpenguin import karsffi
 
 try:
-    import astool
+    from . import iceapi
+    try:
+        from . import astool
+    except ImportError:
+        import astool
 except ImportError:
-    import sv_config as astool
-
-try:
-    import iceapi
-except ImportError:
-    iceapi = None
-    print("IceAPI is not available. astool integration is disabled.")
+    try:
+        import iceapi
+        try:
+            import astool
+        except ModuleNotFoundError:
+            import sv_config as astool
+    except ModuleNotFoundError:
+        iceapi = None
+        logging.warn("IceAPI is not available. astool integration is disabled.")
 
 # Thanks to esterTion and CPPO for help
 

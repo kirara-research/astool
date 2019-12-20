@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-import iceapi
 import logging
 import contextlib
 import sys
@@ -12,7 +11,12 @@ from itertools import zip_longest
 
 import requests
 
-from sv_config import SERVER_CONFIG
+try:
+    from . import iceapi
+    from .sv_config import SERVER_CONFIG
+except ImportError:
+    import iceapi
+    from sv_config import SERVER_CONFIG
 
 def vercmp(a, b):
     aa = a.split(".")

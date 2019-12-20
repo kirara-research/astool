@@ -4,6 +4,16 @@ Requires a recent version of Python 3.
 
 ## Changelog
 
+17/12/2019
+
+- Changed: Fast resume no longer calls bootstrap to check the session.
+  Instead, IceAPI will automatically restart the session if the next API call fails
+  with a 403, or it detects a master version change. Fast resume will still return
+  False for invalid resume data.
+  You can get the old behaviour back by passing revalidate_immediately=True
+  to fast_resume().
+- Added decryption keys for 1.3.0.
+
 30/11/2019
 
 - New: AS_LIBPENGUIN_PATH for customizing libpenguin
@@ -86,6 +96,12 @@ source rt/bin/activate
 pip install -r requirements.txt
 export ASTOOL_STORAGE=/mnt/storage/as-cache/data
 export LIVE_MASTER_CHECK_ALLOWED=1
+
+# Build libpenguin.dylib
+# Note: it is still .dylib on Linux.
+pushd libpenguin
+make libpenguin.dylib
+popd
 
 # Create account
 python3 astool.py jp bootstrap
