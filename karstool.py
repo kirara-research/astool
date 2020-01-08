@@ -23,10 +23,7 @@ from itertools import zip_longest
 import requests
 import plac
 
-try:
-    from .libpenguin import karsffi
-except ImportError:
-    from libpenguin import karsffi
+import hwdecrypt
 
 try:
     from . import iceapi
@@ -151,7 +148,7 @@ def live_master_check(tag, server_configuration):
     return ice.master_version
 
 def file_is_valid(local_root, file):
-    p = os.path.join(local_root, f"enc_{file.name}")
+    p = os.path.join(local_root, "enc", file.name)
     if not os.path.exists(p):
         return False
 
@@ -172,16 +169,17 @@ def download_one(user_agent, remote_root, local_root, file):
         headers={"User-Agent": user_agent})
 
     ks = file.getkeys()
-    keys = karsffi.PenguinKeyset(ks[0], ks[1], ks[2])
+    keys = hwdecrypt.Keyset(ks[0], ks[1], ks[2])
     decompressor = zlib.decompressobj(-zlib.MAX_WBITS)
 
-    with open(os.path.join(local_root, f"enc_{file.name}"), 'wb') as enc_fd, \
-        open(os.path.join(local_root, f"{file.name}"), 'wb') as use_fd:
+    os.makedirs(os.path.join(local_root, "enc"), exist_ok=True)
+    with open(os.path.join(local_root, "enc", file.name), "wb") as enc_fd, \
+        open(os.path.join(local_root, file.name), "wb") as use_fd:
         for chunk in rf.iter_content(chunk_size=0x4000):
             enc_fd.write(chunk)
-            karsffi.decrypt(keys, chunk)
-            #use_fd.write(chunk)
-            use_fd.write(decompressor.decompress(chunk))
+            copy = bytearray(chunk)
+            hwdecrypt.decrypt(keys, copy)
+            use_fd.write(decompressor.decompress(copy))
         use_fd.write(decompressor.flush())
 
 def main(force: ("Download files even if they are valid", "flag", "f"),
@@ -189,7 +187,6 @@ def main(force: ("Download files even if they are valid", "flag", "f"),
          bundle: ("Bundle version to download against", "option", "b"),
          server: ("Server to download against", "option", "r")):
     logging.basicConfig(level=logging.INFO)
-    karsffi.init(os.environ.get("AS_LIBPENGUIN_PATH"))
 
     if not server or server not in astool.SERVER_CONFIG:
         server = "jp"

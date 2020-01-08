@@ -10,10 +10,7 @@ from collections import namedtuple
 import plac
 import requests
 
-if __name__ == "__main__":
-    from libpenguin import karsffi
-else:
-    from .libpenguin import karsffi
+import hwdecrypt
 
 if __name__ == "__main__":
     import astool

@@ -4,6 +4,10 @@ Requires a recent version of Python 3.
 
 ## Changelog
 
+08/01/2020
+
+- Migrated to hwdecrypt.
+
 17/12/2019
 
 - Changed: Fast resume no longer calls bootstrap to check the session.
@@ -97,10 +101,8 @@ pip install -r requirements.txt
 export ASTOOL_STORAGE=/mnt/storage/as-cache/data
 export LIVE_MASTER_CHECK_ALLOWED=1
 
-# Build libpenguin.dylib
-# Note: it is still .dylib on Linux.
-pushd libpenguin
-make libpenguin.dylib
+pushd hwdecrypt_src
+python3 setup.py install
 popd
 
 # Create account
