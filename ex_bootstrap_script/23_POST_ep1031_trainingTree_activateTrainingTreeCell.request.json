@@ -1,0 +1,30 @@
+{
+  "data": [
+    {
+      "card_master_id": 102062001,
+      "cell_master_ids": [
+        17,
+        16,
+        15,
+        14,
+        13,
+        12,
+        11,
+        10,
+        9,
+        8,
+        7,
+        6,
+        5,
+        4,
+        3,
+        2,
+        1
+      ],
+      "pay_type": 1
+    },
+    "b29529ae55da347f5aec001036a30673d7a985c6"
+  ],
+  "method": "POST",
+  "url": "https://jp-real-prod-v4tadlicuqeeumke.api.game25.klabgames.net/ep1031/trainingTree/activateTrainingTreeCell?p=i&mv=99d246f8468022d7&id=23&u=272394909&t=1578994303877"
+}

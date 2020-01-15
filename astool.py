@@ -13,9 +13,11 @@ import requests
 
 try:
     from . import iceapi
+    from . import bootstrap_promote
     from .sv_config import SERVER_CONFIG
 except ImportError:
     import iceapi
+    import bootstrap_promote
     from sv_config import SERVER_CONFIG
 
 def vercmp(a, b):
@@ -159,6 +161,31 @@ def command_sign_package_urls(argv):
 
 def command_resolve_svc(argv):
     print(g_SI_DEFAULT["bundle_version"])
+
+def command_promote(argv):
+    with astool_memo() as memo:
+        uid = memo.get("user_id")
+        pwd = memo.get("password")
+        auc = memo.get("auth_count")
+
+    if not all((uid, pwd, auc)):
+        raise ValueError("You need an account to do that.")
+
+    ice = iceapi.ICEBinder(g_SI_DEFAULT, "iOS", uid, pwd, auc)
+    ret = ice.api.login.login()
+    if ret.return_code != 0:
+        print("Login failed, trying to reset auth count...")
+        ice.set_login(uid, pwd, ret.app_data.get("authorization_count") + 1)
+        ret = ice.api.login.login()
+    
+    if ret.app_data["user_model"]["user_status"]["tutorial_end_at"] == 0:
+        if input("This process cannot be undone. Are you sure? (type 'yes') > ") == "yes":
+            bootstrap_promote.run_playlist(ice, "ex_bootstrap_script/0000_playlist.json")
+
+    with astool_memo() as memo:
+        memo["master_version"] = ice.master_version
+        memo["auth_count"] = ice.auth_count
+        memo["resume_data"] = None
 
 COMMANDS = {
     "bootstrap": command_bootstrap,

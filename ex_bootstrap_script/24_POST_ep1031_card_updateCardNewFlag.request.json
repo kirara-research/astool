@@ -1,0 +1,12 @@
+{
+  "data": [
+    {
+      "card_master_ids": [
+        102062001
+      ]
+    },
+    "4a34094c5431e0f13b7bdb38619bf6f0203f41f4"
+  ],
+  "method": "POST",
+  "url": "https://jp-real-prod-v4tadlicuqeeumke.api.game25.klabgames.net/ep1031/card/updateCardNewFlag?p=i&mv=99d246f8468022d7&id=24&u=272394909&t=1578994357598"
+}

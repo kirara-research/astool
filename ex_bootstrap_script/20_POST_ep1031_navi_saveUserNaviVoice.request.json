@@ -1,0 +1,12 @@
+{
+  "data": [
+    {
+      "navi_voice_master_ids": [
+        102060004
+      ]
+    },
+    "1cbd33cfe6c10a0e9750af28a1d14d5bed99d87e"
+  ],
+  "method": "POST",
+  "url": "https://jp-real-prod-v4tadlicuqeeumke.api.game25.klabgames.net/ep1031/navi/saveUserNaviVoice?p=i&mv=99d246f8468022d7&id=20&u=272394909&t=1578994279324"
+}

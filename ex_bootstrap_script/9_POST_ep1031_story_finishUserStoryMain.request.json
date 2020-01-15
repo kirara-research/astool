@@ -1,0 +1,11 @@
+{
+  "data": [
+    {
+      "cell_id": 1001,
+      "is_auto_mode": false
+    },
+    "e3ddf4305595a6ff67c9c2788416a992094cd450"
+  ],
+  "method": "POST",
+  "url": "https://jp-real-prod-v4tadlicuqeeumke.api.game25.klabgames.net/ep1031/story/finishUserStoryMain?p=i&mv=99d246f8468022d7&id=9&u=272394909&t=1578994158104"
+}

@@ -1,0 +1,12 @@
+{
+  "data": [
+    {
+      "card_index": 1,
+      "deck_id": 1,
+      "suit_master_id": 102062001
+    },
+    "e13b3b521e4906c63a6007f65120253f3e38f3c9"
+  ],
+  "method": "POST",
+  "url": "https://jp-real-prod-v4tadlicuqeeumke.api.game25.klabgames.net/ep1031/liveDeck/saveSuit?p=i&mv=99d246f8468022d7&id=26&u=272394909&t=1578994372849"
+}

@@ -1,0 +1,10 @@
+{
+  "data": [
+    {
+      "gacha_draw_master_id": 1
+    },
+    "c22b2b05e1fd25798269c36d7c8e3ba210cfc502"
+  ],
+  "method": "POST",
+  "url": "https://jp-real-prod-v4tadlicuqeeumke.api.game25.klabgames.net/ep1031/gacha/draw?p=i&mv=99d246f8468022d7&id=31&u=272394909&t=1578994438965"
+}

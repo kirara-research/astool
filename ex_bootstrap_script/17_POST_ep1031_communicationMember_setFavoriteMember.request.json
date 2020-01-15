@@ -1,0 +1,10 @@
+{
+  "data": [
+    {
+      "member_master_id": 206
+    },
+    "6e44895b7e9668590c69dc01aa389d6d2f193544"
+  ],
+  "method": "POST",
+  "url": "https://jp-real-prod-v4tadlicuqeeumke.api.game25.klabgames.net/ep1031/communicationMember/setFavoriteMember?p=i&mv=99d246f8468022d7&id=17&u=272394909&t=1578994251030"
+}

@@ -1,0 +1,19 @@
+{
+  "data": [
+    {
+      "bootstrap_fetch_types": [
+        2,
+        3,
+        4,
+        5,
+        9,
+        10
+      ],
+      "device_name": "iPhoneX",
+      "device_token": ""
+    },
+    "fad184376657957dfd6d598a7475bb624a2dbb38"
+  ],
+  "method": "POST",
+  "url": "https://jp-real-prod-v4tadlicuqeeumke.api.game25.klabgames.net/ep1031/bootstrap/fetchBootstrap?p=i&mv=99d246f8468022d7&id=33&u=272394909&t=1578994473608"
+}

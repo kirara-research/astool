@@ -1,0 +1,71 @@
+{
+  "data": [
+    {
+      "card_with_suit": [
+        102062001,
+        null,
+        102071001,
+        null,
+        102081001,
+        null,
+        101031001,
+        null,
+        101061001,
+        null,
+        101051001,
+        null,
+        100051001,
+        100051001,
+        100091001,
+        100091001,
+        100041001,
+        100041001
+      ],
+      "deck_id": 1,
+      "squad_dict": [
+        101,
+        {
+          "card_master_ids": [
+            101031001,
+            101061001,
+            101051001
+          ],
+          "user_accessory_ids": [
+            null,
+            null,
+            null
+          ]
+        },
+        102,
+        {
+          "card_master_ids": [
+            102081001,
+            100051001,
+            100091001
+          ],
+          "user_accessory_ids": [
+            null,
+            null,
+            null
+          ]
+        },
+        103,
+        {
+          "card_master_ids": [
+            102062001,
+            102071001,
+            100041001
+          ],
+          "user_accessory_ids": [
+            null,
+            null,
+            null
+          ]
+        }
+      ]
+    },
+    "19db89651d546b4a7012cbc5b86c459bb3293dc1"
+  ],
+  "method": "POST",
+  "url": "https://jp-real-prod-v4tadlicuqeeumke.api.game25.klabgames.net/ep1031/liveDeck/saveDeckAll?p=i&mv=99d246f8468022d7&id=25&u=272394909&t=1578994368416"
+}

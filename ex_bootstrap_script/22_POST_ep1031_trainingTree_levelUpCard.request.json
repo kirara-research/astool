@@ -1,0 +1,11 @@
+{
+  "data": [
+    {
+      "additional_level": 1,
+      "card_master_id": 102062001
+    },
+    "e308e76da4e953e26c4765744a3d82a6ff5e6927"
+  ],
+  "method": "POST",
+  "url": "https://jp-real-prod-v4tadlicuqeeumke.api.game25.klabgames.net/ep1031/trainingTree/levelUpCard?p=i&mv=99d246f8468022d7&id=22&u=272394909&t=1578994297143"
+}

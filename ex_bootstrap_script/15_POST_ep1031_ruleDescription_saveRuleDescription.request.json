@@ -1,0 +1,12 @@
+{
+  "data": [
+    {
+      "rule_description_master_ids": [
+        2
+      ]
+    },
+    "2344f2657338d84607eda2649fd3d9849806fb89"
+  ],
+  "method": "POST",
+  "url": "https://jp-real-prod-v4tadlicuqeeumke.api.game25.klabgames.net/ep1031/ruleDescription/saveRuleDescription?p=i&mv=99d246f8468022d7&id=15&u=272394909&t=1578994212582"
+}

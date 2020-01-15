@@ -1,0 +1,11 @@
+{
+  "data": [
+    {
+      "day": 0,
+      "month": 0
+    },
+    "9ed7a2e88b005eca8f6f5a16409e12581565592f"
+  ],
+  "method": "POST",
+  "url": "https://jp-real-prod-v4tadlicuqeeumke.api.game25.klabgames.net/ep1031/userProfile/setProfileBirthday?p=i&mv=99d246f8468022d7&id=8&u=272394909&t=1578994142490"
+}

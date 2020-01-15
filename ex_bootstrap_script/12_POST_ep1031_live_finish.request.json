@@ -1,0 +1,1148 @@
+{
+  "data": [
+    {
+      "live_finish_status": 1,
+      "live_id": 1578994159633582076,
+      "live_score": {
+        "card_stat_dict": [
+          100011001,
+          {
+            "active_skill_value": 200,
+            "appeal_count": 0,
+            "base_parameter": {
+              "appeal": 627,
+              "stamina": 620,
+              "technique": 1128
+            },
+            "card_master_id": 100011001,
+            "got_voltage": 0,
+            "passive_skill_values": [
+              0
+            ],
+            "recast_squad_effect_count": 0,
+            "skill_triggered_count": 0
+          },
+          100041001,
+          {
+            "active_skill_value": 220,
+            "appeal_count": 0,
+            "base_parameter": {
+              "appeal": 683,
+              "stamina": 683,
+              "technique": 710
+            },
+            "card_master_id": 100041001,
+            "got_voltage": 0,
+            "passive_skill_values": [
+              0
+            ],
+            "recast_squad_effect_count": 0,
+            "skill_triggered_count": 0
+          },
+          100031001,
+          {
+            "active_skill_value": 100,
+            "appeal_count": 0,
+            "base_parameter": {
+              "appeal": 621,
+              "stamina": 836,
+              "technique": 621
+            },
+            "card_master_id": 100031001,
+            "got_voltage": 0,
+            "passive_skill_values": [
+              0
+            ],
+            "recast_squad_effect_count": 0,
+            "skill_triggered_count": 0
+          },
+          100061001,
+          {
+            "active_skill_value": 100,
+            "appeal_count": 0,
+            "base_parameter": {
+              "appeal": 633,
+              "stamina": 752,
+              "technique": 724
+            },
+            "card_master_id": 100061001,
+            "got_voltage": 0,
+            "passive_skill_values": [
+              0
+            ],
+            "recast_squad_effect_count": 0,
+            "skill_triggered_count": 0
+          },
+          100021001,
+          {
+            "active_skill_value": 110,
+            "appeal_count": 0,
+            "base_parameter": {
+              "appeal": 696,
+              "stamina": 710,
+              "technique": 710
+            },
+            "card_master_id": 100021001,
+            "got_voltage": 0,
+            "passive_skill_values": [
+              0
+            ],
+            "recast_squad_effect_count": 0,
+            "skill_triggered_count": 0
+          },
+          100081001,
+          {
+            "active_skill_value": 300,
+            "appeal_count": 0,
+            "base_parameter": {
+              "appeal": 633,
+              "stamina": 861,
+              "technique": 621
+            },
+            "card_master_id": 100081001,
+            "got_voltage": 0,
+            "passive_skill_values": [
+              0
+            ],
+            "recast_squad_effect_count": 0,
+            "skill_triggered_count": 0
+          },
+          100091001,
+          {
+            "active_skill_value": 80,
+            "appeal_count": 0,
+            "base_parameter": {
+              "appeal": 836,
+              "stamina": 868,
+              "technique": 638
+            },
+            "card_master_id": 100091001,
+            "got_voltage": 0,
+            "passive_skill_values": [
+              0
+            ],
+            "recast_squad_effect_count": 0,
+            "skill_triggered_count": 0
+          },
+          100051001,
+          {
+            "active_skill_value": 40,
+            "appeal_count": 0,
+            "base_parameter": {
+              "appeal": 836,
+              "stamina": 621,
+              "technique": 633
+            },
+            "card_master_id": 100051001,
+            "got_voltage": 0,
+            "passive_skill_values": [
+              0
+            ],
+            "recast_squad_effect_count": 0,
+            "skill_triggered_count": 0
+          },
+          100071001,
+          {
+            "active_skill_value": 150,
+            "appeal_count": 0,
+            "base_parameter": {
+              "appeal": 621,
+              "stamina": 627,
+              "technique": 844
+            },
+            "card_master_id": 100071001,
+            "got_voltage": 0,
+            "passive_skill_values": [
+              0
+            ],
+            "recast_squad_effect_count": 0,
+            "skill_triggered_count": 0
+          }
+        ],
+        "change_squad_count": 0,
+        "combo_count": 0,
+        "current_score": 0,
+        "finish_info": {
+          "created_at": 1578994182,
+          "live_const": {
+            "note_stamina_reduce": 1,
+            "sp_gauge_additional_rate": 10000,
+            "sp_gauge_length": 2800,
+            "sp_gauge_reducing_point": 50,
+            "sp_skill_voltage_magnification": 10000
+          }
+        },
+        "highest_combo_count": 0,
+        "is_perfect_full_combo": true,
+        "is_perfect_live": true,
+        "live_power": 1040,
+        "remaining_stamina": 6578,
+        "result_dict": [
+          1,
+          {
+            "card_master_id": 0,
+            "judge_type": 1,
+            "judged_at": 0,
+            "voltage": 0
+          },
+          2,
+          {
+            "card_master_id": 0,
+            "judge_type": 1,
+            "judged_at": 0,
+            "voltage": 0
+          },
+          3,
+          {
+            "card_master_id": 0,
+            "judge_type": 1,
+            "judged_at": 0,
+            "voltage": 0
+          },
+          4,
+          {
+            "card_master_id": 0,
+            "judge_type": 1,
+            "judged_at": 0,
+            "voltage": 0
+          },
+          5,
+          {
+            "card_master_id": 0,
+            "judge_type": 1,
+            "judged_at": 0,
+            "voltage": 0
+          },
+          6,
+          {
+            "card_master_id": 0,
+            "judge_type": 1,
+            "judged_at": 0,
+            "voltage": 0
+          },
+          7,
+          {
+            "card_master_id": 0,
+            "judge_type": 1,
+            "judged_at": 0,
+            "voltage": 0
+          },
+          8,
+          {
+            "card_master_id": 0,
+            "judge_type": 1,
+            "judged_at": 0,
+            "voltage": 0
+          },
+          9,
+          {
+            "card_master_id": 0,
+            "judge_type": 1,
+            "judged_at": 0,
+            "voltage": 0
+          },
+          10,
+          {
+            "card_master_id": 0,
+            "judge_type": 1,
+            "judged_at": 0,
+            "voltage": 0
+          },
+          11,
+          {
+            "card_master_id": 0,
+            "judge_type": 1,
+            "judged_at": 0,
+            "voltage": 0
+          },
+          12,
+          {
+            "card_master_id": 0,
+            "judge_type": 1,
+            "judged_at": 0,
+            "voltage": 0
+          },
+          13,
+          {
+            "card_master_id": 0,
+            "judge_type": 1,
+            "judged_at": 0,
+            "voltage": 0
+          },
+          14,
+          {
+            "card_master_id": 0,
+            "judge_type": 1,
+            "judged_at": 0,
+            "voltage": 0
+          },
+          15,
+          {
+            "card_master_id": 0,
+            "judge_type": 1,
+            "judged_at": 0,
+            "voltage": 0
+          },
+          16,
+          {
+            "card_master_id": 0,
+            "judge_type": 1,
+            "judged_at": 0,
+            "voltage": 0
+          },
+          17,
+          {
+            "card_master_id": 0,
+            "judge_type": 1,
+            "judged_at": 0,
+            "voltage": 0
+          },
+          18,
+          {
+            "card_master_id": 0,
+            "judge_type": 1,
+            "judged_at": 0,
+            "voltage": 0
+          },
+          19,
+          {
+            "card_master_id": 0,
+            "judge_type": 1,
+            "judged_at": 0,
+            "voltage": 0
+          },
+          20,
+          {
+            "card_master_id": 0,
+            "judge_type": 1,
+            "judged_at": 0,
+            "voltage": 0
+          },
+          21,
+          {
+            "card_master_id": 0,
+            "judge_type": 1,
+            "judged_at": 0,
+            "voltage": 0
+          },
+          22,
+          {
+            "card_master_id": 0,
+            "judge_type": 1,
+            "judged_at": 0,
+            "voltage": 0
+          },
+          23,
+          {
+            "card_master_id": 0,
+            "judge_type": 1,
+            "judged_at": 0,
+            "voltage": 0
+          },
+          24,
+          {
+            "card_master_id": 0,
+            "judge_type": 1,
+            "judged_at": 0,
+            "voltage": 0
+          },
+          25,
+          {
+            "card_master_id": 0,
+            "judge_type": 1,
+            "judged_at": 0,
+            "voltage": 0
+          },
+          26,
+          {
+            "card_master_id": 0,
+            "judge_type": 1,
+            "judged_at": 0,
+            "voltage": 0
+          },
+          27,
+          {
+            "card_master_id": 0,
+            "judge_type": 1,
+            "judged_at": 0,
+            "voltage": 0
+          },
+          28,
+          {
+            "card_master_id": 0,
+            "judge_type": 1,
+            "judged_at": 0,
+            "voltage": 0
+          },
+          29,
+          {
+            "card_master_id": 0,
+            "judge_type": 1,
+            "judged_at": 0,
+            "voltage": 0
+          },
+          30,
+          {
+            "card_master_id": 0,
+            "judge_type": 1,
+            "judged_at": 0,
+            "voltage": 0
+          },
+          31,
+          {
+            "card_master_id": 0,
+            "judge_type": 1,
+            "judged_at": 0,
+            "voltage": 0
+          },
+          32,
+          {
+            "card_master_id": 0,
+            "judge_type": 1,
+            "judged_at": 0,
+            "voltage": 0
+          },
+          33,
+          {
+            "card_master_id": 0,
+            "judge_type": 1,
+            "judged_at": 0,
+            "voltage": 0
+          },
+          34,
+          {
+            "card_master_id": 0,
+            "judge_type": 1,
+            "judged_at": 0,
+            "voltage": 0
+          },
+          35,
+          {
+            "card_master_id": 0,
+            "judge_type": 1,
+            "judged_at": 0,
+            "voltage": 0
+          },
+          36,
+          {
+            "card_master_id": 0,
+            "judge_type": 1,
+            "judged_at": 0,
+            "voltage": 0
+          },
+          37,
+          {
+            "card_master_id": 0,
+            "judge_type": 1,
+            "judged_at": 0,
+            "voltage": 0
+          },
+          38,
+          {
+            "card_master_id": 0,
+            "judge_type": 1,
+            "judged_at": 0,
+            "voltage": 0
+          },
+          39,
+          {
+            "card_master_id": 0,
+            "judge_type": 1,
+            "judged_at": 0,
+            "voltage": 0
+          },
+          40,
+          {
+            "card_master_id": 0,
+            "judge_type": 1,
+            "judged_at": 0,
+            "voltage": 0
+          },
+          41,
+          {
+            "card_master_id": 0,
+            "judge_type": 1,
+            "judged_at": 0,
+            "voltage": 0
+          },
+          42,
+          {
+            "card_master_id": 0,
+            "judge_type": 1,
+            "judged_at": 0,
+            "voltage": 0
+          },
+          43,
+          {
+            "card_master_id": 0,
+            "judge_type": 1,
+            "judged_at": 0,
+            "voltage": 0
+          },
+          44,
+          {
+            "card_master_id": 0,
+            "judge_type": 1,
+            "judged_at": 0,
+            "voltage": 0
+          },
+          45,
+          {
+            "card_master_id": 0,
+            "judge_type": 1,
+            "judged_at": 0,
+            "voltage": 0
+          },
+          46,
+          {
+            "card_master_id": 0,
+            "judge_type": 1,
+            "judged_at": 0,
+            "voltage": 0
+          },
+          47,
+          {
+            "card_master_id": 0,
+            "judge_type": 1,
+            "judged_at": 0,
+            "voltage": 0
+          },
+          48,
+          {
+            "card_master_id": 0,
+            "judge_type": 1,
+            "judged_at": 0,
+            "voltage": 0
+          },
+          49,
+          {
+            "card_master_id": 0,
+            "judge_type": 1,
+            "judged_at": 0,
+            "voltage": 0
+          },
+          50,
+          {
+            "card_master_id": 0,
+            "judge_type": 1,
+            "judged_at": 0,
+            "voltage": 0
+          },
+          51,
+          {
+            "card_master_id": 0,
+            "judge_type": 1,
+            "judged_at": 0,
+            "voltage": 0
+          },
+          52,
+          {
+            "card_master_id": 0,
+            "judge_type": 1,
+            "judged_at": 0,
+            "voltage": 0
+          },
+          53,
+          {
+            "card_master_id": 0,
+            "judge_type": 1,
+            "judged_at": 0,
+            "voltage": 0
+          },
+          54,
+          {
+            "card_master_id": 0,
+            "judge_type": 1,
+            "judged_at": 0,
+            "voltage": 0
+          }
+        ],
+        "start_info": {
+          "created_at": 1578994159,
+          "live_const": {
+            "note_stamina_reduce": 1,
+            "sp_gauge_additional_rate": 10000,
+            "sp_gauge_length": 2800,
+            "sp_gauge_reducing_point": 50,
+            "sp_skill_voltage_magnification": 10000
+          }
+        },
+        "target_score": 35000,
+        "turn_stat_dict": [
+          1,
+          {
+            "appended_shield": 0,
+            "current_life": 6578,
+            "current_voltage": 0,
+            "healed_life": 0,
+            "healed_life_percent": 0,
+            "note_id": 0,
+            "stamina_damage": 0
+          },
+          2,
+          {
+            "appended_shield": 0,
+            "current_life": 0,
+            "current_voltage": 0,
+            "healed_life": 0,
+            "healed_life_percent": 0,
+            "note_id": 0,
+            "stamina_damage": 0
+          },
+          3,
+          {
+            "appended_shield": 0,
+            "current_life": 0,
+            "current_voltage": 0,
+            "healed_life": 0,
+            "healed_life_percent": 0,
+            "note_id": 0,
+            "stamina_damage": 0
+          },
+          4,
+          {
+            "appended_shield": 0,
+            "current_life": 0,
+            "current_voltage": 0,
+            "healed_life": 0,
+            "healed_life_percent": 0,
+            "note_id": 0,
+            "stamina_damage": 0
+          },
+          5,
+          {
+            "appended_shield": 0,
+            "current_life": 0,
+            "current_voltage": 0,
+            "healed_life": 0,
+            "healed_life_percent": 0,
+            "note_id": 0,
+            "stamina_damage": 0
+          },
+          6,
+          {
+            "appended_shield": 0,
+            "current_life": 0,
+            "current_voltage": 0,
+            "healed_life": 0,
+            "healed_life_percent": 0,
+            "note_id": 0,
+            "stamina_damage": 0
+          },
+          7,
+          {
+            "appended_shield": 0,
+            "current_life": 0,
+            "current_voltage": 0,
+            "healed_life": 0,
+            "healed_life_percent": 0,
+            "note_id": 0,
+            "stamina_damage": 0
+          },
+          8,
+          {
+            "appended_shield": 0,
+            "current_life": 0,
+            "current_voltage": 0,
+            "healed_life": 0,
+            "healed_life_percent": 0,
+            "note_id": 0,
+            "stamina_damage": 0
+          },
+          9,
+          {
+            "appended_shield": 0,
+            "current_life": 0,
+            "current_voltage": 0,
+            "healed_life": 0,
+            "healed_life_percent": 0,
+            "note_id": 0,
+            "stamina_damage": 0
+          },
+          10,
+          {
+            "appended_shield": 0,
+            "current_life": 0,
+            "current_voltage": 0,
+            "healed_life": 0,
+            "healed_life_percent": 0,
+            "note_id": 0,
+            "stamina_damage": 0
+          },
+          11,
+          {
+            "appended_shield": 0,
+            "current_life": 0,
+            "current_voltage": 0,
+            "healed_life": 0,
+            "healed_life_percent": 0,
+            "note_id": 0,
+            "stamina_damage": 0
+          },
+          12,
+          {
+            "appended_shield": 0,
+            "current_life": 0,
+            "current_voltage": 0,
+            "healed_life": 0,
+            "healed_life_percent": 0,
+            "note_id": 0,
+            "stamina_damage": 0
+          },
+          13,
+          {
+            "appended_shield": 0,
+            "current_life": 0,
+            "current_voltage": 0,
+            "healed_life": 0,
+            "healed_life_percent": 0,
+            "note_id": 0,
+            "stamina_damage": 0
+          },
+          14,
+          {
+            "appended_shield": 0,
+            "current_life": 0,
+            "current_voltage": 0,
+            "healed_life": 0,
+            "healed_life_percent": 0,
+            "note_id": 0,
+            "stamina_damage": 0
+          },
+          15,
+          {
+            "appended_shield": 0,
+            "current_life": 0,
+            "current_voltage": 0,
+            "healed_life": 0,
+            "healed_life_percent": 0,
+            "note_id": 0,
+            "stamina_damage": 0
+          },
+          16,
+          {
+            "appended_shield": 0,
+            "current_life": 0,
+            "current_voltage": 0,
+            "healed_life": 0,
+            "healed_life_percent": 0,
+            "note_id": 0,
+            "stamina_damage": 0
+          },
+          17,
+          {
+            "appended_shield": 0,
+            "current_life": 0,
+            "current_voltage": 0,
+            "healed_life": 0,
+            "healed_life_percent": 0,
+            "note_id": 0,
+            "stamina_damage": 0
+          },
+          18,
+          {
+            "appended_shield": 0,
+            "current_life": 0,
+            "current_voltage": 0,
+            "healed_life": 0,
+            "healed_life_percent": 0,
+            "note_id": 0,
+            "stamina_damage": 0
+          },
+          19,
+          {
+            "appended_shield": 0,
+            "current_life": 0,
+            "current_voltage": 0,
+            "healed_life": 0,
+            "healed_life_percent": 0,
+            "note_id": 0,
+            "stamina_damage": 0
+          },
+          20,
+          {
+            "appended_shield": 0,
+            "current_life": 0,
+            "current_voltage": 0,
+            "healed_life": 0,
+            "healed_life_percent": 0,
+            "note_id": 0,
+            "stamina_damage": 0
+          },
+          21,
+          {
+            "appended_shield": 0,
+            "current_life": 0,
+            "current_voltage": 0,
+            "healed_life": 0,
+            "healed_life_percent": 0,
+            "note_id": 0,
+            "stamina_damage": 0
+          },
+          22,
+          {
+            "appended_shield": 0,
+            "current_life": 0,
+            "current_voltage": 0,
+            "healed_life": 0,
+            "healed_life_percent": 0,
+            "note_id": 0,
+            "stamina_damage": 0
+          },
+          23,
+          {
+            "appended_shield": 0,
+            "current_life": 0,
+            "current_voltage": 0,
+            "healed_life": 0,
+            "healed_life_percent": 0,
+            "note_id": 0,
+            "stamina_damage": 0
+          },
+          24,
+          {
+            "appended_shield": 0,
+            "current_life": 0,
+            "current_voltage": 0,
+            "healed_life": 0,
+            "healed_life_percent": 0,
+            "note_id": 0,
+            "stamina_damage": 0
+          },
+          25,
+          {
+            "appended_shield": 0,
+            "current_life": 0,
+            "current_voltage": 0,
+            "healed_life": 0,
+            "healed_life_percent": 0,
+            "note_id": 0,
+            "stamina_damage": 0
+          },
+          26,
+          {
+            "appended_shield": 0,
+            "current_life": 0,
+            "current_voltage": 0,
+            "healed_life": 0,
+            "healed_life_percent": 0,
+            "note_id": 0,
+            "stamina_damage": 0
+          },
+          27,
+          {
+            "appended_shield": 0,
+            "current_life": 0,
+            "current_voltage": 0,
+            "healed_life": 0,
+            "healed_life_percent": 0,
+            "note_id": 0,
+            "stamina_damage": 0
+          },
+          28,
+          {
+            "appended_shield": 0,
+            "current_life": 0,
+            "current_voltage": 0,
+            "healed_life": 0,
+            "healed_life_percent": 0,
+            "note_id": 0,
+            "stamina_damage": 0
+          },
+          29,
+          {
+            "appended_shield": 0,
+            "current_life": 0,
+            "current_voltage": 0,
+            "healed_life": 0,
+            "healed_life_percent": 0,
+            "note_id": 0,
+            "stamina_damage": 0
+          },
+          30,
+          {
+            "appended_shield": 0,
+            "current_life": 0,
+            "current_voltage": 0,
+            "healed_life": 0,
+            "healed_life_percent": 0,
+            "note_id": 0,
+            "stamina_damage": 0
+          },
+          31,
+          {
+            "appended_shield": 0,
+            "current_life": 0,
+            "current_voltage": 0,
+            "healed_life": 0,
+            "healed_life_percent": 0,
+            "note_id": 0,
+            "stamina_damage": 0
+          },
+          32,
+          {
+            "appended_shield": 0,
+            "current_life": 0,
+            "current_voltage": 0,
+            "healed_life": 0,
+            "healed_life_percent": 0,
+            "note_id": 0,
+            "stamina_damage": 0
+          },
+          33,
+          {
+            "appended_shield": 0,
+            "current_life": 0,
+            "current_voltage": 0,
+            "healed_life": 0,
+            "healed_life_percent": 0,
+            "note_id": 0,
+            "stamina_damage": 0
+          },
+          34,
+          {
+            "appended_shield": 0,
+            "current_life": 0,
+            "current_voltage": 0,
+            "healed_life": 0,
+            "healed_life_percent": 0,
+            "note_id": 0,
+            "stamina_damage": 0
+          },
+          35,
+          {
+            "appended_shield": 0,
+            "current_life": 0,
+            "current_voltage": 0,
+            "healed_life": 0,
+            "healed_life_percent": 0,
+            "note_id": 0,
+            "stamina_damage": 0
+          },
+          36,
+          {
+            "appended_shield": 0,
+            "current_life": 0,
+            "current_voltage": 0,
+            "healed_life": 0,
+            "healed_life_percent": 0,
+            "note_id": 0,
+            "stamina_damage": 0
+          },
+          37,
+          {
+            "appended_shield": 0,
+            "current_life": 0,
+            "current_voltage": 0,
+            "healed_life": 0,
+            "healed_life_percent": 0,
+            "note_id": 0,
+            "stamina_damage": 0
+          },
+          38,
+          {
+            "appended_shield": 0,
+            "current_life": 0,
+            "current_voltage": 0,
+            "healed_life": 0,
+            "healed_life_percent": 0,
+            "note_id": 0,
+            "stamina_damage": 0
+          },
+          39,
+          {
+            "appended_shield": 0,
+            "current_life": 0,
+            "current_voltage": 0,
+            "healed_life": 0,
+            "healed_life_percent": 0,
+            "note_id": 0,
+            "stamina_damage": 0
+          },
+          40,
+          {
+            "appended_shield": 0,
+            "current_life": 0,
+            "current_voltage": 0,
+            "healed_life": 0,
+            "healed_life_percent": 0,
+            "note_id": 0,
+            "stamina_damage": 0
+          },
+          41,
+          {
+            "appended_shield": 0,
+            "current_life": 0,
+            "current_voltage": 0,
+            "healed_life": 0,
+            "healed_life_percent": 0,
+            "note_id": 0,
+            "stamina_damage": 0
+          },
+          42,
+          {
+            "appended_shield": 0,
+            "current_life": 0,
+            "current_voltage": 0,
+            "healed_life": 0,
+            "healed_life_percent": 0,
+            "note_id": 0,
+            "stamina_damage": 0
+          },
+          43,
+          {
+            "appended_shield": 0,
+            "current_life": 0,
+            "current_voltage": 0,
+            "healed_life": 0,
+            "healed_life_percent": 0,
+            "note_id": 0,
+            "stamina_damage": 0
+          },
+          44,
+          {
+            "appended_shield": 0,
+            "current_life": 0,
+            "current_voltage": 0,
+            "healed_life": 0,
+            "healed_life_percent": 0,
+            "note_id": 0,
+            "stamina_damage": 0
+          },
+          45,
+          {
+            "appended_shield": 0,
+            "current_life": 0,
+            "current_voltage": 0,
+            "healed_life": 0,
+            "healed_life_percent": 0,
+            "note_id": 0,
+            "stamina_damage": 0
+          },
+          46,
+          {
+            "appended_shield": 0,
+            "current_life": 0,
+            "current_voltage": 0,
+            "healed_life": 0,
+            "healed_life_percent": 0,
+            "note_id": 0,
+            "stamina_damage": 0
+          },
+          47,
+          {
+            "appended_shield": 0,
+            "current_life": 0,
+            "current_voltage": 0,
+            "healed_life": 0,
+            "healed_life_percent": 0,
+            "note_id": 0,
+            "stamina_damage": 0
+          },
+          48,
+          {
+            "appended_shield": 0,
+            "current_life": 0,
+            "current_voltage": 0,
+            "healed_life": 0,
+            "healed_life_percent": 0,
+            "note_id": 0,
+            "stamina_damage": 0
+          },
+          49,
+          {
+            "appended_shield": 0,
+            "current_life": 0,
+            "current_voltage": 0,
+            "healed_life": 0,
+            "healed_life_percent": 0,
+            "note_id": 0,
+            "stamina_damage": 0
+          },
+          50,
+          {
+            "appended_shield": 0,
+            "current_life": 0,
+            "current_voltage": 0,
+            "healed_life": 0,
+            "healed_life_percent": 0,
+            "note_id": 0,
+            "stamina_damage": 0
+          },
+          51,
+          {
+            "appended_shield": 0,
+            "current_life": 0,
+            "current_voltage": 0,
+            "healed_life": 0,
+            "healed_life_percent": 0,
+            "note_id": 0,
+            "stamina_damage": 0
+          },
+          52,
+          {
+            "appended_shield": 0,
+            "current_life": 0,
+            "current_voltage": 0,
+            "healed_life": 0,
+            "healed_life_percent": 0,
+            "note_id": 0,
+            "stamina_damage": 0
+          },
+          53,
+          {
+            "appended_shield": 0,
+            "current_life": 0,
+            "current_voltage": 0,
+            "healed_life": 0,
+            "healed_life_percent": 0,
+            "note_id": 0,
+            "stamina_damage": 0
+          },
+          54,
+          {
+            "appended_shield": 0,
+            "current_life": 0,
+            "current_voltage": 0,
+            "healed_life": 0,
+            "healed_life_percent": 0,
+            "note_id": 0,
+            "stamina_damage": 0
+          },
+          0,
+          {
+            "appended_shield": 0,
+            "current_life": 6578,
+            "current_voltage": 0,
+            "healed_life": 0,
+            "healed_life_percent": 0,
+            "note_id": 0,
+            "stamina_damage": 0
+          },
+          55,
+          {
+            "appended_shield": 0,
+            "current_life": 0,
+            "current_voltage": 0,
+            "healed_life": 0,
+            "healed_life_percent": 0,
+            "note_id": 0,
+            "stamina_damage": 0
+          }
+        ],
+        "use_buf_active_skill_count": 0,
+        "use_debuf_active_skill_count": 0,
+        "use_heal_active_skill_count": 0,
+        "use_sp_skill_count": 0,
+        "use_voltage_active_skill_count": 0,
+        "wave_stat": []
+      },
+      "resume_finish_info": {
+        "cached_judge_result": []
+      }
+    },
+    "7a08ad6a3eba16f816ad4d75d2404abd8b55a733"
+  ],
+  "method": "POST",
+  "url": "https://jp-real-prod-v4tadlicuqeeumke.api.game25.klabgames.net/ep1031/live/finish?p=i&mv=99d246f8468022d7&id=12&u=272394909&t=1578994182079"
+}

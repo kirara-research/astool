@@ -1,0 +1,115 @@
+[
+  {
+    "delay": 0.411,
+    "src": "6_POST_ep1031_userProfile_setProfile"
+  },
+  {
+    "delay": 22.197,
+    "src": "7_POST_ep1031_userProfile_setProfile"
+  },
+  {
+    "delay": 6.15,
+    "src": "8_POST_ep1031_userProfile_setProfileBirthday"
+  },
+  {
+    "delay": 15.82,
+    "src": "9_POST_ep1031_story_finishUserStoryMain"
+  },
+  {
+    "delay": 0.95,
+    "src": "10_POST_ep1031_live_start",
+    "after_response": "SaveCurrentBeatmapInfo"
+  },
+  {
+    "delay": 13.338,
+    "src": "11_POST_ep1031_ruleDescription_saveRuleDescription"
+  },
+  {
+    "delay": 9.56,
+    "src": "12_POST_ep1031_live_finish",
+    "before_request": "RestoreBeatmapInfo"
+  },
+  {
+    "delay": 18.932,
+    "src": "13_POST_ep1031_story_finishUserStoryMain"
+  },
+  {
+    "delay": 0.351,
+    "src": "14_POST_ep1031_live_start",
+    "after_response": "SaveCurrentBeatmapInfo"
+  },
+  {
+    "delay": 11.207,
+    "src": "15_POST_ep1031_ruleDescription_saveRuleDescription"
+  },
+  {
+    "delay": 9.447,
+    "src": "16_POST_ep1031_live_finish",
+    "before_request": "RestoreBeatmapInfo"
+  },
+  {
+    "delay": 28.957,
+    "src": "17_POST_ep1031_communicationMember_setFavoriteMember"
+  },
+  {
+    "delay": 9.742,
+    "src": "19_POST_ep1031_navi_tapLovePoint"
+  },
+  {
+    "delay": 6.247,
+    "src": "21_POST_ep1031_trainingTree_fetchTrainingTree"
+  },
+  {
+    "delay": 11.413,
+    "src": "22_POST_ep1031_trainingTree_levelUpCard"
+  },
+  {
+    "delay": 6.729,
+    "src": "23_POST_ep1031_trainingTree_activateTrainingTreeCell"
+  },
+  {
+    "delay": 53.898,
+    "src": "24_POST_ep1031_card_updateCardNewFlag"
+  },
+  {
+    "delay": 10.625,
+    "src": "25_POST_ep1031_liveDeck_saveDeckAll"
+  },
+  {
+    "delay": 4.605,
+    "src": "26_POST_ep1031_liveDeck_saveSuit"
+  },
+  {
+    "_": "no_input",
+    "delay": 11.693,
+    "src": "27_POST_ep1031_livePartners_fetch"
+  },
+  {
+    "delay": 8.7,
+    "src": "28_POST_ep1031_live_start",
+    "after_response": "SaveCurrentBeatmapInfo"
+  },
+  {
+    "delay": 14.737,
+    "src": "29_POST_ep1031_live_finish",
+    "before_request": "RestoreBeatmapInfo"
+  },
+  {    
+    "_": "no_input",
+    "delay": 26.542,
+    "src": "30_POST_ep1031_gacha_fetchGachaMenu"
+  },
+  {
+    "delay": 4.447,
+    "src": "31_POST_ep1031_gacha_draw"
+  },
+  {
+    "delay": 2.828,
+    "src": "33_POST_ep1031_bootstrap_fetchBootstrap"
+  },
+  {
+    "_": "no_input",
+    "delay": 10.35,
+    "src": "34_POST_ep1031_tutorial_phaseEnd"
+  }
+]

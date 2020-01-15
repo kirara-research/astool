@@ -1,0 +1,10 @@
+{
+  "data": [
+    {
+      "card_master_id": 102062001
+    },
+    "8f371c3e79125f239781ff86887f9623d7e98d79"
+  ],
+  "method": "POST",
+  "url": "https://jp-real-prod-v4tadlicuqeeumke.api.game25.klabgames.net/ep1031/trainingTree/fetchTrainingTree?p=i&mv=99d246f8468022d7&id=21&u=272394909&t=1578994285600"
+}

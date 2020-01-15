@@ -1,0 +1,11 @@
+{
+  "data": [
+    {
+      "device_token": "",
+      "nickname": "かーちゃん"
+    },
+    "afb10a81eef7d5055cbc6bc05b1359b1d9689815"
+  ],
+  "method": "POST",
+  "url": "https://jp-real-prod-v4tadlicuqeeumke.api.game25.klabgames.net/ep1031/userProfile/setProfile?p=i&mv=99d246f8468022d7&id=7&u=272394909&t=1578994136173"
+}

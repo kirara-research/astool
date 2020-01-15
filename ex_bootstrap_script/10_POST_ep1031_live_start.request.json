@@ -1,0 +1,16 @@
+{
+  "data": [
+    {
+      "cell_id": 1002,
+      "deck_id": 1,
+      "is_auto_play": false,
+      "live_difficulty_id": 30001301,
+      "lp_magnification": 1,
+      "partner_card_master_id": 0,
+      "partner_user_id": 0
+    },
+    "4c3f56ab02173fff049b9f0036227f7f63115da4"
+  ],
+  "method": "POST",
+  "url": "https://jp-real-prod-v4tadlicuqeeumke.api.game25.klabgames.net/ep1031/live/start?p=i&mv=99d246f8468022d7&id=10&u=272394909&t=1578994159281"
+}
