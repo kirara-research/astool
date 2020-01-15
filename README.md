@@ -4,6 +4,11 @@ Requires a recent version of Python 3.
 
 ## Changelog
 
+14/01/2020
+
+- New: You can automate the tutorial on a new account which unlocks features
+  on KLab's side. See the astool documentation below for info.
+
 08/01/2020
 
 - Migrated to hwdecrypt.
@@ -57,6 +62,10 @@ astool is used to talk to the AS API server. Currently, it has two user commands
 - `astool.py [server] sign_package_urls [package_name] [other_package_name]...` -
   Get a download link for the named package(s). These are signed CloudFront links
   that will eventually expire.
+- `astool.py [server] promote` - With a bootstrapped account, complete the tutorial
+  based on the playlist in `ex_bootstrap_script`. This allows the account to access
+  event rankings, among other things.
+- `astool.py [server] resolve` - Print the app version as specified in the config file.
 
 ## karstool
 
