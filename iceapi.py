@@ -24,7 +24,7 @@ from cryptography.hazmat.backends import default_backend
 APIThunkLog = logging.getLogger("ICEAPIThunk")
 APIBinderLog = logging.getLogger("ICEBinder")
 
-api_return_t = namedtuple("api_return_t", ("headers", "return_code", "app_data"))
+api_return_t = namedtuple("api_return_t", ("headers", "return_code", "app_data", "server_time"))
 
 DEFAULT_ASSET_STATE = ("AW9YpftGljWY/fnzPXciMnWWoSOIQXcdctowkQPUfpAjasaYRfvSidpw1D2" +
     "lmb6Ns2/LLhnLAAXMWlpKtyOIQpFTu3CmZHkVSg==")
@@ -233,7 +233,7 @@ class ICEBinder(object):
         try:
             payload = rsp.json()
         except json.JSONDecodeError:
-            return api_return_t(rsp.headers, -1, None)
+            return api_return_t(rsp.headers, -1, None, 0)
         
         if os.environ.get("ICEAPI_DEBUG_RESPONSES"):
             pprint.pprint(payload)
@@ -241,9 +241,8 @@ class ICEBinder(object):
         self.has_time = True
         self.master_version = payload[1]
         APIBinderLog.debug(f"IceAPI: Set master version to {self.master_version}!")
-        apidata = payload[3]
 
-        return api_return_t(rsp.headers, payload[2], apidata)
+        return api_return_t(rsp.headers, payload[2], payload[3], payload[0] / 1000)
 
     def default_hit_api(self, url, payload=None, skip_session_key_check=False, skip_fast_resume=False):
         if not skip_session_key_check and not self.has_session:

@@ -4,6 +4,11 @@ Requires a recent version of Python 3.
 
 ## Changelog
 
+15/01/2020
+
+- New: IceAPI's api_return_t now exposes the server time in the response.
+  api_return_t.server_time is a Unix timestamp corresponding to that.
+
 14/01/2020
 
 - New: You can automate the tutorial on a new account which unlocks features
