@@ -9,8 +9,6 @@ import zlib
 from datetime import datetime
 from itertools import zip_longest
 
-import requests
-
 try:
     from . import iceapi
     from . import bootstrap_promote
@@ -60,7 +58,10 @@ def astool_memo(si_tag=None):
     if si_tag is None:
         si_tag = g_SI_TAG
 
-    store = os.path.join(os.getenv("ASTOOL_STORAGE", ""), si_tag, "astool_store.json")
+    storage_base = os.path.join(os.getenv("ASTOOL_STORAGE", ""), si_tag)
+    os.makedirs(storage_base, exist_ok=True)
+
+    store = os.path.join(storage_base, "astool_store.json")
     try:
         with open(store, "r") as js:
             memo = json.load(js)
