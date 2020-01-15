@@ -181,6 +181,9 @@ def command_promote(argv):
     if ret.app_data["user_model"]["user_status"]["tutorial_end_at"] == 0:
         if input("This process cannot be undone. Are you sure? (type 'yes') > ") == "yes":
             bootstrap_promote.run_playlist(ice, "ex_bootstrap_script/0000_playlist.json")
+    else:
+        print("This account has already finished the tutorial. "
+            "If you want to do this again, run bootstrap to create a new account.")
 
     with astool_memo() as memo:
         memo["master_version"] = ice.master_version
@@ -192,6 +195,7 @@ COMMANDS = {
     "sign_package_urls": command_sign_package_urls,
     "accept_tos": command_accept_tos,
     "resolve": command_resolve_svc,
+    "promote": command_promote,
 }
 def main():
     global g_SI_TAG, g_SI_DEFAULT
