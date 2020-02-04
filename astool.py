@@ -191,12 +191,17 @@ def command_promote(argv):
         memo["auth_count"] = ice.auth_count
         memo["resume_data"] = None
 
+def command_invalidate_session(argv):
+    with astool_memo() as memo:
+        memo["resume_data"] = None
+
 COMMANDS = {
     "bootstrap": command_bootstrap,
     "sign_package_urls": command_sign_package_urls,
     "accept_tos": command_accept_tos,
     "resolve": command_resolve_svc,
     "promote": command_promote,
+    "invalidate": command_invalidate_session,
 }
 def main():
     global g_SI_TAG, g_SI_DEFAULT

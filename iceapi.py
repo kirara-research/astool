@@ -13,6 +13,7 @@ import hashlib
 import cryptography
 import os
 import pprint
+import binascii
 from collections import namedtuple
 
 from cryptography.hazmat.primitives.asymmetric.padding import OAEP, MGF1
@@ -95,6 +96,11 @@ class ICEBinder(object):
         self.platform_code = "i" if platform == "iOS" else "a"
         self.rsa_public_key = load_pem_public_key(server_info["public_key"], default_backend())
         assert isinstance(self.rsa_public_key, rsa.RSAPublicKey)
+        
+        if "session_mixkey" in server_info:
+            self.mixkey = binascii.unhexlify(server_info["session_mixkey"])
+        else:
+            self.mixkey = None
 
         self._bootstrap_key = server_info["bootstrap_key"].encode("ascii")
         if not auth_key:
@@ -352,6 +358,10 @@ class ICEBinder(object):
         if result.app_data.get("session_key"):
             server_mixed = base64.b64decode(result.app_data.get("session_key"))
             self.session_key = self.apply_xorpad(rand, server_mixed)
+
+            if self.mixkey:
+                self.session_key = self.apply_xorpad(self.session_key, self.mixkey)
+
             APIBinderLog.info(f"A session has been established with key {self.session_key}.")
             self.has_session = True
 

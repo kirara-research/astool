@@ -16,6 +16,17 @@ SERVER_CONFIG = {}
 
 SERVER_CONFIG["jp"] = [
 {
+    "root": "https://jp-real-prod-v4tadlicuqeeumke.api.game25.klabgames.net/ep1040",
+#@astool_OSS_REDACT_START
+    "bootstrap_key": "qIbAhMVtoH4zS9JL",
+#@astool_OSS_REDACT_END
+    "public_key": PUBLIC_KEY_DEFAULT_JP,
+    "user_agent": "allstars/11 CFNetwork/1107.1 Darwin/19.0.0",
+    "master_keys": [0xe10398e5, 0xe0cbf8bf, 0x0bc28a8e],
+    "bundle_version": "1.4.0",
+    "session_mixkey": "65D780D3EED9AF5831FFD5B870C7649FAC254AC21A384B4769814F5EB11AC339",
+},
+{
     "root": "https://jp-real-prod-v4tadlicuqeeumke.api.game25.klabgames.net/ep1031",
 #@astool_OSS_REDACT_START
     "bootstrap_key": "VgS4YaPhfxP3qNo9",

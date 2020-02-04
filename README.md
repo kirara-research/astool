@@ -4,6 +4,12 @@ Requires a recent version of Python 3.
 
 ## Changelog
 
+04/02/2020
+
+- Added decryption keys for 1.4.0.
+- Added 1.4.0 session mixkey support.
+- You can invalidate fast resume data manually with astool's `invalidate` command.
+
 15/01/2020
 
 - New: IceAPI's api_return_t now exposes the server time in the response.
