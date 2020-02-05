@@ -1,5 +1,47 @@
 #!/usr/bin/env python3
 
+#@astool_OSS_REDACT_START
+# ## How to assemble a server config from scratch:
+#
+# root:
+#     Search for "klabgames.net" in global-metadata. Copy the full
+#     URL base out
+#
+# bootstrap_key:
+#     This is right after the root URL. It's always 16 bytes - copy
+#     up to the "x'" string.
+#
+# public_key:
+#     Search for "applinks:llas" in global-metadata. The nearest XML
+#     key is the one you need. Convert it to PEM using
+#     https://superdry.apphb.com/tools/online-rsa-key-converter
+#
+# session_mixkey: 32 bytes
+#     Search for "applinks:llas" in global-metadata and scroll past
+#     the RSA key. It's in the middle of a bunch of small ints so
+#     should be easily visible.
+#
+# user_agent:
+#     Need to capture it off network, but doesn't matter for API
+#     usage. You can copy it from another config
+#
+# bundle_version:
+#     Get it from the App Store info page. It's only used for the
+#     plumbing API.
+#
+# master_keys:
+#     These are set by Constant .cctor in libil2cpp.so. First get
+#     a memory dump of the decrypted code with GameGuardian:
+#
+#     - Root the armv7 version of bluestacks with BSTweaker;
+#     - Start GameGuardian as root
+#     - Unroot bluestacks so the game launches
+#     - Use GG to dump memory.
+#
+#     Then, search for the image and function using the analyzer
+#     tool in this repo.
+#@astool_OSS_REDACT_END
+
 PUBLIC_KEY_DEFAULT_JP = b""
 #@astool_OSS_REDACT_START
 PUBLIC_KEY_DEFAULT_JP = b"""\
