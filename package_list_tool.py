@@ -109,6 +109,9 @@ def resolve_metapackages(db: sqlite3.Connection, metas: Set[str]):
         seen_list.add(pack_name)
         split_list.append(PackageDownloadTask(pack_name, file_size, metapack_offset, False))
 
+    if split_list:
+        tasks.append(MetapackageDownloadTask(mp_name, split_list, True))
+
     return seen_list, tasks
 
 
