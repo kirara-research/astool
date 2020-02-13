@@ -20,6 +20,8 @@ def main():
                 py_limited_api=True,
             )
         )
+    else:
+        sys.argv[:] = [x for x in sys.argv if x != "--without-hwdecrypt"]
 
     setup(**args)
 

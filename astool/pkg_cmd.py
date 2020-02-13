@@ -6,19 +6,10 @@ from . import pkg
 
 
 class PackageManagerMain(object):
-    commands = ("sync", "gc")
-
     def __init__(self, context):
         self.context = context
 
-    def sync(
-        self,
-        master: ("Assume master version (that you already have an asset DB for)", "option", "m"),
-        validate_only: ("Don't download anything, just validate.", "flag", "n"),
-        quiet: ("When validating, print only incomplete packages.", "flag", "i"),
-        lang: ("Asset language (default: ja)", "option", "g"),
-        *groups: "Packages to validate or complete",
-    ):
+    def sync(self, master, validate_only, quiet, lang, *groups):
         """Download or validate package groups."""
         if not lang:
             lang = "ja"
@@ -60,7 +51,10 @@ class PackageManagerMain(object):
         if download_tasks:
             print("Update statistics:")
             print(f"  {len(download_tasks)} jobs,")
-            npkg = sum(1 if isinstance(x, pkg.PackageDownloadTask) else len(x.splits) for x in download_tasks)
+            npkg = sum(
+                1 if isinstance(x, pkg.PackageDownloadTask) else len(x.splits)
+                for x in download_tasks
+            )
             print(f"  {npkg} new packages,")
             nbytes = sum(
                 x.size if isinstance(x, pkg.PackageDownloadTask) else sum(y.size for y in x.splits)
@@ -72,14 +66,11 @@ class PackageManagerMain(object):
 
         if download_tasks and not validate_only:
             ice = self.context.get_iceapi()
-            manager.execute_job_list(ice, download_tasks, done=self.context.release_iceapi, quiet=quiet)
+            manager.execute_job_list(
+                ice, download_tasks, done=self.context.release_iceapi, quiet=quiet
+            )
 
-    def gc(
-        self,
-        master: ("Assume master version (that you already have an asset DB for)", "option", "m"),
-        dry_run: ("Don't download anything, just validate.", "flag", "n"),
-        lang: ("Asset language (default: ja)", "option", "g"),
-    ):
+    def gc(self, master, dry_run, lang):
         """Delete unreferenced packages."""
         if not lang:
             lang = "ja"

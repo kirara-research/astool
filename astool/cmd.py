@@ -1,5 +1,6 @@
 import plac
 import os
+import sys
 import logging
 from itertools import zip_longest
 from contextlib import contextmanager
@@ -21,7 +22,8 @@ class ASToolMainCommand(object):
         "resolve",
         "promote",
         "invalidate",
-        "pkg",
+        "pkg_sync",
+        "pkg_gc",
         "dl_master",
     )
 
@@ -128,8 +130,9 @@ class ASToolMainCommand(object):
             memo["resume_data"] = None
 
     def pkg(self, *args):
+        first = sys.argv.index("pkg") + 1
         plac.call(
-            pkg_cmd.PackageManagerMain(self.context), arglist=args,
+            pkg_cmd.PackageManagerMain(self.context), arglist=sys.argv[first:],
         )
 
     def live_master_check(self):
@@ -142,7 +145,9 @@ class ASToolMainCommand(object):
         return m
 
     def dl_master(
-        self, master: ("Master version", "option", "m"), force: ("Always re-download files", "flag", "f"),
+        self,
+        master: ("Master version", "option", "m"),
+        force: ("Always re-download files", "flag", "f"),
     ):
         if not master:
             master = self.live_master_check()
@@ -159,4 +164,24 @@ class ASToolMainCommand(object):
                 print(f"Retrieving and decrypting {file.name}...")
                 masters.download_one(self.context, file)
             else:
-                print(f"File {file.name} is still valid!")
+                if not self.quiet:
+                    print(f"File {file.name} is still valid!")
+
+    def pkg_sync(
+        self,
+        master: ("Assume master version (that you already have an asset DB for)", "option", "m"),
+        validate_only: ("Don't download anything, just validate.", "flag", "n"),
+        lang: ("Asset language (default: ja)", "option", "g"),
+        *groups: "Packages to validate or complete",
+    ):
+        cmd = pkg_cmd.PackageManagerMain(self.context)
+        cmd.sync(master, validate_only, self.quiet, lang, *groups)
+
+    def pkg_gc(
+        self,
+        master: ("Assume master version (that you already have an asset DB for)", "option", "m"),
+        dry_run: ("Don't download anything, just validate.", "flag", "n"),
+        lang: ("Asset language (default: ja)", "option", "g"),
+    ):
+        cmd = pkg_cmd.PackageManagerMain(self.context)
+        cmd.gc(master, dry_run, lang)
