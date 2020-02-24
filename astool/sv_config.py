@@ -1,3 +1,5 @@
+# fmt: off
+
 #!/usr/bin/env python3
 
 # @astool_OSS_REDACT_START
@@ -170,5 +172,29 @@ SERVER_CONFIG["j2"] = [
         "user_agent": "allstars/5 CFNetwork/1107.1 Darwin/19.0.0",
         "master_keys": [0xB79E1D01, 0xFAB4DDE8, 0xD8739968],
         "bundle_version": "1.2.1",
+    }
+]
+
+# @astool_OSS_REDACT_START
+PUBLIC_KEY_DEFAULT_EN = b"""\
+-----BEGIN PUBLIC KEY-----
+MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC/ZUSWq8LCuF2JclEp6uuW9+yd
+dLQvb2420+F8rxIF8+W53BiF8g9m6nCETdRw7RVnzNABevMndCCTD6oQ6a2w0Qpo
+KeT26578UCWtGp74NGg2Q2fHYFMAhTytVk48qO4ViCN3snFs0AURU06niM98MIcE
+Unj9vj6kOBlOGv4JWQIDAQAB
+-----END PUBLIC KEY-----
+"""
+# @astool_OSS_REDACT_END
+
+SERVER_CONFIG["en"] = [
+    {
+        "root": "https://gl-real-prod-8f2jln5l4evlw5l1.api.game25.klabgames.net/ep1034",
+# @astool_OSS_REDACT_START
+        "bootstrap_key": "e0xrykyuBrLlwZhd",
+# @astool_OSS_REDACT_END
+        "public_key": PUBLIC_KEY_DEFAULT_EN,
+        "user_agent": "global/7346 CFNetwork/1121.2.2 Darwin/19.2.0",
+        "master_keys": [0x6D3C95EA, 0xF1B952FD, 0x1BA88576],
+        "bundle_version": "1.0.1",
     }
 ]

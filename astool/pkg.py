@@ -48,7 +48,11 @@ class PackageManager(object):
         for root in roots:
             for letter in package_prefixes:
                 os.makedirs(os.path.join(root, f"pkg{letter}"), exist_ok=True)
-                packages.update(x for x in os.listdir(os.path.join(root, f"pkg{letter}")) if x.startswith(letter))
+                packages.update(
+                    x
+                    for x in os.listdir(os.path.join(root, f"pkg{letter}"))
+                    if x.startswith(letter)
+                )
         return packages
 
     def lookup_file(self, pack: str) -> str:
@@ -86,7 +90,10 @@ class PackageManager(object):
         return partial, missing
 
     def get_unreferenced_packages(self) -> set:
-        indexed = set(package for package, in self.asset_db.execute("SELECT pack_name FROM m_asset_package_mapping"))
+        indexed = set(
+            package
+            for package, in self.asset_db.execute("SELECT pack_name FROM m_asset_package_mapping")
+        )
         return self.package_state - indexed
 
     def resolve_metapackages(self, metas: Set[str]) -> Tuple[set, list]:
@@ -99,7 +106,9 @@ class PackageManager(object):
 
         split_list = None
         mp_name = None
-        for pack_name, file_size, metapack_name, metapack_offset in fast_select(self.asset_db, query, metas):
+        for pack_name, file_size, metapack_name, metapack_offset in fast_select(
+            self.asset_db, query, metas
+        ):
             if mp_name != metapack_name:
                 if mp_name:
                     tasks.append(MetapackageDownloadTask(mp_name, split_list, True))
@@ -182,9 +191,13 @@ class PackageManager(object):
                     bio.seek(split.offset)
                     if not quiet:
                         print(f"    {split.name}...")
-                    with open(os.path.join(self.search_paths[-1], f"pkg{split.name[0]}", split.name), "wb") as of:
+                    with open(
+                        os.path.join(self.search_paths[-1], f"pkg{split.name[0]}", split.name), "wb"
+                    ) as of:
                         of.write(bio.read(split.size))
+                    self.package_state.add(split.name)
             else:
                 with open(os.path.join(self.search_paths[-1], f"pkg{canon[0]}", canon), "wb") as of:
                     for chunk in rf.iter_content(chunk_size=0x4000):
                         of.write(chunk)
+                self.package_state.add(canon)
