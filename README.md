@@ -4,6 +4,11 @@ Requires a recent version of Python 3.
 
 ## Changelog
 
+25/02/2020
+
+- Added keys for EN 1.0.1.
+- Redid the entire astool package structure.
+
 04/02/2020
 
 - Added decryption keys for 1.4.0.
