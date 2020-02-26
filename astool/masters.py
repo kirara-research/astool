@@ -86,7 +86,9 @@ class Manifest(object):
             self.files[i].size = size
 
     def __repr__(self):
-        return "<Manifest {0} {1}>:\n".format(self.version, self.lang) + "\n".join("    " + repr(x) for x in self.files)
+        return "<Manifest {0} {1}>:\n".format(self.version, self.lang) + "\n".join(
+            "    " + repr(x) for x in self.files
+        )
 
 
 def download_remote_manifest(context, master_version, force=False):
@@ -94,7 +96,8 @@ def download_remote_manifest(context, master_version, force=False):
     local_store = os.path.join(context.masters, master_version)
     os.makedirs(local_store, exist_ok=True)
 
-    dest = os.path.join(local_store, "masterdata_i_ja")
+    langcode = context.server_config.get("language", "ja")
+    dest = os.path.join(local_store, f"masterdata_i_{langcode}")
     if os.path.exists(dest) and not force:
         with open(dest, "rb") as f:
             try:
@@ -102,7 +105,10 @@ def download_remote_manifest(context, master_version, force=False):
             except Exception as e:
                 print("Can't read the disk manifest, trying to download a fresh one.")
 
-    r = requests.get(f"{root}/masterdata_i_ja", headers={"User-Agent": context.server_config["user_agent"]})
+    r = requests.get(
+        f"{root}/masterdata_i_{langcode}",
+        headers={"User-Agent": context.server_config["user_agent"]},
+    )
     if r.status_code != 200:
         print(f"Could not get the manifest for version {master_version}, is it out of date?")
         print(f"The original status code was {r.status_code}.")
@@ -138,7 +144,9 @@ def download_one(context, file: FileReference):
     local_store = os.path.join(context.masters, file.version)
     remote_root = context.server_config["root"] + f"/static/{file.version}"
 
-    rf = requests.get(f"{remote_root}/{file.name}", headers={"User-Agent": context.server_config["user_agent"]})
+    rf = requests.get(
+        f"{remote_root}/{file.name}", headers={"User-Agent": context.server_config["user_agent"]}
+    )
 
     ks = file.getkeys()
     keys = hwdecrypt.Keyset(ks[0], ks[1], ks[2])

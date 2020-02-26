@@ -196,5 +196,7 @@ SERVER_CONFIG["en"] = [
         "user_agent": "global/7346 CFNetwork/1121.2.2 Darwin/19.2.0",
         "master_keys": [0x6D3C95EA, 0xF1B952FD, 0x1BA88576],
         "bundle_version": "1.0.1",
+        "language": "en",
+        "session_mixkey": "294867DF7779DB803CEDAD92E1D53D966F43F425FE2BD9ECFAC6EA1CED6B7246"
     }
 ]

@@ -27,7 +27,9 @@ def resolve_server_config(candidates, exact=None):
         for v in candidates:
             if v["bundle_version"] == exact:
                 return v
-        raise ValueError(f"There is no astool server configuration that matches the exact version {exact}.")
+        raise ValueError(
+            f"There is no astool server configuration that matches the exact version {exact}."
+        )
 
     the_max = None
     for v in candidates:
@@ -78,7 +80,7 @@ class ASContext(object):
             auc = memo.get("auth_count")
             fast_resume = memo.get("resume_data")
 
-        if not all((uid, pwd, auc)):
+        if not all((uid, pwd, auc is not None)):
             raise ValueError("You need an account to do that.")
 
         ice = iceapi.ICEBinder(self.server_config, "iOS", uid, pwd, auc)
@@ -101,4 +103,4 @@ class ASContext(object):
             if save_session:
                 memo["resume_data"] = ice.save_session()
             else:
-                memo["resume_daya"] = None
+                memo["resume_data"] = None

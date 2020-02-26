@@ -27,8 +27,11 @@ APIBinderLog = logging.getLogger("ICEBinder")
 
 api_return_t = namedtuple("api_return_t", ("headers", "return_code", "app_data", "server_time"))
 
-DEFAULT_ASSET_STATE = ("AW9YpftGljWY/fnzPXciMnWWoSOIQXcdctowkQPUfpAjasaYRfvSidpw1D2" +
-    "lmb6Ns2/LLhnLAAXMWlpKtyOIQpFTu3CmZHkVSg==")
+DEFAULT_ASSET_STATE = (
+    "AW9YpftGljWY/fnzPXciMnWWoSOIQXcdctowkQPUfpAjasaYRfvSidpw1D2"
+    + "lmb6Ns2/LLhnLAAXMWlpKtyOIQpFTu3CmZHkVSg=="
+)
+
 
 def drill_down(some_dict, key_path, default=None):
     level = some_dict
@@ -39,8 +42,10 @@ def drill_down(some_dict, key_path, default=None):
             return default
     return level
 
+
 class ICEMaintenance(Exception):
     pass
+
 
 class ICEAPIThunk(object):
     special_behaviours = {}
@@ -73,18 +78,22 @@ class ICEAPIThunk(object):
         def _(f):
             ICEAPIThunk.special_behaviours[for_url] = f
             return f
+
         return _
+
 
 class ICEBinder(object):
     """
     ICEBinder for allstars
     """
-    def __init__(self,
+
+    def __init__(
+        self,
         server_info: dict,
-        platform: str, # iOS | Android
+        platform: str,  # iOS | Android
         user_id: int = None,
         auth_key: str = None,
-        auth_count: int = 0
+        auth_count: int = 0,
     ):
         assert (not any((user_id, auth_key))) or all((user_id, auth_key))
 
@@ -96,11 +105,13 @@ class ICEBinder(object):
         self.platform_code = "i" if platform == "iOS" else "a"
         self.rsa_public_key = load_pem_public_key(server_info["public_key"], default_backend())
         assert isinstance(self.rsa_public_key, rsa.RSAPublicKey)
-        
+
         if "session_mixkey" in server_info:
             self.mixkey = binascii.unhexlify(server_info["session_mixkey"])
         else:
             self.mixkey = None
+
+        self.user_language = server_info.get("language")
 
         self._bootstrap_key = server_info["bootstrap_key"].encode("ascii")
         if not auth_key:
@@ -121,9 +132,7 @@ class ICEBinder(object):
 
         self.api = ICEAPIThunk(self, "")
 
-    def set_login(self, user_id: int = None,
-        auth_key: str = None,
-        auth_count: int = 0):
+    def set_login(self, user_id: int = None, auth_key: str = None, auth_count: int = 0):
         assert (not any((user_id, auth_key))) or all((user_id, auth_key))
 
         self.user_id = user_id
@@ -156,7 +165,9 @@ class ICEBinder(object):
         self.is_fast_resume_in_progress = False
 
         if skip_validity_check and revalidate_immediately:
-            raise ValueError("You can't request both skip_validity_check and revalidate_immediately at once.")
+            raise ValueError(
+                "You can't request both skip_validity_check and revalidate_immediately at once."
+            )
 
         if skip_validity_check:
             APIBinderLog.info("Fast resume: picked up session without check")
@@ -170,10 +181,12 @@ class ICEBinder(object):
 
     def fast_resume_validate(self, resume_info):
         try:
-            response = self.api.bootstrap.fetchBootstrap({
-                "bootstrap_fetch_types": [2], # banner fetch type
-                "device_token": self.device_token
-            })
+            response = self.api.bootstrap.fetchBootstrap(
+                {
+                    "bootstrap_fetch_types": [2],  # banner fetch type
+                    "device_token": self.device_token,
+                }
+            )
         except Exception as e:
             APIBinderLog.info("Fast resume: failing because {0}".format(e))
             return False
@@ -197,7 +210,7 @@ class ICEBinder(object):
             "session_key": base64.b64encode(self.session_key).decode("ascii"),
             "request_id": self.request_id,
             "master_version": self.master_version,
-            "device_token": self.device_token
+            "device_token": self.device_token,
         }
         APIBinderLog.info("Save session: saved, this ICEBinder is no longer valid past this point")
         self.has_session = False
@@ -212,7 +225,7 @@ class ICEBinder(object):
         code = hmac.new(self.session_key, path.encode("utf8"), hashlib.sha1)
         code.update(b" ")
         code.update(payload.encode("utf8"))
-        return f"[{payload},\"{code.hexdigest()}\"]"
+        return f'[{payload},"{code.hexdigest()}"]'
 
     def query(self):
         q = [f"p={self.platform_code}"]
@@ -228,6 +241,9 @@ class ICEBinder(object):
         if self.has_time:
             q.append(f"t={round(time.time() * 1000)}")
 
+        if self.user_language:
+            q.append(f"l={self.user_language}")
+
         self.request_id += 1
         return "&".join(q)
 
@@ -240,7 +256,7 @@ class ICEBinder(object):
             payload = rsp.json()
         except json.JSONDecodeError:
             return api_return_t(rsp.headers, -1, None, 0)
-        
+
         if os.environ.get("ICEAPI_DEBUG_RESPONSES"):
             pprint.pprint(payload)
 
@@ -250,7 +266,9 @@ class ICEBinder(object):
 
         return api_return_t(rsp.headers, payload[2], payload[3], payload[0] / 1000)
 
-    def default_hit_api(self, url, payload=None, skip_session_key_check=False, skip_fast_resume=False):
+    def default_hit_api(
+        self, url, payload=None, skip_session_key_check=False, skip_fast_resume=False
+    ):
         if not skip_session_key_check and not self.has_session:
             raise ValueError("You need to establish a session before you do that.")
 
@@ -258,12 +276,13 @@ class ICEBinder(object):
         headers["User-Agent"] = self.user_agent
 
         q = self.query()
+
         destURL = self.api_host.rstrip("/") + f"{url}?{q}"
-        destJSON = json.dumps(payload, separators=(',', ':'))
+        destJSON = json.dumps(payload, separators=(",", ":"))
 
         headers["Content-Type"] = "application/json"
         data = self.bless(f"{url}?{q}", destJSON)
-        
+
         if os.environ.get("ICEAPI_DEBUG_REQUESTS"):
             pprint.pprint(data)
 
@@ -295,7 +314,9 @@ class ICEBinder(object):
         ret = self.api.login.login()
         if ret.return_code != 0:
             APIBinderLog.info("Login failed, trying to reset auth count...")
-            self.set_login(self.user_id, self.authorization_key, ret.app_data.get("authorization_count") + 1)
+            self.set_login(
+                self.user_id, self.authorization_key, ret.app_data.get("authorization_count") + 1
+            )
             self.api.login.login()
 
     def relogin_and_retry(self, url, payload):
@@ -306,7 +327,7 @@ class ICEBinder(object):
         q = self.query()
 
         destURL = self.api_host.rstrip("/") + f"{url}?{q}"
-        destJSON = json.dumps(payload, separators=(',', ':'))
+        destJSON = json.dumps(payload, separators=(",", ":"))
 
         headers["Content-Type"] = "application/json"
         data = self.bless(f"{url}?{q}", destJSON)
@@ -321,13 +342,12 @@ class ICEBinder(object):
     @ICEAPIThunk.this_function_specifically_handles_the_url("/login/startup")
     def login_startup(self, url, payload=None):
         rand = self.generate_randomkey()
-        mask = self.rsa_public_key.encrypt(rand, OAEP(mgf=MGF1(SHA1()), algorithm=SHA1(), label=None))
+        mask = self.rsa_public_key.encrypt(
+            rand, OAEP(mgf=MGF1(SHA1()), algorithm=SHA1(), label=None)
+        )
         mask = base64.b64encode(mask).decode("ascii")
 
-        params = {
-            "mask": mask,
-            "asset_state": DEFAULT_ASSET_STATE
-        }
+        params = {"mask": mask, "asset_state": DEFAULT_ASSET_STATE}
         if payload:
             params.update(payload)
 
@@ -335,7 +355,8 @@ class ICEBinder(object):
         if "authorization_key" in result.app_data:
             server_mixed = base64.b64decode(result.app_data.get("authorization_key"))
             result.app_data["authorization_key"] = base64.b64encode(
-                self.apply_xorpad(rand, server_mixed)).decode("utf8")
+                self.apply_xorpad(rand, server_mixed)
+            ).decode("utf8")
             self.authorization_key = result.app_data["authorization_key"]
         return result
 
@@ -345,15 +366,22 @@ class ICEBinder(object):
             self.set_login(self.user_id, self.authorization_key, self.auth_count)
 
         rand = self.generate_randomkey()
-        mask = self.rsa_public_key.encrypt(rand, OAEP(mgf=MGF1(SHA1()), algorithm=SHA1(), label=None))
+        mask = self.rsa_public_key.encrypt(
+            rand, OAEP(mgf=MGF1(SHA1()), algorithm=SHA1(), label=None)
+        )
         mask = base64.b64encode(mask).decode("ascii")
 
-        result = self.default_hit_api(url, {
-            "user_id": self.user_id,
-            "auth_count": self.auth_count,
-            "mask": mask,
-            "asset_state": DEFAULT_ASSET_STATE,
-        }, skip_session_key_check=True, skip_fast_resume=True)
+        result = self.default_hit_api(
+            url,
+            {
+                "user_id": self.user_id,
+                "auth_count": self.auth_count,
+                "mask": mask,
+                "asset_state": DEFAULT_ASSET_STATE,
+            },
+            skip_session_key_check=True,
+            skip_fast_resume=True,
+        )
 
         if result.app_data.get("session_key"):
             server_mixed = base64.b64decode(result.app_data.get("session_key"))
@@ -374,15 +402,21 @@ class ICEBinder(object):
         self.auth_count += 1
         return result
 
-    @ICEAPIThunk.this_function_specifically_handles_the_url("/dataLink/fetchGameServiceDataBeforeLogin")
+    @ICEAPIThunk.this_function_specifically_handles_the_url(
+        "/dataLink/fetchGameServiceDataBeforeLogin"
+    )
     def dataLink_fetchGameServiceDataBeforeLogin(self, url, payload=None):
         rand = self.generate_randomkey()
-        mask = self.rsa_public_key.encrypt(rand, OAEP(mgf=MGF1(SHA1()), algorithm=SHA1(), label=None))
+        mask = self.rsa_public_key.encrypt(
+            rand, OAEP(mgf=MGF1(SHA1()), algorithm=SHA1(), label=None)
+        )
         mask = base64.b64encode(mask).decode("ascii")
 
         params = {"mask": mask}
         if payload:
             params.update(payload)
 
-        result = self.default_hit_api(url, params, skip_session_key_check=True, skip_fast_resume=True)
+        result = self.default_hit_api(
+            url, params, skip_session_key_check=True, skip_fast_resume=True
+        )
         return result
