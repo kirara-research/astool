@@ -12,13 +12,20 @@ class PackageManagerMain(object):
     def sync(self, master, validate_only, quiet, lang, *groups):
         """Download or validate package groups."""
         if not lang:
-            lang = "ja"
+            lang = self.context.server_config.get("language", "ja")
 
         if not master:
             with self.context.enter_memo() as memo:
                 master = memo["master_version"]
 
         path = os.path.join(self.context.masters, master, f"asset_i_{lang}_0.db")
+        if not os.path.exists(path):
+            path = os.path.join(self.context.masters, master, f"asset_i_{lang}.db")
+
+        if not os.path.exists(path):
+            print("Can't find asset DB.")
+            return
+
         manager = pkg.PackageManager(path, (self.context.cache,))
 
         print("Master:", master)
@@ -73,13 +80,20 @@ class PackageManagerMain(object):
     def gc(self, master, dry_run, lang):
         """Delete unreferenced packages."""
         if not lang:
-            lang = "ja"
+            lang = self.context.server_config.get("language", "ja")
 
         if not master:
             with self.context.enter_memo() as memo:
                 master = memo["master_version"]
 
         path = os.path.join(self.context.masters, master, f"asset_i_{lang}_0.db")
+        if not os.path.exists(path):
+            path = os.path.join(self.context.masters, master, f"asset_i_{lang}.db")
+
+        if not os.path.exists(path):
+            print("Can't find asset DB.")
+            return
+
         manager = pkg.PackageManager(path, (self.context.cache,))
 
         print("Master:", master)
