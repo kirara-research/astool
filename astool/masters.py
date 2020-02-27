@@ -91,13 +91,15 @@ class Manifest(object):
         )
 
 
-def download_remote_manifest(context, master_version, force=False):
+def download_remote_manifest(context, master_version, force=False, platform_code="i", lang_code=None):
     root = context.server_config["root"] + f"/static/{master_version}"
     local_store = os.path.join(context.masters, master_version)
     os.makedirs(local_store, exist_ok=True)
 
-    langcode = context.server_config.get("language", "ja")
-    dest = os.path.join(local_store, f"masterdata_i_{langcode}")
+    if lang_code is None:
+        lang_code = context.server_config.get("language", "ja")
+
+    dest = os.path.join(local_store, f"masterdata_{platform_code}_{lang_code}")
     if os.path.exists(dest) and not force:
         with open(dest, "rb") as f:
             try:
@@ -106,7 +108,7 @@ def download_remote_manifest(context, master_version, force=False):
                 print("Can't read the disk manifest, trying to download a fresh one.")
 
     r = requests.get(
-        f"{root}/masterdata_i_{langcode}",
+        f"{root}/masterdata_{platform_code}_{lang_code}",
         headers={"User-Agent": context.server_config["user_agent"]},
     )
     if r.status_code != 200:
@@ -163,44 +165,3 @@ def download_one(context, file: FileReference):
             hwdecrypt.decrypt(keys, copy)
             use_fd.write(decompressor.decompress(copy))
         use_fd.write(decompressor.flush())
-
-
-def main(
-    force: ("Download files even if they are valid", "flag", "f"),
-    master: ("Master version to download against", "option", "m"),
-    bundle: ("Bundle version to download against", "option", "b"),
-    server: ("Server to download against", "option", "r"),
-):
-    logging.basicConfig(level=logging.INFO)
-
-    if not server or server not in astool.SERVER_CONFIG:
-        server = "jp"
-
-    if iceapi is None and not master:
-        print("You need to provide the master version (./karstool -m <version>).")
-        return
-
-    try:
-        server_configuration = resolve_server_config(astool.SERVER_CONFIG[server], bundle)
-    except ValueError as e:
-        print(f"Failed to resolve server configuration: {str(e)}")
-        return
-
-    if not master:
-        if os.getenv("LIVE_MASTER_CHECK_ALLOWED"):
-            mv = live_master_check(server, server_configuration)
-        else:
-            with astool.astool_memo(server) as memo:
-                mv = memo["master_version"]
-    else:
-        mv = master
-
-    print(f"Master: {mv}, Application: {server_configuration['bundle_version']}")
-
-    manifest = Manifest(io.BytesIO(r.content), server_configuration)
-    for file in manifest.files:
-        if not file_is_valid(local_store, file) or force:
-            print(f"Retrieving and decrypting {file.name}...")
-            download_one(server_configuration["user_agent"], root, local_store, file)
-        else:
-            print(f"File {file.name} is still valid!")

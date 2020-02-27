@@ -158,14 +158,22 @@ class ASToolMainCommand(object):
 
         print(f"Master: {master}, Application: {self.context.server_config['bundle_version']}")
 
-        manifest = masters.download_remote_manifest(self.context, master)
-        for file in manifest.files:
-            if not masters.file_is_valid(self.context, file) or force:
-                print(f"Retrieving and decrypting {file.name}...")
-                masters.download_one(self.context, file)
-            else:
-                if not self.quiet:
-                    print(f"File {file.name} is still valid!")
+        langs = [self.context.server_config.get("language", "ja")]
+        langs.extend(self.context.server_config.get("additional_languages", ()))
+        have_files = set()
+        
+        for lang_code in langs:
+            manifest = masters.download_remote_manifest(self.context, master, lang_code=lang_code)
+            for file in manifest.files:
+                if file.name in have_files:
+                    continue
+                if not masters.file_is_valid(self.context, file) or force:
+                    print(f"Retrieving and decrypting {file.name}...")
+                    masters.download_one(self.context, file)
+                    have_files.add(file.name)
+                else:
+                    if not self.quiet:
+                        print(f"File {file.name} is still valid!")
 
     def pkg_sync(
         self,
