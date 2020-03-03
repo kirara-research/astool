@@ -1,6 +1,5 @@
-# fmt: off
-
 #!/usr/bin/env python3
+# fmt: off
 
 # @astool_OSS_REDACT_START
 # ## How to assemble a server config from scratch:
@@ -45,6 +44,8 @@
 # @astool_OSS_REDACT_END
 
 PUBLIC_KEY_DEFAULT_JP = b""
+MIXKEY_DEFAULT_JP = ""
+
 # @astool_OSS_REDACT_START
 PUBLIC_KEY_DEFAULT_JP = b"""\
 -----BEGIN PUBLIC KEY-----
@@ -54,16 +55,28 @@ KeT26578UCWtGp74NGg2Q2fHYFMAhTytVk48qO4ViCN3snFs0AURU06niM98MIcE
 Unj9vj6kOBlOGv4JWQIDAQAB
 -----END PUBLIC KEY-----
 """
+MIXKEY_DEFAULT_JP = "65D780D3EED9AF5831FFD5B870C7649FAC254AC21A384B4769814F5EB11AC339"
 # @astool_OSS_REDACT_END
 
 SERVER_CONFIG = {}
 
 SERVER_CONFIG["jp"] = [
     {
+        "root": "https://jp-real-prod-v4tadlicuqeeumke.api.game25.klabgames.net/ep1041",
+        # @astool_OSS_REDACT_START
+        "bootstrap_key": "SkOYIxhfI1msD6ku",
+        "session_mixkey": MIXKEY_DEFAULT_JP,
+        # @astool_OSS_REDACT_END
+        "public_key": PUBLIC_KEY_DEFAULT_JP,
+        "user_agent": "allstars/12 CFNetwork/1107.1 Darwin/19.0.0",
+        "master_keys": [0x0cb3992c, 0x75a632fd, 0x52d42eed],
+        "bundle_version": "1.4.1",
+    },
+    {
         "root": "https://jp-real-prod-v4tadlicuqeeumke.api.game25.klabgames.net/ep1040",
         # @astool_OSS_REDACT_START
         "bootstrap_key": "qIbAhMVtoH4zS9JL",
-        "session_mixkey": "65D780D3EED9AF5831FFD5B870C7649FAC254AC21A384B4769814F5EB11AC339",
+        "session_mixkey": MIXKEY_DEFAULT_JP,
         # @astool_OSS_REDACT_END
         "public_key": PUBLIC_KEY_DEFAULT_JP,
         "user_agent": "allstars/11 CFNetwork/1107.1 Darwin/19.0.0",
