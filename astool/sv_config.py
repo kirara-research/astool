@@ -65,7 +65,10 @@ SERVER_CONFIG["jp"] = [
         "root": "https://jp-real-prod-v4tadlicuqeeumke.api.game25.klabgames.net/ep1050",
         # @astool_OSS_REDACT_START
         "bootstrap_key": "HEfMsRCTP43dXl66",
-        "session_mixkey": "91D5B6D373F76C8CD3B908FAB2EB825A511C72C14B667C8A0C7F7A5E6ADCB36B",
+        "session_mixkey": [
+            "FC11A7F49CDCF784B8B7C7C4A1CFA0AA745A346D406A9FC142B5643E706AD2B2",
+            "E4F84C384EEEA5826DCAF1E60787A8F4FE1D5C3B28F6EE09179057D246D49B2E"
+        ],
         # @astool_OSS_REDACT_END
         "public_key": PUBLIC_KEY_DEFAULT_JP,
         "user_agent": "allstars/13 CFNetwork/1107.1 Darwin/19.0.0",

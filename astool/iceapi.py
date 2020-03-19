@@ -106,10 +106,14 @@ class ICEBinder(object):
         self.rsa_public_key = load_pem_public_key(server_info["public_key"], default_backend())
         assert isinstance(self.rsa_public_key, rsa.RSAPublicKey)
 
-        if "session_mixkey" in server_info:
-            self.mixkey = binascii.unhexlify(server_info["session_mixkey"])
+        smkey = server_info["session_mixkey"]
+        if isinstance(smkey, list):
+            self.mixkeys = tuple(binascii.unhexlify(x) for x in smkey)
+        elif isinstance(smkey, str):
+            # pre-150 configs
+            self.mixkeys = (binascii.unhexlify(smkey),)
         else:
-            self.mixkey = None
+            self.mixkeys = ()
 
         self.user_language = server_info.get("language")
 
@@ -387,8 +391,8 @@ class ICEBinder(object):
             server_mixed = base64.b64decode(result.app_data.get("session_key"))
             self.session_key = self.apply_xorpad(rand, server_mixed)
 
-            if self.mixkey:
-                self.session_key = self.apply_xorpad(self.session_key, self.mixkey)
+            for k in self.mixkeys:
+                self.session_key = self.apply_xorpad(self.session_key, k)
 
             APIBinderLog.info(f"A session has been established with key {self.session_key}.")
             self.has_session = True
