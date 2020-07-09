@@ -13,6 +13,8 @@ from . import masters
 from .sv_config import SERVER_CONFIG
 import json
 
+LOGGER = logging.getLogger("astool.cli")
+
 
 class ASToolMainCommand(object):
     commands = (
@@ -75,14 +77,14 @@ class ASToolMainCommand(object):
             memo["password"] = ret.app_data.get("authorization_key")
             memo["auth_count"] = 0
 
-        print("astool: Bootstrapped with id={0}, pw={1}".format(memo["user_id"], memo["password"]))
+        LOGGER.info("astool: Bootstrapped with id=%s, pw=%s", memo["user_id"], memo["password"])
         ice.set_login(memo["user_id"], memo["password"], 1)
         ice.api.login.login()
         ret = ice.api.terms.agreement({"terms_version": 1})
         if ret.return_code == 0:
-            print("astool: Agreed to the terms of service...")
+            LOGGER.info("astool: Agreed to the terms of service...")
         else:
-            print(ret.return_code, ret.app_data)
+            LOGGER.error("TOS agreement failed: %d %s", ret.return_code, ret.app_data)
 
         with self.context.enter_memo() as memo:
             memo["auth_count"] = 1
@@ -94,7 +96,7 @@ class ASToolMainCommand(object):
 
         ret = ice.api.terms.agreement({"terms_version": 1})
         if ret.return_code == 0:
-            print("astool: Agreed to the terms of service...")
+            LOGGER.info("astool: Agreed to the terms of service...")
 
         self.context.release_iceapi(ice)
 
@@ -110,17 +112,17 @@ class ASToolMainCommand(object):
         ice = iceapi.ICEBinder(self.context.server_config, "iOS", uid, pwd, auc)
         ret = ice.api.login.login()
         if ret.return_code != 0:
-            print("Login failed, trying to reset auth count...")
+            LOGGER.warning("Login failed, trying to reset auth count...")
             ice.set_login(uid, pwd, ret.app_data.get("authorization_count") + 1)
             ret = ice.api.login.login()
 
         if ret.app_data["user_model"]["user_status"]["tutorial_end_at"] == 0:
-            print("astool: I'm going to complete the tutorial for this account.")
+            LOGGER.warning("astool: I'm going to complete the tutorial for this account.")
             if input("This process cannot be undone. Are you sure? (type 'yes') > ") == "yes":
                 bootstrap_promote.run_playlist(ice, "ex_bootstrap_script/0000_playlist.json")
         else:
-            print(
-                "This account has already finished the tutorial. "
+            LOGGER.warning(
+                "This account has already finished the tutorial. " +
                 "If you want to do this again, run bootstrap to create a new account."
             )
 
@@ -145,9 +147,7 @@ class ASToolMainCommand(object):
         return m
 
     def dl_master(
-        self,
-        master: ("Master version", "option", "m"),
-        force: ("Always re-download files", "flag", "f"),
+        self, master: ("Master version", "option", "m"), force: ("Always re-download files", "flag", "f"),
     ):
         if not master:
             master = self.live_master_check()
@@ -156,24 +156,24 @@ class ASToolMainCommand(object):
                 with self.context.enter_memo() as memo:
                     master = memo["master_version"]
 
-        print(f"Master: {master}, Application: {self.context.server_config['bundle_version']}")
+        LOGGER.info("Master: %s, Application: %s",
+            master, self.context.server_config["bundle_version"])
 
         langs = [self.context.server_config.get("language", "ja")]
         langs.extend(self.context.server_config.get("additional_languages", ()))
         have_files = set()
-        
+
         for lang_code in langs:
             manifest = masters.download_remote_manifest(self.context, master, lang_code=lang_code)
             for file in manifest.files:
                 if file.name in have_files:
                     continue
                 if not masters.file_is_valid(self.context, file) or force:
-                    print(f"Retrieving and decrypting {file.name}...")
+                    LOGGER.info("Retrieving and decrypting %s...", file.name)
                     masters.download_one(self.context, file)
                     have_files.add(file.name)
                 else:
-                    if not self.quiet:
-                        print(f"File {file.name} is still valid!")
+                    LOGGER.info("File %s is still valid!", file.name)
 
     def pkg_sync(
         self,

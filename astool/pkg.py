@@ -4,6 +4,7 @@ import sys
 import struct
 import os
 import io
+import logging
 from typing import Set, Iterable, Union, TypeVar, Tuple, List
 from collections import namedtuple
 
@@ -14,6 +15,8 @@ try:
     from . import hwdecrypt
 except ImportError:
     import hwdecrypt
+
+LOGGER = logging.getLogger("astool.pkg")
 
 MetapackageDownloadTask = namedtuple("MetapackageDownloadTask", ("name", "splits", "is_meta"))
 PackageDownloadTask = namedtuple("PackageDownloadTask", ("name", "size", "offset", "is_meta"))
@@ -164,7 +167,7 @@ class PackageManager(object):
 
         return deduplicated_dls
 
-    def execute_job_list(self, ice, jobs, done=None, quiet=False):
+    def execute_job_list(self, ice, jobs, done=None):
         url_list = ice.api.asset.getPackUrl({"pack_names": [job.name for job in jobs]})
         if done:
             done(ice)
@@ -177,20 +180,14 @@ class PackageManager(object):
 
         for jnum, (job, url) in enumerate(zip(jobs, url_list)):
             canon = job.name
-            if job.is_meta:
-                if not quiet:
-                    print(f"({jnum + 1}/{len(url_list)}) Retrieving {canon} (meta)...")
-            else:
-                if not quiet:
-                    print(f"({jnum + 1}/{len(url_list)}) Retrieving {canon}...")
+            LOGGER.info("(%d/%d) Retrieving %s...", jnum + 1, len(url_list), canon)
             rf = requests.get(url, headers={"User-Agent": ice.user_agent})
 
             if job.is_meta:
                 bio = io.BytesIO(rf.content)
                 for split in job.splits:
                     bio.seek(split.offset)
-                    if not quiet:
-                        print(f"    {split.name}...")
+                    LOGGER.debug("    %s...", split.name)
                     with open(
                         os.path.join(self.search_paths[-1], f"pkg{split.name[0]}", split.name), "wb"
                     ) as of:

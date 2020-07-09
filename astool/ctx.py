@@ -7,6 +7,7 @@ from contextlib import contextmanager
 from . import iceapi
 from .sv_config import SERVER_CONFIG
 
+LOGGER = logging.getLogger("astool.scfg")
 
 def vercmp(a, b):
     aa = a.split(".")
@@ -87,7 +88,7 @@ class ASContext(object):
         if reauth or not ice.resume_session(fast_resume, revalidate_immediately=validate):
             ret = ice.api.login.login()
             if ret.return_code != 0:
-                print("Login failed, trying to reset auth count...")
+                LOGGER.warning("Login failed, trying to reset auth count...")
                 ice.set_login(uid, pwd, ret.app_data.get("authorization_count") + 1)
                 ice.api.login.login()
 

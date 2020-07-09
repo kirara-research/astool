@@ -29,6 +29,8 @@ except ImportError:
 
 # Thanks to esterTion and CPPO for help
 
+LOGGER = logging.getLogger("astool.masters")
+
 
 def eatbytes(stream, n):
     return stream.read(n)
@@ -105,15 +107,15 @@ def download_remote_manifest(context, master_version, force=False, platform_code
             try:
                 return Manifest(f, context.server_config)
             except Exception as e:
-                print("Can't read the disk manifest, trying to download a fresh one.")
+                LOGGER.warning("Can't read the disk manifest, trying to download a fresh one.")
 
     r = requests.get(
         f"{root}/masterdata_{platform_code}_{lang_code}",
         headers={"User-Agent": context.server_config["user_agent"]},
     )
     if r.status_code != 200:
-        print(f"Could not get the manifest for version {master_version}, is it out of date?")
-        print(f"The original status code was {r.status_code}.")
+        LOGGER.error("Could not get the manifest for version %s, is it out of date?", master_version)
+        LOGGER.error("The original status code was %d.", r.status_code)
         return None
 
     with open(dest, "wb") as rm:
