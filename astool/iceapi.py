@@ -63,14 +63,14 @@ class ICEAPIThunk(object):
         return ICEAPIThunk(self.session, "/".join((self.url, attr)))
 
     def __call__(self, *args, **kwargs):
-        APIThunkLog.info("callout %s", self.url)
+        APIThunkLog.debug("callout %s", self.url)
 
         if self.url in ICEAPIThunk.special_behaviours:
             ret = ICEAPIThunk.special_behaviours[self.url](self.session, self.url, *args, **kwargs)
         else:
             ret = self.session.default_hit_api(self.url, *args, **kwargs)
 
-        APIThunkLog.info("result: %s -> %d", self.url, ret.return_code)
+        APIThunkLog.debug("result: %s -> %d", self.url, ret.return_code)
         return ret
 
     @staticmethod
@@ -174,7 +174,7 @@ class ICEBinder(object):
             )
 
         if skip_validity_check:
-            APIBinderLog.info("Fast resume: picked up session without check")
+            APIBinderLog.debug("Fast resume: picked up session without check")
             return True
 
         if revalidate_immediately:
@@ -192,18 +192,18 @@ class ICEBinder(object):
                 }
             )
         except Exception as e:
-            APIBinderLog.info("Fast resume: failing because {0}".format(e))
+            APIBinderLog.warning("Fast resume: failing because {0}".format(e))
             return False
 
         if response.return_code != 0:
-            APIBinderLog.info("Fast resume: failing because session check returned non-zero")
+            APIBinderLog.warning("Fast resume: failing because session check returned non-zero")
             return False
 
         if self.master_version != resume_info["master_version"]:
-            APIBinderLog.info("Fast resume: failing because master version changed")
+            APIBinderLog.warning("Fast resume: failing because master version changed")
             return False
 
-        APIBinderLog.info("Fast resume: picked up session successfully!")
+        APIBinderLog.debug("Fast resume: picked up session successfully!")
         return True
 
     def save_session(self):
@@ -216,7 +216,7 @@ class ICEBinder(object):
             "master_version": self.master_version,
             "device_token": self.device_token,
         }
-        APIBinderLog.info("Save session: saved, this ICEBinder is no longer valid past this point")
+        APIBinderLog.debug("Save session: saved, this ICEBinder is no longer valid past this point")
         self.has_session = False
         self.is_fast_resume_in_progress = False
         return data
@@ -295,13 +295,13 @@ class ICEBinder(object):
             rsp = requests.post(destURL, headers=headers, data=data)
 
             if rsp.status_code == 403:
-                APIThunkLog.info("The session has gone invalid.")
+                APIThunkLog.warning("The session has gone invalid.")
                 rsp = self.relogin_and_retry(url, payload)
 
             ret = self.extract_response(rsp)
 
             if self.master_version != master:
-                APIThunkLog.info("Reestablishing session because master changed.")
+                APIThunkLog.warning("Reestablishing session because master changed.")
                 self.relogin()
 
             self.is_fast_resume_in_progress = False
@@ -314,10 +314,10 @@ class ICEBinder(object):
         return bytes(bytearray(aa ^ bb for aa, bb in zip(a, b)))
 
     def relogin(self):
-        APIBinderLog.info("Retrying login...")
+        APIBinderLog.debug("Retrying login...")
         ret = self.api.login.login()
         if ret.return_code != 0:
-            APIBinderLog.info("Login failed, trying to reset auth count...")
+            APIBinderLog.warning("Login failed, trying to reset auth count...")
             self.set_login(
                 self.user_id, self.authorization_key, ret.app_data.get("authorization_count") + 1
             )
@@ -394,13 +394,13 @@ class ICEBinder(object):
             for k in self.mixkeys:
                 self.session_key = self.apply_xorpad(self.session_key, k)
 
-            APIBinderLog.info(f"A session has been established with key {self.session_key}.")
+            APIBinderLog.debug("A session has been established with key %s.", self.session_key)
             self.has_session = True
 
         # print(result.app_data)
         token = drill_down(result.app_data, ("user_model", "user_status", "device_token"))
         if token is not None:
-            APIBinderLog.info(f"Device token: {token}")
+            APIBinderLog.debug(f"Device token: {token}")
             self.device_token = token
 
         self.auth_count += 1
