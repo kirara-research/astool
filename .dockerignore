@@ -1,0 +1,5 @@
+playground/*
+build/*
+dist/*
+*.egg-info/*
+.vscode/*

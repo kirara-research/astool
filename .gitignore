@@ -1,4 +1,12 @@
 __pycache__
-ex_bootstrap_script/responses
-
+# artifacts
+ex_bootstrap_script/
 analyzer_src/analyzer
+analyzer_src/*.bin
+
+# setuptools build stuff
+dist
+build
+astool.egg-info
+
+.vscode
