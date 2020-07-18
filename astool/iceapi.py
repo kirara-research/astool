@@ -133,6 +133,7 @@ class ICEBinder(object):
         self.device_token = None
 
         self.is_fast_resume_in_progress = False
+        self.http_session = requests.Session()
 
         self.api = ICEAPIThunk(self, "")
 
@@ -154,6 +155,8 @@ class ICEBinder(object):
         self.device_token = None
 
         self.is_fast_resume_in_progress = False
+        self.http_session.close()
+        self.http_session = requests.Session()
 
     def resume_session(self, resume_info, skip_validity_check=False, revalidate_immediately=False):
         if not resume_info:
@@ -167,6 +170,8 @@ class ICEBinder(object):
         self.has_time = True
 
         self.is_fast_resume_in_progress = False
+        self.http_session.close()
+        self.http_session = requests.Session()
 
         if skip_validity_check and revalidate_immediately:
             raise ValueError(
@@ -219,6 +224,8 @@ class ICEBinder(object):
         APIBinderLog.debug("Save session: saved, this ICEBinder is no longer valid past this point")
         self.has_session = False
         self.is_fast_resume_in_progress = False
+        self.http_session.close()
+        self.http_session = requests.Session()
         return data
 
     @property
@@ -292,7 +299,7 @@ class ICEBinder(object):
 
         if self.is_fast_resume_in_progress and not skip_fast_resume:
             master = self.master_version
-            rsp = requests.post(destURL, headers=headers, data=data)
+            rsp = self.http_session.post(destURL, headers=headers, data=data)
 
             if rsp.status_code == 403:
                 APIThunkLog.warning("The session has gone invalid.")
@@ -307,7 +314,7 @@ class ICEBinder(object):
             self.is_fast_resume_in_progress = False
             return ret
         else:
-            rsp = requests.post(destURL, headers=headers, data=data)
+            rsp = self.http_session.post(destURL, headers=headers, data=data)
             return self.extract_response(rsp)
 
     def apply_xorpad(self, a, b):
@@ -339,7 +346,7 @@ class ICEBinder(object):
         if os.environ.get("ICEAPI_DEBUG_REQUESTS"):
             pprint.pprint(data)
 
-        return requests.post(destURL, headers=headers, data=data)
+        return self.http_session.post(destURL, headers=headers, data=data)
 
     #####
 

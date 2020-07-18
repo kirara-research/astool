@@ -93,7 +93,9 @@ class Manifest(object):
         )
 
 
-def download_remote_manifest(context, master_version, force=False, platform_code="i", lang_code=None):
+def download_remote_manifest(
+    context, master_version, force=False, platform_code="i", lang_code=None
+):
     root = context.server_config["root"] + f"/static/{master_version}"
     local_store = os.path.join(context.masters, master_version)
     os.makedirs(local_store, exist_ok=True)
@@ -109,12 +111,14 @@ def download_remote_manifest(context, master_version, force=False, platform_code
             except Exception as e:
                 LOGGER.warning("Can't read the disk manifest, trying to download a fresh one.")
 
-    r = requests.get(
+    r = context.session.get(
         f"{root}/masterdata_{platform_code}_{lang_code}",
         headers={"User-Agent": context.server_config["user_agent"]},
     )
     if r.status_code != 200:
-        LOGGER.error("Could not get the manifest for version %s, is it out of date?", master_version)
+        LOGGER.error(
+            "Could not get the manifest for version %s, is it out of date?", master_version
+        )
         LOGGER.error("The original status code was %d.", r.status_code)
         return None
 
@@ -148,7 +152,7 @@ def download_one(context, file: FileReference):
     local_store = os.path.join(context.masters, file.version)
     remote_root = context.server_config["root"] + f"/static/{file.version}"
 
-    rf = requests.get(
+    rf = context.session.get(
         f"{remote_root}/{file.name}", headers={"User-Agent": context.server_config["user_agent"]}
     )
 

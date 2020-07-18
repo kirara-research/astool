@@ -178,10 +178,12 @@ class PackageManager(object):
         url_list = url_list.app_data["url_list"]
         assert len(url_list) == len(jobs)
 
+        dl_session = requests.Session()
+
         for jnum, (job, url) in enumerate(zip(jobs, url_list)):
             canon = job.name
             LOGGER.info("(%d/%d) Retrieving %s...", jnum + 1, len(url_list), canon)
-            rf = requests.get(url, headers={"User-Agent": ice.user_agent})
+            rf = dl_session.get(url, headers={"User-Agent": ice.user_agent})
 
             if job.is_meta:
                 bio = io.BytesIO(rf.content)
@@ -198,3 +200,5 @@ class PackageManager(object):
                     for chunk in rf.iter_content(chunk_size=0x4000):
                         of.write(chunk)
                 self.package_state.add(canon)
+
+        dl_session.close()

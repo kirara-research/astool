@@ -4,10 +4,13 @@ import json
 from itertools import zip_longest
 from contextlib import contextmanager
 
+import requests
+
 from . import iceapi
 from .sv_config import SERVER_CONFIG
 
 LOGGER = logging.getLogger("astool.scfg")
+
 
 def vercmp(a, b):
     aa = a.split(".")
@@ -54,6 +57,8 @@ class ASContext(object):
         self.cache = os.path.join(self.root, "cache")
         self.masters = os.path.join(self.root, "masters")
         self.memo_full_path = os.path.join(self.root, f"{self.memo_name}.json")
+
+        self.session = requests.Session()
 
         os.makedirs(self.cache, exist_ok=True)
         os.makedirs(self.masters, exist_ok=True)
