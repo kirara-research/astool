@@ -46,7 +46,7 @@ def main(
     region: ("The astool region to use.", "option", "r"),
     master: ("Assume master version (that you already have an asset DB for)", "option", "m"),
     lang: ("Language code", "option", "l"),
-    quiet: ("Suppress most output", "option", "q"),
+    quiet: ("Suppress most output", "flag", "q"),
 ):
     context = ctx.ASContext(region or "jp", None, None)
 
