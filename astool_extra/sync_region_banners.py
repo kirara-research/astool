@@ -60,9 +60,9 @@ def main(
     if not quiet:
         logging.basicConfig(format="srb:  %(levelname)s: %(message)s", level=logging.DEBUG)
 
-    logging.info("Master:", master)
+    logging.info("Master: %s", master)
     md_path = os.path.join(context.masters, master, "masterdata.db")
-    logging.info(md_path)
+    logging.info("path: %s", md_path)
     data_db = sqlite3.connect(f"file:{md_path}?mode=ro", uri=True)
 
     pm = pkg.PackageManager(
@@ -73,8 +73,9 @@ def main(
 
     for (path,) in data_db.execute("SELECT path FROM m_decoration_texture"):
         to_gather.append(path)
-        logging.info(f"assetname: {path}")
+        logging.debug("Asset: %s", path)
 
+    logging.info("Need %d files", len(to_gather))
     # Download anything we need.
     ensure_assets_available(pm, context, to_gather)
 
