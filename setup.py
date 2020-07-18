@@ -7,7 +7,7 @@ def main():
         name="astool",
         version="1.0.0",
         description="Tooling for interacting with remote and local AS resources.",
-        packages=["astool"],
+        packages=["astool", "astool_extra"],
         ext_modules=[],
         package_data={"astool": ["ex_bootstrap_script/*.json"]},
     )
