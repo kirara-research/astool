@@ -4,45 +4,19 @@ import binascii
 import os
 import struct
 import zlib
+import json
 
 import plac
 
 import hwdecrypt
 from astool import ctx, pkg
 
-SEARCH_PATHS = []
-
-
-def ensure_assets_available(pm: pkg.PackageManager, context: ctx.ASContext, gather_list: set):
-    # First, get the list of packages we already have.
-    packages = set()
-
-    for k in gather_list:
-        # Convert asset names to their containing packages.
-        val = pm.asset_db.execute(
-            "SELECT pack_name FROM texture WHERE asset_path = ?", (k,)
-        ).fetchone()
-        if val:
-            if val[0] not in pm.package_state:
-                packages.add(val[0])
-        else:
-            print(f"warning: cannot resolve {k} to a package name. this will cause issues later.")
-
-    if packages:
-        # Convert the list of packages to a list of downloads.
-        # This will select metapackages if needed.
-        task_list = pm.compute_download_list(packages)
-
-        # Now execute to the cache path. Metapackages will be unpacked.
-        ice = context.get_iceapi()
-        pm.execute_job_list(ice, task_list, done=context.release_iceapi)
-
 
 def to_unsigned(i):
     return struct.unpack("<I", struct.pack("<i", i))[0]
 
 
-def save_img(pm: pkg.PackageManager, table: str, name: str, key: str):
+def save_img(pm: pkg.PackageManager, table: str, name: str, key: str, fbindir: str = None):
     rows = pm.asset_db.execute(
         f"SELECT pack_name, head, size, key1, key2 FROM {table} WHERE asset_path = ?", (key,)
     )
@@ -50,21 +24,34 @@ def save_img(pm: pkg.PackageManager, table: str, name: str, key: str):
     k1 = to_unsigned(k1)
     k2 = to_unsigned(k2)
 
-    try:
-        if os.path.exists(name):
-            return
+    if fbindir:
+        real_stor_path = os.path.join(fbindir,
+            hex(zlib.crc32(f"{table}${key}".encode("utf8")))[2:])
+    else:
+        real_stor_path = name
 
-        buf = bytearray(size)
-        with open(pm.lookup_file(pack), "rb") as src:
-            src.seek(off)
-            src.readinto(buf)
-        keyset = hwdecrypt.Keyset(k1, k2, 0x3039)
-        hwdecrypt.decrypt(keyset, buf)
+    if not os.path.exists(real_stor_path):
+        try:
+            buf = bytearray(size)
+            with open(pm.lookup_file(pack), "rb") as src:
+                src.seek(off)
+                src.readinto(buf)
+            keyset = hwdecrypt.Keyset(k1, k2, 0x3039)
+            hwdecrypt.decrypt(keyset, buf)
 
-        with open(name, "wb") as dst:
-            dst.write(buf)
-    except Exception as e:
-        print("warn: missing:", name)
+            with open(real_stor_path, "wb") as dst:
+                dst.write(buf)
+        except Exception as e:
+            print("warn: missing:", name)
+
+    if fbindir:
+        if os.path.exists(name) and os.readlink(name) != real_stor_path:
+            os.unlink(name)
+
+        try:
+            os.symlink(real_stor_path, name)
+        except FileExistsError:
+            pass
 
 
 def select_deps(asset_db, dep_asset):
@@ -76,10 +63,27 @@ def select_deps(asset_db, dep_asset):
 
 def select_model_bases(data_db):
     for row in data_db.execute(
-        "SELECT id, member_m_id, thumbnail_image_asset_path, model_asset_path FROM m_suit"
+        """SELECT id, member_m_id, thumbnail_image_asset_path, model_asset_path, attach_key FROM m_suit
+            LEFT JOIN m_suit_attach ON (suit_master_id == m_suit.id)"""
     ):
         print(f"- {row[1]}_{row[0]}")
-        yield f"{row[1]}_{row[0]}", row[2], row[3]
+        yield f"{row[1]}_{row[0]}", row[2], row[3], row[4]
+
+    print("NPCs start")
+    for row in data_db.execute(
+        "SELECT id, member_m_id, model_asset_path FROM m_suit_non_playable"
+    ):
+        print(f"- {row[1]}_{row[0]}")
+        yield f"{row[1]}_{row[0]}", None, row[2], None
+
+    print("Rinaface variants start")
+    for row in data_db.execute(
+        """SELECT m_suit_view.suit_master_id, member_m_id, view_status, m_suit_view.model_asset_path, attach_key, thumbnail_image_asset_path FROM m_suit_view
+            LEFT JOIN m_suit ON (m_suit_view.suit_master_id == m_suit.id)
+            LEFT JOIN m_suit_attach ON (m_suit_view.suit_master_id == m_suit_attach.suit_master_id)"""
+    ):
+        print(f"- {row[1]}_{row[0]}_{row[2]}")
+        yield f"{row[1]}_{row[0]}_{row[2]}", row[5], row[3], row[4]
 
 
 def select_idlers(data_db):
@@ -113,17 +117,25 @@ def main(
         os.path.join(context.masters, master, "asset_i_ja.db"), [context.cache]
     )
 
-    for model_base, thumb_asset, unity_asset in select_model_bases(data_db):
+    fbindir = os.path.join(output, "storage")
+    os.makedirs(fbindir, exist_ok=True)
+
+    for model_base, thumb_asset, unity_asset, mutator in select_model_bases(data_db):
         out_base = os.path.join(output, model_base)
         os.makedirs(out_base, exist_ok=True)
-        save_img(pm, "texture", os.path.join(out_base, "thumbnail.png"), thumb_asset)
-        save_img(pm, "member_model", os.path.join(out_base, "root.unity3d"), unity_asset)
+        if thumb_asset:
+            save_img(pm, "texture", os.path.join(out_base, "thumbnail.png"), thumb_asset)
+        save_img(pm, "member_model", os.path.join(out_base, "root.unity3d"), unity_asset, fbindir)
+
+        if mutator is not None:
+            with open(os.path.join(out_base, "config.json"), "w") as cfg:
+                json.dump({"mutator": mutator}, cfg)
 
         for i, dependency in enumerate(select_deps(pm.asset_db, unity_asset)):
             if dependency.startswith("§"):
                 continue
 
-            save_img(pm, "member_model", os.path.join(out_base, f"file_{i}.unity3d"), dependency)
+            save_img(pm, "member_model", os.path.join(out_base, f"file_{i}.unity3d"), dependency, fbindir)
 
     os.makedirs(os.path.join(output, "IdleAnimations.library"), exist_ok=True)
     for char_id, unity_asset in select_idlers(data_db):
@@ -131,7 +143,7 @@ def main(
             pm,
             "navi_motion",
             os.path.join(output, "IdleAnimations.library", f"{char_id}.unity3d"),
-            unity_asset,
+            unity_asset
         )
 
     os.makedirs(os.path.join(output, "AllAnimations.library"), exist_ok=True)
@@ -140,7 +152,7 @@ def main(
             pm,
             "navi_motion",
             os.path.join(output, "AllAnimations.library", f"{name}.unity3d"),
-            unity_asset,
+            unity_asset
         )
 
 
