@@ -45,11 +45,13 @@ def save_img(pm: pkg.PackageManager, table: str, name: str, key: str, fbindir: s
             print("warn: missing:", name)
 
     if fbindir:
-        if os.path.exists(name) and os.readlink(name) != real_stor_path:
+        # FIXME: hack for docker :(
+        alias_path = os.path.join("..", os.path.basename(fbindir), os.path.basename(real_stor_path))
+        if os.path.exists(name) and os.readlink(name) != alias_path:
             os.unlink(name)
 
         try:
-            os.symlink(real_stor_path, name)
+            os.symlink(alias_path, name)
         except FileExistsError:
             pass
 
