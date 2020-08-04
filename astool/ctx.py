@@ -31,9 +31,7 @@ def resolve_server_config(candidates, exact=None):
         for v in candidates:
             if v["bundle_version"] == exact:
                 return v
-        raise ValueError(
-            f"There is no astool server configuration that matches the exact version {exact}."
-        )
+        raise ValueError(f"There is no astool server configuration that matches the exact version {exact}.")
 
     the_max = None
     for v in candidates:
@@ -67,7 +65,7 @@ class ASContext(object):
             self.bundle = self.server_config["bundle_version"]
 
     @contextmanager
-    def enter_memo(self):
+    def enter_memo(self, rdonly=False):
         try:
             with open(self.memo_full_path, "r") as js:
                 memo = json.load(js)
@@ -76,10 +74,11 @@ class ASContext(object):
 
         yield memo
 
-        with open(self.memo_full_path, "w") as js:
-            json.dump(memo, js)
+        if not rdonly:
+            with open(self.memo_full_path, "w") as js:
+                json.dump(memo, js)
 
-    def get_iceapi(self, reauth=False, validate=False):
+    def get_iceapi(self, reauth=False, validate=False, lock=False):
         with self.enter_memo() as memo:
             uid = memo.get("user_id")
             pwd = memo.get("password")

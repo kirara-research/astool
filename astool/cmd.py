@@ -27,6 +27,7 @@ class ASToolMainCommand(object):
         "pkg_sync",
         "pkg_gc",
         "dl_master",
+        "current_master",
     )
 
     def __init__(
@@ -52,6 +53,12 @@ class ASToolMainCommand(object):
         """Print the bundle version."""
 
         print(self.context.server_config["bundle_version"])
+
+    def current_master(self):
+        """Print the bundle version."""
+
+        with self.context.enter_memo(rdonly=True) as memo:
+            print(memo.get("master_version", ""))
 
     def invalidate(self):
         """Remove fast resume data from the memo."""
@@ -122,8 +129,8 @@ class ASToolMainCommand(object):
                 bootstrap_promote.run_playlist(ice, "ex_bootstrap_script/0000_playlist.json")
         else:
             LOGGER.warning(
-                "This account has already finished the tutorial. " +
-                "If you want to do this again, run bootstrap to create a new account."
+                "This account has already finished the tutorial. "
+                + "If you want to do this again, run bootstrap to create a new account."
             )
 
         with self.context.enter_memo() as memo:
@@ -156,8 +163,7 @@ class ASToolMainCommand(object):
                 with self.context.enter_memo() as memo:
                     master = memo["master_version"]
 
-        LOGGER.info("Master: %s, Application: %s",
-            master, self.context.server_config["bundle_version"])
+        LOGGER.info("Master: %s, Application: %s", master, self.context.server_config["bundle_version"])
 
         langs = [self.context.server_config.get("language", "ja")]
         langs.extend(self.context.server_config.get("additional_languages", ()))

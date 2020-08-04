@@ -3,6 +3,7 @@ __pycache__
 ex_bootstrap_script/
 analyzer_src/analyzer
 analyzer_src/*.bin
+out/
 
 # setuptools build stuff
 dist
@@ -10,3 +11,4 @@ build
 astool.egg-info
 
 .vscode
+

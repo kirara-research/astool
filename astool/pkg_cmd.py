@@ -61,10 +61,7 @@ class PackageManagerMain(object):
         if download_tasks:
             LOGGER.info("Update statistics:")
             LOGGER.info("  %d jobs,", len(download_tasks))
-            npkg = sum(
-                1 if isinstance(x, pkg.PackageDownloadTask) else len(x.splits)
-                for x in download_tasks
-            )
+            npkg = sum(1 if isinstance(x, pkg.PackageDownloadTask) else len(x.splits) for x in download_tasks)
             LOGGER.info("  %d new packages,", npkg)
             nbytes = sum(
                 x.size if isinstance(x, pkg.PackageDownloadTask) else sum(y.size for y in x.splits)
@@ -76,9 +73,7 @@ class PackageManagerMain(object):
 
         if download_tasks and not validate_only:
             ice = self.context.get_iceapi()
-            manager.execute_job_list(
-                ice, download_tasks, done=self.context.release_iceapi
-            )
+            manager.execute_job_list(ice, download_tasks, done=self.context.release_iceapi)
 
     def gc(self, master, dry_run, lang):
         """Delete unreferenced packages."""
@@ -114,5 +109,7 @@ class PackageManagerMain(object):
 
         LOGGER.info(
             "%d bytes (%d MB) %s freed by deleting these unused packages.",
-            freeable, freeable / (1024 * 1024), "can be" if dry_run else "were"
+            freeable,
+            freeable / (1024 * 1024),
+            "can be" if dry_run else "were",
         )
