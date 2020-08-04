@@ -111,7 +111,7 @@ class PackageManager(object):
         seen_list = set()
         tasks = []
 
-        query = """SELECT pack_name, file_size, metapack_name, metapack_offset
+        query = """SELECT DISTINCT pack_name, file_size, metapack_name, metapack_offset
             FROM m_asset_package_mapping WHERE metapack_name IN ({0})
             ORDER BY metapack_name, metapack_offset"""
 
