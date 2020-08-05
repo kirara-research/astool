@@ -204,7 +204,7 @@ class PackageManager(object):
     def destination_for_new_file(self, package_name: str):
         return os.path.join(self.search_paths[-1], f"pkg{package_name[0]}", package_name)
 
-    async def aio_download_task(self, session, queue, user_agent):
+    async def aio_download_task(self, session, queue):
         while not queue.empty():
             task, url = await queue.get()
             canon = task.name
@@ -265,7 +265,7 @@ class PackageManager(object):
             async with aiohttp.ClientSession(headers={"User-Agent": user_agent}) as session:
                 tasks = []
                 for i in range(10):
-                    task = asyncio.create_task(self.aio_download_task(session, queue, user_agent))
+                    task = asyncio.create_task(self.aio_download_task(session, queue))
                     tasks.append(task)
 
                 tasks.append(asyncio.create_task(queue.join()))
