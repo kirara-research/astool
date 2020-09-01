@@ -163,6 +163,12 @@ class PackageManager(object):
 
         return dl
 
+    def prune_package_list(self, pkgs: Iterable[str]) -> Set[str]:
+        query = """SELECT pack_name FROM m_asset_pack WHERE pack_name IN ({0})"""
+        real_set = set(x for x, in fast_select(self.asset_db, query, pkgs))
+        real_set -= self.package_state
+        return real_set
+
     @staticmethod
     def combine_download_lists(dls: Iterable[Iterable[AnyDownloadTask]]) -> List[AnyDownloadTask]:
         combined_names = set()

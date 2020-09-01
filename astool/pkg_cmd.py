@@ -21,6 +21,10 @@ class PackageManagerMain(object):
             with self.context.enter_memo() as memo:
                 master = memo["master_version"]
 
+        if not groups:
+            LOGGER.warning("No groups specified. Exiting.")
+            return
+
         path = os.path.join(self.context.masters, master, f"asset_i_{lang}_0.db")
         if not os.path.exists(path):
             path = os.path.join(self.context.masters, master, f"asset_i_{lang}.db")
@@ -34,28 +38,35 @@ class PackageManagerMain(object):
         LOGGER.info("Master: %s", master)
         LOGGER.info("Packages on disk: %d", len(manager.package_state))
 
+        download_tasks = []
+        wanted_packages = set()
+        resolve_mode = 1
+
         if len(groups) == 1 and groups[0] == "everything":
             packages = manager.lookup_all_package_groups()
+        elif groups[0] == "@":
+            resolve_mode = 2
+            wanted_packages = manager.prune_package_list(list(groups[1:]))
         else:
             packages = manager.lookup_matching_package_groups(groups)
 
-        download_tasks = []
-        wanted_packages = set()
+        if resolve_mode == 1:
+            LOGGER.info("Validating packages...")
+            for package_group in packages:
+                have, donthave = manager.get_package_group(package_group)
 
-        LOGGER.info("Validating packages...")
-        for package_group in packages:
-            have, donthave = manager.get_package_group(package_group)
+                if donthave:
+                    print(f"Validating '{package_group}'...", end=" ")
+                    print("\x1b[31m", end="")
+                    print(f"{len(have)}/{len(have) + len(donthave)} \x1b[0m")
+                elif not quiet:
+                    print(f"Validating '{package_group}'...", end=" ")
+                    print("\x1b[32m", end="")
+                    print(f"{len(have)}/{len(have) + len(donthave)} \x1b[0m")
 
-            if donthave:
-                print(f"Validating '{package_group}'...", end=" ")
-                print("\x1b[31m", end="")
-                print(f"{len(have)}/{len(have) + len(donthave)} \x1b[0m")
-            elif not quiet:
-                print(f"Validating '{package_group}'...", end=" ")
-                print("\x1b[32m", end="")
-                print(f"{len(have)}/{len(have) + len(donthave)} \x1b[0m")
-
-            wanted_packages.update(donthave)
+                wanted_packages.update(donthave)
+        else:
+            LOGGER.info("Proceeding in direct mode.")
 
         download_tasks = manager.compute_download_list(wanted_packages)
         if download_tasks:
