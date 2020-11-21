@@ -352,8 +352,23 @@ Unj9vj6kOBlOGv4JWQIDAQAB
 -----END PUBLIC KEY-----
 """
 # @astool_OSS_REDACT_END
-
 SERVER_CONFIG["en"] = [
+    {
+        "root": "https://gl-real-prod-8f2jln5l4evlw5l1.api.game25.klabgames.net/ep1083",
+        # @astool_OSS_REDACT_START
+        "bootstrap_key": "vvmX7f8kdcakDuPm",
+        "session_mixkey": [
+            "31F1F9DC7AC4392D1DE26ACF99D970E425B63335B461E720C73D6914020D6014",
+            "78D53D9E645A0305602174E06B98D81F638EAF4A84DB19C756866FDDAC360C96",
+        ],
+        # @astool_OSS_REDACT_END
+        "public_key": PUBLIC_KEY_DEFAULT_EN,
+        "user_agent": "global/7346 CFNetwork/1107.1 Darwin/19.0.0",
+        "master_keys": [0x2d6c275b, 0x358afcaa, 0x787639cc],
+        "bundle_version": "1.8.0",
+        "language": "en",
+        "additional_languages": ["ko", "th", "zh"],
+    },
     {
         "root": "https://gl-real-prod-8f2jln5l4evlw5l1.api.game25.klabgames.net/ep1075",
         # @astool_OSS_REDACT_START
