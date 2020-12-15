@@ -62,7 +62,7 @@ SERVER_CONFIG = {}
 
 SERVER_CONFIG["jp"] = [
     {
-        "root": "https://jp-real-prod-v4tadlicuqeeumke.api.game25.klabgames.net/ep2021",
+        "root": "https://jp-real-prod-v4tadlicuqeeumke.api.game25.klabgames.net/ep2020",
         # @astool_OSS_REDACT_START
         "bootstrap_key": "dAoOyWzkyIVflCEa",
         "session_mixkey": [
