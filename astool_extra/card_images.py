@@ -87,14 +87,14 @@ def main(
     data_db = sqlite3.connect(f"file:{md_path}?mode=ro", uri=True)
 
     pm = pkg.PackageManager(
-        os.path.join(context.masters, master, "asset_i_ja_0.db"), [context.cache]
+        os.path.join(context.masters, master, "asset_i_ja.db"), [context.cache]
     )
 
     to_gather = []
     destinations = []
 
     for cid, at, ia, ta in data_db.execute(
-        """SELECT card_m_id, appearance_type, image_asset_path, 
+        """SELECT card_m_id, appearance_type, image_asset_path,
             thumbnail_asset_path
         FROM m_card_appearance"""
     ):
