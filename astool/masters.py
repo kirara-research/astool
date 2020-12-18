@@ -11,6 +11,7 @@
 
 import sys
 import os
+import json
 import struct
 import binascii
 import subprocess
@@ -124,6 +125,9 @@ def download_remote_manifest(
 
     with open(dest, "wb") as rm:
         rm.write(r.content)
+
+    with open(os.path.join(local_store, f"auxinfo_{platform_code}"), "w") as auxinfo:
+        json.dump({"bundle_version": context.server_config["bundle_version"]}, auxinfo)
 
     return Manifest(io.BytesIO(r.content), context.server_config)
 
