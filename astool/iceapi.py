@@ -205,8 +205,11 @@ class ICEBinder(object):
             return False
 
         if self.master_version != resume_info["master_version"]:
-            APIBinderLog.warning("Fast resume: failing because master version changed")
-            return False
+            APIThunkLog.warning("Fast resume: Master version changed: %s -> %s.",
+                resume_info["master_version"], self.master_version)
+            APIThunkLog.warning("Fast resume: This is no longer an error.")
+            # APIBinderLog.warning("Fast resume: failing because master version changed")
+            # return False
 
         APIBinderLog.debug("Fast resume: picked up session successfully!")
         return True
@@ -308,8 +311,11 @@ class ICEBinder(object):
             ret = self.extract_response(rsp)
 
             if self.master_version != master:
-                APIThunkLog.warning("Reestablishing session because master changed.")
-                self.relogin()
+                APIThunkLog.warning("Fast resume: Master version changed: %s -> %s.",
+                    master, self.master_version)
+                APIThunkLog.warning("Fast resume: This is no longer an error.")
+                # APIThunkLog.warning("Reestablishing session because master changed.")
+                # self.relogin()
 
             self.is_fast_resume_in_progress = False
             return ret
@@ -388,7 +394,7 @@ class ICEBinder(object):
                 "user_id": self.user_id,
                 "auth_count": self.auth_count,
                 "mask": mask,
-                "asset_state": DEFAULT_ASSET_STATE,
+                "asset_state": DEFAULT_ASSET_STATE
             },
             skip_session_key_check=True,
             skip_fast_resume=True,
