@@ -5,7 +5,7 @@ from setuptools import setup, Extension
 def main():
     args = dict(
         name="astool",
-        version="1.1.0.7",
+        version="1.1.0.8",
         description="Tooling for interacting with remote and local AS resources.",
         packages=["astool", "astool_extra"],
         ext_modules=[],
