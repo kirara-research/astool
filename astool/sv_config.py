@@ -72,7 +72,7 @@ SERVER_CONFIG["jp"] = [
         # @astool_OSS_REDACT_END
         "public_key": PUBLIC_KEY_DEFAULT_JP,
         "user_agent": "allstars/37572 CFNetwork/1197 Darwin/20.0.0",
-        "master_keys": [0x2c5c618a, 0x4881e86c, 0x71000f4e],
+        "master_keys": [0x2c5c681a, 0x4881e86c, 0x71000f4e],
         "bundle_version": "2.3.2",
     },
     {
