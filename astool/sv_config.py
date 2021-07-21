@@ -62,6 +62,20 @@ SERVER_CONFIG = {}
 
 SERVER_CONFIG["jp"] = [
     {
+        "root": "https://jp-real-prod-v4tadlicuqeeumke.api.game25.klabgames.net/ep2042",
+        # @astool_OSS_REDACT_START
+        "bootstrap_key": "UoI2wN1bieusxdfv",
+        "session_mixkey": [
+            "31F1F9DC7AC4392D1DE26ACF99D970E425B63335B461E720C73D6914020D6014",
+            "78D53D9E645A0305602174E06B98D81F638EAF4A84DB19C756866FDDAC360C96",
+        ],
+        # @astool_OSS_REDACT_END
+        "public_key": PUBLIC_KEY_DEFAULT_JP,
+        "user_agent": "allstars/37572 CFNetwork/1197 Darwin/20.0.0",
+        "master_keys": [0x4f492dab, 0x0f35c54d, 0x4bf8b639],
+        "bundle_version": "2.4.2",
+    },
+    {
         "root": "https://jp-real-prod-v4tadlicuqeeumke.api.game25.klabgames.net/ep2040",
         # @astool_OSS_REDACT_START
         "bootstrap_key": "sj8OXFAzcy3WMe1t",
@@ -427,19 +441,6 @@ SERVER_CONFIG["jp"] = [
     # }
 ]
 
-SERVER_CONFIG["j2"] = [
-    {
-        "root": "https://jp-real-prod-v4tadlicuqeeumke.api.game25.klabgames.net/ep1021",
-        # @astool_OSS_REDACT_START
-        "bootstrap_key": "7xy2slp4ofSixvpZ",
-        # @astool_OSS_REDACT_END
-        "public_key": PUBLIC_KEY_DEFAULT_JP,
-        "user_agent": "allstars/5 CFNetwork/1107.1 Darwin/19.0.0",
-        "master_keys": [0xB79E1D01, 0xFAB4DDE8, 0xD8739968],
-        "bundle_version": "1.2.1",
-    }
-]
-
 # @astool_OSS_REDACT_START
 PUBLIC_KEY_DEFAULT_EN = b"""\
 -----BEGIN PUBLIC KEY-----
@@ -451,6 +452,22 @@ Unj9vj6kOBlOGv4JWQIDAQAB
 """
 # @astool_OSS_REDACT_END
 SERVER_CONFIG["en"] = [
+    {
+        "root": "https://gl-real-prod-8f2jln5l4evlw5l1.api.game25.klabgames.net/ep2045",
+        # @astool_OSS_REDACT_START
+        "bootstrap_key": "cMR6i5nwUyXtmDaI",
+        "session_mixkey": [
+            "31F1F9DC7AC4392D1DE26ACF99D970E425B63335B461E720C73D6914020D6014",
+            "78D53D9E645A0305602174E06B98D81F638EAF4A84DB19C756866FDDAC360C96",
+        ],
+        # @astool_OSS_REDACT_END
+        "public_key": PUBLIC_KEY_DEFAULT_EN,
+        "user_agent": "global/7346 CFNetwork/1107.1 Darwin/19.0.0",
+        "master_keys": [0x1d682677, 0x760f95db, 0x5df1538f],
+        "bundle_version": "2.4.2",
+        "language": "en",
+        "additional_languages": ["ko", "th", "zh"],
+    },
     {
         "root": "https://gl-real-prod-8f2jln5l4evlw5l1.api.game25.klabgames.net/ep2043",
         # @astool_OSS_REDACT_START
