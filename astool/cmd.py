@@ -5,6 +5,8 @@ import logging
 from itertools import zip_longest
 from contextlib import contextmanager
 
+import zlib
+import hwdecrypt
 from . import iceapi
 from . import bootstrap_promote
 from . import pkg_cmd
@@ -29,6 +31,7 @@ class ASToolMainCommand(object):
         "dl_master",
         "current_master",
         "master_gc",
+        "decrypt_master",
     )
 
     def __init__(
@@ -142,7 +145,8 @@ class ASToolMainCommand(object):
     def pkg(self, *args):
         first = sys.argv.index("pkg") + 1
         plac.call(
-            pkg_cmd.PackageManagerMain(self.context), arglist=sys.argv[first:],
+            pkg_cmd.PackageManagerMain(self.context),
+            arglist=sys.argv[first:],
         )
 
     def live_master_check(self):
@@ -155,7 +159,9 @@ class ASToolMainCommand(object):
         return m
 
     def dl_master(
-        self, master: ("Master version", "option", "m"), force: ("Always re-download files", "flag", "f"),
+        self,
+        master: ("Master version", "option", "m"),
+        force: ("Always re-download files", "flag", "f"),
     ):
         if not master:
             master = self.live_master_check()
@@ -164,7 +170,9 @@ class ASToolMainCommand(object):
                 with self.context.enter_memo() as memo:
                     master = memo["master_version"]
 
-        LOGGER.info("Master: %s, Application: %s", master, self.context.server_config["bundle_version"])
+        LOGGER.info(
+            "Master: %s, Application: %s", master, self.context.server_config["bundle_version"]
+        )
 
         langs = [self.context.server_config.get("language", "ja")]
         langs.extend(self.context.server_config.get("additional_languages", ()))
@@ -182,15 +190,49 @@ class ASToolMainCommand(object):
                 else:
                     LOGGER.info("File %s is still valid!", file.name)
 
+    def decrypt_master(self, filename):
+        wd = os.path.dirname(filename)
+        auxinfo = os.path.join(wd, "auxinfo_i")
+        masterinfo = os.path.join(wd, "masterdata_i_ja")
+        with open(auxinfo, "r") as f:
+            server_config = ctx.resolve_server_config(
+                SERVER_CONFIG["jp"], exact=json.load(f).get("bundle_version")
+            )
+
+        with open(masterinfo, "rb") as f:
+            manifest = masters.Manifest(f, server_config)
+
+        for file in manifest.files:
+            if file.name == os.path.basename(filename):
+                break
+        else:
+            print("File not in manifest")
+
+        ks = file.getkeys()
+        keys = hwdecrypt.Keyset(ks[0], ks[1], ks[2])
+        decompressor = zlib.decompressobj(-zlib.MAX_WBITS)
+
+        with open(filename, "rb") as ef, open(f"{file}.dec", "wb") as of:
+            while True:
+                chunk = ef.read(65536)
+                if not chunk:
+                    break
+
+                copy = bytearray(chunk)
+                hwdecrypt.decrypt(keys, copy)
+                of.write(decompressor.decompress(copy))
+            of.write(decompressor.flush())
+
     def pkg_sync(
         self,
         master: ("Assume master version (that you already have an asset DB for)", "option", "m"),
         validate_only: ("Don't download anything, just validate.", "flag", "n"),
+        signal_cts: ("Path to write 'ready' to when finished using SAPI.", "option", "sfd"),
         lang: ("Asset language (default: ja)", "option", "g"),
         *groups: "Packages to validate or complete",
     ):
         cmd = pkg_cmd.PackageManagerMain(self.context)
-        cmd.sync(master, validate_only, self.quiet, lang, *groups)
+        cmd.sync(master, validate_only, signal_cts, self.quiet, lang, *groups)
 
     def pkg_gc(
         self,
@@ -200,14 +242,14 @@ class ASToolMainCommand(object):
     ):
         cmd = pkg_cmd.PackageManagerMain(self.context)
         cmd.gc(master, dry_run, lang)
-    
+
     def master_gc(
         self,
         dry_run: ("Dry run. Don't delete any files.", "flag", "n"),
     ):
         with self.context.enter_memo(rdonly=True) as memo:
             protect_master = [memo.get("master_version")]
-        
+
         version_list = []
         lang = self.context.server_config.get("language", "ja")
         for mv_dir in os.listdir(self.context.masters):
@@ -217,12 +259,13 @@ class ASToolMainCommand(object):
             if mv_dir in protect_master:
                 LOGGER.info("%s is in use, not adding to cleanup list", mv_dir)
                 continue
-            
-            if not os.path.exists(os.path.join(self.context.masters, mv_dir, "auxinfo_i")) and not \
-                os.path.exists(os.path.join(self.context.masters, mv_dir, "auxinfo_a")):
+
+            if not os.path.exists(
+                os.path.join(self.context.masters, mv_dir, "auxinfo_i")
+            ) and not os.path.exists(os.path.join(self.context.masters, mv_dir, "auxinfo_a")):
                 LOGGER.info("%s has no auxinfo, not adding to cleanup list", mv_dir)
                 continue
-            
+
             for try_name in [f"masterdata_i_{lang}", f"masterdata_a_{lang}"]:
                 try:
                     mt = os.path.getmtime(os.path.join(self.context.masters, mv_dir, try_name))
@@ -230,7 +273,7 @@ class ASToolMainCommand(object):
                     break
                 except FileNotFoundError:
                     continue
-        
+
         cleaned_bytes = 0
         for _, version in version_list[:-5]:
             dir = os.path.join(self.context.masters, version)
@@ -238,7 +281,7 @@ class ASToolMainCommand(object):
                 # .gz for compatibility with old archive style
                 if not (file.endswith(".db.gz") or file.endswith(".db")):
                     continue
-    
+
                 full_path = os.path.join(dir, file)
                 cleaned_bytes += os.path.getsize(full_path)
                 if not dry_run:

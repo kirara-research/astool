@@ -4,6 +4,7 @@ import binascii
 import os
 import struct
 import logging
+from typing import Optional, Sequence
 
 import plac
 
@@ -13,7 +14,19 @@ from astool import ctx, pkg
 SEARCH_PATHS = []
 
 
-def ensure_assets_available(pm: pkg.PackageManager, context: ctx.ASContext, gather_list: set):
+def write_signal(signal_pth: Optional[str]):
+    if signal_pth is not None:
+        with open(signal_pth, "wb") as sigf:
+            sigf.write(b"ready\n")
+            sigf.flush()
+
+
+def ensure_assets_available(
+    pm: pkg.PackageManager,
+    context: ctx.ASContext,
+    gather_list: Sequence[str],
+    signal_pth: str = None,
+):
     # First, get the list of packages we already have.
     packages = set()
 
@@ -35,7 +48,14 @@ def ensure_assets_available(pm: pkg.PackageManager, context: ctx.ASContext, gath
 
         # Now execute to the cache path. Metapackages will be unpacked.
         ice = context.get_iceapi()
-        pm.execute_job_list(ice, task_list, done=context.release_iceapi)
+
+        def on_release_iceapi(ice):
+            write_signal(signal_pth)
+            context.release_iceapi(ice)
+
+        pm.execute_job_list(ice, task_list, done=on_release_iceapi)
+    else:
+        write_signal(signal_pth)
 
 
 def to_unsigned(i):
@@ -45,6 +65,7 @@ def to_unsigned(i):
 def main(
     region: ("The astool region to use.", "option", "r"),
     master: ("Assume master version (that you already have an asset DB for)", "option", "m"),
+    signal_cts: ("Path to write 'ready' to when finished using SAPI.", "option", "sfd"),
     lang: ("Language code", "option", "l"),
     quiet: ("Suppress most output", "flag", "q"),
 ):
@@ -77,7 +98,7 @@ def main(
 
     logging.info("Need %d files", len(to_gather))
     # Download anything we need.
-    ensure_assets_available(pm, context, to_gather)
+    ensure_assets_available(pm, context, to_gather, signal_pth=signal_cts)
 
 
 if __name__ == "__main__":

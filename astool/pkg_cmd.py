@@ -1,5 +1,6 @@
 import os
 import logging
+from typing import Optional
 
 import plac
 
@@ -12,7 +13,13 @@ class PackageManagerMain(object):
     def __init__(self, context):
         self.context = context
 
-    def sync(self, master, validate_only, quiet, lang, *groups):
+    def write_signal(self, signal_pth: Optional[str]):
+        if signal_pth is not None:
+            with open(signal_pth, "wb") as sigf:
+                sigf.write(b"ready\n")
+                sigf.flush()
+
+    def sync(self, master, validate_only, signal_pth, quiet, lang, *groups):
         """Download or validate package groups."""
         if not lang:
             lang = self.context.server_config.get("language", "ja")
@@ -23,6 +30,7 @@ class PackageManagerMain(object):
 
         if not groups:
             LOGGER.warning("No groups specified. Exiting.")
+            self.write_signal(signal_pth)
             return
 
         path = os.path.join(self.context.masters, master, f"asset_i_{lang}_0.db")
@@ -31,6 +39,7 @@ class PackageManagerMain(object):
 
         if not os.path.exists(path):
             LOGGER.critical("Can't find asset DB.")
+            self.write_signal(signal_pth)
             return
 
         manager = pkg.PackageManager(path, (self.context.cache,))
@@ -72,7 +81,10 @@ class PackageManagerMain(object):
         if download_tasks:
             LOGGER.info("Update statistics:")
             LOGGER.info("  %d jobs,", len(download_tasks))
-            npkg = sum(1 if isinstance(x, pkg.PackageDownloadTask) else len(x.splits) for x in download_tasks)
+            npkg = sum(
+                1 if isinstance(x, pkg.PackageDownloadTask) else len(x.splits)
+                for x in download_tasks
+            )
             LOGGER.info("  %d new packages,", npkg)
             nbytes = sum(
                 x.size if isinstance(x, pkg.PackageDownloadTask) else sum(y.size for y in x.splits)
@@ -84,7 +96,14 @@ class PackageManagerMain(object):
 
         if download_tasks and not validate_only:
             ice = self.context.get_iceapi()
-            manager.execute_job_list(ice, download_tasks, done=self.context.release_iceapi)
+
+            def on_iceapi_release(ice):
+                self.write_signal(signal_pth)
+                self.context.release_iceapi(ice)
+
+            manager.execute_job_list(ice, download_tasks, done=on_iceapi_release)
+        else:
+            self.write_signal(signal_pth)
 
     def gc(self, master, dry_run, lang):
         """Delete unreferenced packages."""
