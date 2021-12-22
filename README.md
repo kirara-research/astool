@@ -42,8 +42,9 @@ Common args can include:
 
 Commands and their arguments:
 
-- `accept_tos` - Accepts the TOS, only needs to be used if not done by `bootstrap`.
-- `bootstrap` - Creates an account and saves the login info to the memo. Currently not working.
+- `accept_tos` - Accepts the TOS, only needs to be used if not done by `bootstrap`. Currently not working for
+  EN.
+- `bootstrap` - Creates an account and saves the login info to the memo. Currently only partially working for EN.
 - `current_master` - Prints the current master from the memo to stdout.
 - `decrypt_master (file)` - Decrypts the database (file) to (file).dec. The directory that (file)
   is in will be consulted for the appropriate keys.
