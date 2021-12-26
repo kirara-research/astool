@@ -175,3 +175,15 @@ def download_one(context, file: FileReference):
             hwdecrypt.decrypt(keys, copy)
             use_fd.write(decompressor.decompress(copy))
         use_fd.write(decompressor.flush())
+
+def update_current_link(context, master: str):
+    sym_path = os.path.join(context.masters, "current")
+    if os.path.exists(sym_path) and not os.path.islink(sym_path):
+        raise FileExistsError(f"Cannot replace current link at {sym_path}, it exists and is not a symlink.")
+
+    try:
+        os.remove(sym_path)
+    except FileNotFoundError:
+        pass
+
+    os.symlink(master, sym_path)

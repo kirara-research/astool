@@ -189,6 +189,11 @@ class ASToolMainCommand(object):
                     have_files.add(file.name)
                 else:
                     LOGGER.info("File %s is still valid!", file.name)
+        
+        try:
+            masters.update_current_link(self.context, master)
+        except OSError as e:
+            LOGGER.error("Can't update current master symlink: %s", str(e))
 
     def decrypt_master(self, filename):
         wd = os.path.dirname(filename)
