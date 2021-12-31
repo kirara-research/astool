@@ -258,7 +258,8 @@ class ASToolMainCommand(object):
         version_list = []
         lang = self.context.server_config.get("language", "ja")
         for mv_dir in os.listdir(self.context.masters):
-            if not os.path.isdir(os.path.join(self.context.masters, mv_dir)):
+            fullp = os.path.join(self.context.masters, mv_dir)
+            if os.path.islink(fullp) or not os.path.isdir(fullp):
                 continue
 
             if mv_dir in protect_master:
