@@ -62,6 +62,20 @@ SERVER_CONFIG = {}
 
 SERVER_CONFIG["jp"] = [
     {
+        "root": "https://jp-real-prod-v4tadlicuqeeumke.api.game25.klabgames.net/ep3011",
+        # @astool_OSS_REDACT_START
+        "bootstrap_key": "BauARpoZqN01zSIX",
+        "session_mixkey": [
+            "31F1F9DC7AC4392D1DE26ACF99D970E425B63335B461E720C73D6914020D6014",
+            "78D53D9E645A0305602174E06B98D81F638EAF4A84DB19C756866FDDAC360C96",
+        ],
+        # @astool_OSS_REDACT_END
+        "public_key": PUBLIC_KEY_DEFAULT_JP,
+        "user_agent": "allstars/37572 CFNetwork/1197 Darwin/20.0.0",
+        "master_keys": [0x1af08c15, 0x24ef8cf4, 0x64acd91a],
+        "bundle_version": "3.1.1",
+    },
+    {
         "root": "https://jp-real-prod-v4tadlicuqeeumke.api.game25.klabgames.net/ep3010",
         # @astool_OSS_REDACT_START
         "bootstrap_key": "CuGb3B75KwfJRFkS",
@@ -494,6 +508,22 @@ Unj9vj6kOBlOGv4JWQIDAQAB
 """
 # @astool_OSS_REDACT_END
 SERVER_CONFIG["en"] = [
+    {
+        "root": "https://gl-real-prod-8f2jln5l4evlw5l1.api.game25.klabgames.net/ep3011",
+        # @astool_OSS_REDACT_START
+        "bootstrap_key": "UfM3WxkbKu7LRjiF",
+        "session_mixkey": [
+            "31F1F9DC7AC4392D1DE26ACF99D970E425B63335B461E720C73D6914020D6014",
+            "78D53D9E645A0305602174E06B98D81F638EAF4A84DB19C756866FDDAC360C96",
+        ],
+        # @astool_OSS_REDACT_END
+        "public_key": PUBLIC_KEY_DEFAULT_EN,
+        "user_agent": "global/7346 CFNetwork/1107.1 Darwin/19.0.0",
+        "master_keys": [0x1af08c15, 0x24ef8cf4, 0x64acd91a],
+        "bundle_version": "3.1.1",
+        "language": "en",
+        "additional_languages": ["ko", "th", "zh"],
+    },
     {
         "root": "https://gl-real-prod-8f2jln5l4evlw5l1.api.game25.klabgames.net/ep3010",
         # @astool_OSS_REDACT_START
