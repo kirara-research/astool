@@ -9,17 +9,15 @@
 #      + dbs.....
 # Change the root by exporting ASTOOL_STORAGE.
 
-import sys
 import os
 import json
 import struct
 import binascii
-import subprocess
+import tempfile
 import zlib
 import io
 import logging
 import hashlib
-from itertools import zip_longest
 
 import requests
 
@@ -166,15 +164,34 @@ def download_one(context, file: FileReference):
 
     os.makedirs(os.path.join(local_store, "enc"), exist_ok=True)
 
-    with open(os.path.join(local_store, "enc", file.name), "wb") as enc_fd, open(
-        os.path.join(local_store, file.name), "wb"
-    ) as use_fd:
+    dest_enc_filename = os.path.join(local_store, "enc", file.name)
+    dest_filename = os.path.join(local_store, file.name)
+
+    enc_fd = tempfile.NamedTemporaryFile("wb", dir=local_store, prefix="._astool_temp", delete=False)
+    clear_fd = tempfile.NamedTemporaryFile("wb", dir=local_store, prefix="._astool_temp", delete=False)
+
+    with enc_fd, clear_fd:
         for chunk in rf.iter_content(chunk_size=0x4000):
             enc_fd.write(chunk)
             copy = bytearray(chunk)
             hwdecrypt.decrypt(keys, copy)
-            use_fd.write(decompressor.decompress(copy))
-        use_fd.write(decompressor.flush())
+            clear_fd.write(decompressor.decompress(copy))
+        clear_fd.write(decompressor.flush())
+    
+    # Order is important here because file_is_valid only checks the status of the encrypted file.
+    os.chmod(clear_fd.name, 0o644)
+    try:
+        os.unlink(dest_filename)
+    except FileNotFoundError:
+        pass
+    os.rename(clear_fd.name, dest_filename)
+
+    os.chmod(enc_fd.name, 0o644)
+    try:
+        os.unlink(dest_enc_filename)
+    except FileNotFoundError:
+        pass
+    os.rename(enc_fd.name, dest_enc_filename)
 
 def update_current_link(context, master: str):
     sym_path = os.path.join(context.masters, "current")

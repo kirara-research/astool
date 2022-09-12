@@ -1,17 +1,15 @@
 #!/usr/bin/env python3
 import sqlite3
-import sys
-import struct
 import os
 import io
 import logging
 import asyncio
 import time
-from typing import Set, Iterable, Union, TypeVar, Tuple, List
+import tempfile
+from typing import Optional, Set, Iterable, Union, Tuple, List
 from collections import namedtuple
 from contextlib import contextmanager
 
-import plac
 import requests
 
 try:
@@ -210,6 +208,20 @@ class PackageManager(object):
     def destination_for_new_file(self, package_name: str):
         return os.path.join(self.search_paths[-1], f"pkg{package_name[0]}", package_name)
 
+    def _allocate_file(self, dest_pkg_name):
+        final_dest = self.destination_for_new_file(dest_pkg_name)
+        tmp_target = tempfile.NamedTemporaryFile("wb", prefix=".pkg_temp", dir=os.path.dirname(final_dest), delete=False)
+        return final_dest, tmp_target
+
+    @staticmethod
+    def _move_file_into_place(src, dest):
+        os.chmod(src, 0o644)
+        try:
+            os.unlink(dest)
+        except FileNotFoundError:
+            pass
+        os.rename(src, dest)
+
     async def aio_download_task(self, session, queue):
         while not queue.empty():
             task, url = await queue.get()
@@ -235,27 +247,32 @@ class PackageManager(object):
 
                     assert offset == split.offset, f"{canon}: {split.name} not aligned at start"
 
+                    final_dest, tmp_target = self._allocate_file(split.name)
                     rem = split.size
-                    with open(self.destination_for_new_file(split.name), "wb") as of:
+                    with tmp_target:
                         while True:
                             chunk = await resp.content.read(min(0x10000, rem))
                             if not chunk:
                                 break
-                            of.write(chunk)
+                            tmp_target.write(chunk)
                             offset += len(chunk)
                             rem -= len(chunk)
 
                     assert rem == 0, f"{canon}: {split.name} not fully written"
+
+                    self._move_file_into_place(tmp_target.name, final_dest)
                     self.package_state.add(split.name)
             else:
+                final_dest, tmp_target = self._allocate_file(canon)
                 # logging.info("Checkpoint %s: beginning demux for %s...", canon, canon)
-                with open(self.destination_for_new_file(canon), "wb") as of:
+                with tmp_target:
                     while True:
                         chunk = await resp.content.read(0x10000)
                         if not chunk:
                             break
-                        of.write(chunk)
+                        tmp_target.write(chunk)
 
+                self._move_file_into_place(tmp_target.name, final_dest)
                 self.package_state.add(canon)
 
             queue.task_done()
@@ -290,13 +307,20 @@ class PackageManager(object):
                 for split in job.splits:
                     bio.seek(split.offset)
                     LOGGER.debug("    %s...", split.name)
-                    with open(self.destination_for_new_file(split.name), "wb") as of:
-                        of.write(bio.read(split.size))
+
+                    final_dest, tmp_target = self._allocate_file(split.name)
+                    with tmp_target:
+                        tmp_target.write(bio.read(split.size))
+                    
+                    self._move_file_into_place(tmp_target.name, final_dest)
                     self.package_state.add(split.name)
             else:
-                with open(self.destination_for_new_file(canon), "wb") as of:
+                final_dest, tmp_target = self._allocate_file(canon)
+                with tmp_target:
                     for chunk in rf.iter_content(chunk_size=0x10000):
-                        of.write(chunk)
+                        tmp_target.write(chunk)
+
+                self._move_file_into_place(tmp_target.name, final_dest)
                 self.package_state.add(canon)
 
         dl_session.close()

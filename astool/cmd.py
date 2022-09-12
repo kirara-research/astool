@@ -2,8 +2,6 @@ import plac
 import os
 import sys
 import logging
-from itertools import zip_longest
-from contextlib import contextmanager
 
 import zlib
 import hwdecrypt
@@ -59,10 +57,10 @@ class ASToolMainCommand(object):
         print(self.context.server_config["bundle_version"])
 
     def current_master(self):
-        """Print the bundle version."""
+        """Print the current master version."""
 
         with self.context.enter_memo(rdonly=True) as memo:
-            print(memo.get("master_version", ""))
+            print(memo.get("latest_complete_master", ""))
 
     def invalidate(self):
         """Remove fast resume data from the memo."""
@@ -194,6 +192,9 @@ class ASToolMainCommand(object):
             masters.update_current_link(self.context, master)
         except OSError as e:
             LOGGER.error("Can't update current master symlink: %s", str(e))
+        
+        with self.context.enter_memo() as memo:
+            memo["latest_complete_master"] = master
 
     def decrypt_master(self, filename):
         wd = os.path.dirname(filename)
@@ -253,7 +254,7 @@ class ASToolMainCommand(object):
         dry_run: ("Dry run. Don't delete any files.", "flag", "n"),
     ):
         with self.context.enter_memo(rdonly=True) as memo:
-            protect_master = [memo.get("master_version")]
+            protect_master = [memo.get("master_version"), memo.get("latest_complete_master")]
 
         version_list = []
         lang = self.context.server_config.get("language", "ja")
