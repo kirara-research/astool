@@ -21,11 +21,7 @@ import hashlib
 
 from .sv_config import ServerConfiguration
 from .ctx import ASContext
-
-try:
-    from . import hwdecrypt
-except ImportError:
-    import hwdecrypt
+import hwdecrypt
 
 # Thanks to esterTion and CPPO for help
 

@@ -17,11 +17,6 @@ try:
 except ImportError:
     aiohttp = None
 
-try:
-    from . import hwdecrypt
-except ImportError:
-    import hwdecrypt
-
 LOGGER = logging.getLogger("astool.pkg")
 
 MetapackageDownloadTask = namedtuple("MetapackageDownloadTask", ("name", "splits", "is_meta"))
