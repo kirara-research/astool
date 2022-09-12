@@ -19,7 +19,8 @@ import io
 import logging
 import hashlib
 
-import requests
+from .sv_config import ServerConfiguration
+from .ctx import ASContext
 
 try:
     from . import hwdecrypt
@@ -68,7 +69,7 @@ class FileReference(object):
 
 
 class Manifest(object):
-    def __init__(self, fobj, fromsi):
+    def __init__(self, fobj, fromsi: ServerConfiguration):
         sha1hash = eatbytes(fobj, 20)
         self.version = prefixstring(fobj)
         self.lang = prefixstring(fobj)
@@ -93,7 +94,7 @@ class Manifest(object):
 
 
 def download_remote_manifest(
-    context, master_version, force=False, platform_code="i", lang_code=None
+    context: ASContext, master_version: str, force=False, platform_code="i", lang_code=None
 ):
     root = context.server_config["root"] + f"/static/{master_version}"
     local_store = os.path.join(context.masters, master_version)
@@ -130,7 +131,7 @@ def download_remote_manifest(
     return Manifest(io.BytesIO(r.content), context.server_config)
 
 
-def file_is_valid(context, file: FileReference):
+def file_is_valid(context: ASContext, file: FileReference):
     local_store = os.path.join(context.masters, file.version)
 
     p = os.path.join(local_store, "enc", file.name)
@@ -150,7 +151,7 @@ def file_is_valid(context, file: FileReference):
     return False
 
 
-def download_one(context, file: FileReference):
+def download_one(context: ASContext, file: FileReference):
     local_store = os.path.join(context.masters, file.version)
     remote_root = context.server_config["root"] + f"/static/{file.version}"
 
@@ -193,7 +194,7 @@ def download_one(context, file: FileReference):
         pass
     os.rename(enc_fd.name, dest_enc_filename)
 
-def update_current_link(context, master: str):
+def update_current_link(context: ASContext, master: str):
     sym_path = os.path.join(context.masters, "current")
     if os.path.exists(sym_path) and not os.path.islink(sym_path):
         raise FileExistsError(f"Cannot replace current link at {sym_path}, it exists and is not a symlink.")

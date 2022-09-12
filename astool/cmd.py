@@ -34,10 +34,10 @@ class ASToolMainCommand(object):
 
     def __init__(
         self,
-        region: "API region",
-        bundle: ("Bundle version", "option", "b"),
-        quiet: ("Disable logging?", "flag", "q"),
-        memo: ("Name of the memo file to use. Default is 'astool_store'.", "option", "f"),
+        region: "API region", # type: ignore
+        bundle: ("Bundle version", "option", "b"), # type: ignore
+        quiet: ("Disable logging?", "flag", "q"), # type: ignore
+        memo: ("Name of the memo file to use. Default is 'astool_store'.", "option", "f"), # type: ignore
     ):
         if not quiet:
             logging.basicConfig(level=logging.INFO)
@@ -158,8 +158,8 @@ class ASToolMainCommand(object):
 
     def dl_master(
         self,
-        master: ("Master version", "option", "m"),
-        force: ("Always re-download files", "flag", "f"),
+        master: ("Master version", "option", "m"), # type: ignore
+        force: ("Always re-download files", "flag", "f"), # type: ignore
     ):
         if not master:
             master = self.live_master_check()
@@ -173,7 +173,7 @@ class ASToolMainCommand(object):
         )
 
         langs = [self.context.server_config.get("language", "ja")]
-        langs.extend(self.context.server_config.get("additional_languages", ()))
+        langs.extend(self.context.server_config.get("additional_languages") or [])
         have_files = set()
 
         for lang_code in langs:
@@ -231,27 +231,27 @@ class ASToolMainCommand(object):
 
     def pkg_sync(
         self,
-        master: ("Assume master version (that you already have an asset DB for)", "option", "m"),
-        validate_only: ("Don't download anything, just validate.", "flag", "n"),
-        signal_cts: ("Path to write 'ready' to when finished using SAPI.", "option", "sfd"),
-        lang: ("Asset language (default: ja)", "option", "g"),
-        *groups: "Packages to validate or complete",
+        master: ("Assume master version (that you already have an asset DB for)", "option", "m"), # type: ignore
+        validate_only: ("Don't download anything, just validate.", "flag", "n"), # type: ignore
+        signal_cts: ("Path to write 'ready' to when finished using SAPI.", "option", "sfd"), # type: ignore
+        lang: ("Asset language (default: ja)", "option", "g"), # type: ignore
+        *groups: "Packages to validate or complete", # type: ignore
     ):
         cmd = pkg_cmd.PackageManagerMain(self.context)
         cmd.sync(master, validate_only, signal_cts, self.quiet, lang, *groups)
 
     def pkg_gc(
         self,
-        master: ("Assume master version (that you already have an asset DB for)", "option", "m"),
-        dry_run: ("Don't download anything, just validate.", "flag", "n"),
-        lang: ("Asset language (default: ja)", "option", "g"),
+        master: ("Assume master version (that you already have an asset DB for)", "option", "m"), # type: ignore
+        dry_run: ("Don't download anything, just validate.", "flag", "n"), # type: ignore
+        lang: ("Asset language (default: ja)", "option", "g"), # type: ignore
     ):
         cmd = pkg_cmd.PackageManagerMain(self.context)
         cmd.gc(master, dry_run, lang)
 
     def master_gc(
         self,
-        dry_run: ("Dry run. Don't delete any files.", "flag", "n"),
+        dry_run: ("Dry run. Don't delete any files.", "flag", "n"), # type: ignore
     ):
         with self.context.enter_memo(rdonly=True) as memo:
             protect_master = [memo.get("master_version"), memo.get("latest_complete_master")]

@@ -1,18 +1,32 @@
+from multiprocessing.sharedctypes import Value
 import os
 import logging
 import json
 from itertools import zip_longest
 from contextlib import contextmanager
+from typing import Sequence, Optional, Dict, Union
+try:
+    from typing import TypedDict
+except ImportError:
+    from typing_extensions import TypedDict
 
 import requests
 
 from . import iceapi
-from .sv_config import SERVER_CONFIG
+from .sv_config import SERVER_CONFIG, ServerConfiguration
 
 LOGGER = logging.getLogger("astool.scfg")
 
+Memo = TypedDict("Memo", {
+    "user_id": int, 
+    "password": str, 
+    "auth_count": int, 
+    "master_version": str, 
+    "resume_data": iceapi.FastResumeData,
+    "latest_complete_master": str
+}, total=False)
 
-def vercmp(a, b):
+def vercmp(a: str, b: str):
     aa = a.split(".")
     bb = b.split(".")
 
@@ -26,7 +40,7 @@ def vercmp(a, b):
     return 0
 
 
-def resolve_server_config(candidates, exact=None):
+def resolve_server_config(candidates: Sequence[ServerConfiguration], exact: Optional[str] = None) -> ServerConfiguration:
     if exact is not None:
         for v in candidates:
             if v["bundle_version"] == exact:
@@ -37,6 +51,9 @@ def resolve_server_config(candidates, exact=None):
     for v in candidates:
         if not the_max or vercmp(v["bundle_version"], the_max["bundle_version"]) > 0:
             the_max = v
+
+    if the_max is None:
+        raise ValueError("There are no server configurations.")
 
     return the_max
 
@@ -49,7 +66,7 @@ class ASContext(object):
         self.region = region
         self.bundle = bundle
         self.memo_name = memo or "astool_store"
-        self.server_config = resolve_server_config(SERVER_CONFIG.get(self.region), self.bundle)
+        self.server_config = resolve_server_config(SERVER_CONFIG.get(self.region, []), self.bundle)
 
         self.root = os.path.join(os.getenv("ASTOOL_STORAGE", ""), self.region)
         self.cache = os.path.join(self.root, "cache")
@@ -68,9 +85,9 @@ class ASContext(object):
     def enter_memo(self, rdonly=False):
         try:
             with open(self.memo_full_path, "r") as js:
-                memo = json.load(js)
+                memo: Memo = json.load(js)
         except FileNotFoundError:
-            memo = {}
+            memo: Memo = {}
 
         yield memo
 

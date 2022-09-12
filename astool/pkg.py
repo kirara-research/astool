@@ -60,14 +60,14 @@ class PackageManager(object):
     @staticmethod
     def compute_package_state(roots: Iterable[str]):
         package_prefixes = "0123456789abcdefghijklmnopqrstuvwxyz"
-        packages = set()
+        packages: Set[str] = set()
         for root in roots:
             for letter in package_prefixes:
                 os.makedirs(os.path.join(root, f"pkg{letter}"), exist_ok=True)
                 packages.update(x for x in os.listdir(os.path.join(root, f"pkg{letter}")) if x.startswith(letter))
         return packages
 
-    def lookup_file(self, pack: str) -> str:
+    def lookup_file(self, pack: str) -> Optional[str]:
         for p in self.search_paths:
             candidate = os.path.join(p, f"pkg{pack[0]}", pack)
             if os.path.exists(candidate):
@@ -133,9 +133,7 @@ class PackageManager(object):
         return seen_list, tasks
 
     def compute_download_list(self, wanted_pkgs: Set[str]) -> List[AnyDownloadTask]:
-        dl = []
-        names = set()
-
+        dl: List[AnyDownloadTask] = []
         llen = None
         sqls = ""
         cur = self.asset_db.cursor()

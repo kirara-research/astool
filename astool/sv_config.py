@@ -1,4 +1,11 @@
 #!/usr/bin/env python3
+
+from typing import Dict, Union, Sequence
+try:
+    from typing import TypedDict
+except ImportError:
+    from typing_extensions import TypedDict
+
 # fmt: off
 
 # @astool_OSS_REDACT_START
@@ -58,7 +65,19 @@ Unj9vj6kOBlOGv4JWQIDAQAB
 MIXKEY_DEFAULT_JP = "65D780D3EED9AF5831FFD5B870C7649FAC254AC21A384B4769814F5EB11AC339"
 # @astool_OSS_REDACT_END
 
-SERVER_CONFIG = {}
+ServerConfiguration = TypedDict("ServerConfiguration", {
+    "root": str,
+    "bootstrap_key": str,
+    "session_mixkey": Union[str, Sequence[str]],
+    "public_key": bytes,
+    "user_agent": str,
+    "master_keys": Sequence[int],
+    "bundle_version": str,
+    "language": str,
+    "additional_languages": Sequence[str],
+}, total=False)
+
+SERVER_CONFIG: Dict[str, Sequence[ServerConfiguration]] = {}
 
 SERVER_CONFIG["jp"] = [
     {

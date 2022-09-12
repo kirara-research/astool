@@ -2,20 +2,23 @@
 # @(#)2016-2019, The Holy Constituency of the Summer Triangle.
 # @(#)All rights reserved.
 
-import requests
 import base64
 import json
-import sys
 import time
 import logging
 import hmac
 import hashlib
-import cryptography
 import os
 import pprint
 import binascii
 from collections import namedtuple
+from typing import Callable, Dict, Optional
+try:
+    from typing import TypedDict
+except ImportError:
+    from typing_extensions import TypedDict
 
+import requests
 from cryptography.hazmat.primitives.asymmetric.padding import OAEP, MGF1
 from cryptography.hazmat.primitives.hashes import SHA1
 from cryptography.hazmat.primitives.serialization import load_pem_public_key
@@ -32,6 +35,12 @@ DEFAULT_ASSET_STATE = (
     + "lmb6Ns2/LLhnLAAXMWlpKtyOIQpFTu3CmZHkVSg=="
 )
 
+FastResumeData = TypedDict("FastResumeData", {
+    "session_key": str,
+    "request_id": int, 
+    "master_version": str, 
+    "device_token": str,
+}, total=True)
 
 def drill_down(some_dict, key_path, default=None):
     level = some_dict
@@ -48,9 +57,9 @@ class ICEMaintenance(Exception):
 
 
 class ICEAPIThunk(object):
-    special_behaviours = {}
+    special_behaviours: Dict[str, Callable] = {}
 
-    def __init__(self, session, url):
+    def __init__(self, session: requests.Session, url: str):
         self.session = session
         self.url = url
         pass
@@ -127,10 +136,10 @@ class ICEBinder(object):
             assert len(self.session_key) == 32
 
         self.request_id = 1
-        self.master_version = None
+        self.master_version: str = None # type: ignore
         self.has_session = False
         self.has_time = False
-        self.device_token = None
+        self.device_token: str = None # type: ignore
 
         self.is_fast_resume_in_progress = False
         self.http_session = requests.Session()
@@ -149,16 +158,16 @@ class ICEBinder(object):
             assert len(self.session_key) == 32
 
         self.request_id = 1
-        self.master_version = None
+        self.master_version = None # type: ignore
         self.has_session = False
         self.has_time = False
-        self.device_token = None
+        self.device_token = None # type: ignore
 
         self.is_fast_resume_in_progress = False
         self.http_session.close()
         self.http_session = requests.Session()
 
-    def resume_session(self, resume_info, skip_validity_check=False, revalidate_immediately=False):
+    def resume_session(self, resume_info: Optional[FastResumeData], skip_validity_check=False, revalidate_immediately=False):
         if not resume_info:
             return False
 
@@ -188,7 +197,7 @@ class ICEBinder(object):
         self.is_fast_resume_in_progress = True
         return True
 
-    def fast_resume_validate(self, resume_info):
+    def fast_resume_validate(self, resume_info: FastResumeData):
         try:
             response = self.api.bootstrap.fetchBootstrap(
                 {
@@ -214,7 +223,7 @@ class ICEBinder(object):
         APIBinderLog.debug("Fast resume: picked up session successfully!")
         return True
 
-    def save_session(self):
+    def save_session(self) -> Optional[FastResumeData]:
         if not self.has_session:
             return None
 
