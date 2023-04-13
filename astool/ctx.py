@@ -31,9 +31,10 @@ def vercmp(a: str, b: str):
     bb = b.split(".")
 
     for av, bv in zip_longest(aa, bb, fillvalue="0"):
-        if av == bv:
+        iav, ibv = int(av), int(bv)
+        if iav == ibv:
             continue
-        if av > bv:
+        if iav > ibv:
             return 1
         else:
             return -1
