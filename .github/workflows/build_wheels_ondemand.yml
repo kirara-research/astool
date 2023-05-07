@@ -36,7 +36,7 @@ jobs:
 
       - name: Build wheels
         run: |
-          python -m cibuildwheel --output-dir wheelhouse
+          python -m pip wheel -w wheelhouse .
           python -m cibuildwheel --output-dir wheelhouse ./hwdecrypt_src
 
       - uses: actions/upload-artifact@v3
