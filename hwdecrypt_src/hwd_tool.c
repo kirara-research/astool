@@ -1,10 +1,4 @@
-#include <stdio.h>
 #include <stdint.h>
-#include <unistd.h>
-#include <fcntl.h>
-#include <errno.h>
-#include <stdlib.h>
-#include <string.h>
 
 __attribute__((used)) static const char __rcsid[] = "@(#)kars/hwd_tool";
 
