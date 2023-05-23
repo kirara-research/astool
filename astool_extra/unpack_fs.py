@@ -119,7 +119,7 @@ class CopyAudioBankFilePair(Action):
     def get_instances(self, sql: sqlite3.Connection, for_rule: "UnpackRule", name_mapping: Dict[str, str]):
         cur = sql.cursor()
         for sheet_name, acb_name, awb_name, acbsz, awbsz in cur.execute(
-            f"""SELECT sheet_name, acb_pack_name, awb_pack_name, pm1.file_size, pm2.file_size FROM {for_rule.table_name}
+            f"""SELECT DISTINCT sheet_name, acb_pack_name, awb_pack_name, pm1.file_size, pm2.file_size FROM {for_rule.table_name}
                 LEFT JOIN m_asset_package_mapping AS pm1 ON (acb_pack_name = pm1.pack_name)
                 LEFT JOIN m_asset_package_mapping AS pm2 ON (awb_pack_name = pm2.pack_name)
             """).fetchall():
@@ -157,7 +157,7 @@ class CopyMovieFile(Action):
     """
     def get_instances(self, sql: sqlite3.Connection, for_rule: "UnpackRule", name_mapping: Dict[str, str]):
         cur = sql.cursor()
-        for dest, src, sz in cur.execute(f"""SELECT pavement, pack_name, file_size FROM {for_rule.table_name}
+        for dest, src, sz in cur.execute(f"""SELECT DISTINCT pavement, pack_name, file_size FROM {for_rule.table_name}
                                              LEFT JOIN m_asset_package_mapping USING (pack_name)""").fetchall():
             mapped = name_mapping.get(dest)
             if mapped is None:
