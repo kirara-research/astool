@@ -78,12 +78,12 @@ python -m astool_extra.unpack_fs [-h] [-r None] [-m None] [-l None] [-t None] [-
 ```
 Common args can include:
 
-- `-h (--help)`: Shows the help menu.
-- `-r (--region)`: Tells astool what region to use (`en` or `jp`).
-- `-m None, --master`: Master version (default: latest known via dl_master)
-- `-l (--lang)`: Tells astool what language to use (default: default for server region).
-- `-t (--table-list)`: Comma-separated list of tables to extract (default: all). Pass 'list' to see available.
-- `-y (--skip-confirmation)`: Don't ask before extracting
+- `-h (--help)` - Shows the help menu.
+- `-r (--region)` - Tells astool what region to use (`en` or `jp`).
+- `-m None, --master` - Master version (default: latest known via dl_master)
+- `-l (--lang)` - Tells astool what language to use (default: default for server region).
+- `-t (--table-list) `- Comma-separated list of tables to extract (default: all). Pass 'list' to see available.
+- `-y (--skip-confirmation)` - Don't ask before extracting
 
 `[output]`: Output folder
 
