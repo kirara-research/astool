@@ -74,7 +74,7 @@ Commands and their arguments:
 ### astool_extra (Data Extraction)
 
 ```sh
-python -m astool_extra.unpack_fs [-h] [-r None] [-m None] [-l None] [-t None] [-y] [output]
+python -m astool_extra.unpack_fs [common args]
 ```
 Common args can include:
 
