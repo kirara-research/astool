@@ -196,10 +196,10 @@ pip install C:/Users/[Userfolder]/Downloads/hwdecrypt-1.1.0-cp311-cp311-win_amd6
 ### - Run every time you want to use the workspace
 ```sh
 .env\scripts\activate
-SET ASTOOL_STORAGE=$(pwd)/data
+SET ASTOOL_STORAGE=aallstars-datafolder/data
 SET LIVE_MASTER_CHECK_ALLOWED=1
 ```
-You can replace $(pwd)/data with a path of your choice
+You can replace `allstars-datafolder/data` with a path of your choice, which gets created after running one of the commnands below.
 
 ### - Now you can run your commands - replace "jp" with "en" for global server
 ```sh
