@@ -187,6 +187,7 @@ python3 -m venv .env
 pip install -e C:/Users/[Userfolder]/astool-ws/astool-dist/
 ```
 - pip install and copy hwdecrypt path
+
 Example:
 ```sh
 pip install C:/Users/[Userfolder]/Downloads/hwdecrypt-1.1.0-cp311-cp311-win_amd64.whl
