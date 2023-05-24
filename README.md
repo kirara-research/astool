@@ -1,6 +1,6 @@
 # astool: All Stars Utility Toolkit
-## forked for readme documentation additions
-## Original: https://github.com/kirara-research/astool
+### forked for readme documentation additions
+### Original: https://github.com/kirara-research/astool
 
 Requires Python 3.7+.
 
