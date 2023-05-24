@@ -215,7 +215,7 @@ python -m astool jp dl_master
 
 Here the double spaces are VERY IMPORTANT for downloading, else it won't do much of anything.
 ```sh
-python -m astool jp pkg_sync '%'
+python -m astool jp pkg_sync  %
 ```
 
 ## Programmatic Usage
