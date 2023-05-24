@@ -195,7 +195,7 @@ Example:
 pip install C:/Users/[Userfolder]/Downloads/hwdecrypt-1.1.0-cp311-cp311-win_amd64.whl
 ```
 
-### - Run every time you want to use the workspace
+- Run every time you want to use the workspace
 ```sh
 .env\scripts\activate
 SET ASTOOL_STORAGE=allstars-data/data
@@ -203,17 +203,17 @@ SET LIVE_MASTER_CHECK_ALLOWED=1
 ```
 You can replace `allstars-data/data` with a path of your choice, which gets created after running one of the commnands below.
 
-### - Now you can run your commands - replace "jp" with "en" for global server
+- Now you can run your commands - replace "jp" with "en" for global server
 ```sh
 python -m astool jp bootstrap
 ```
-### -  If the above command fails with a 500 Internal Server Error, that's fine; the following commands will still work. 
+-  If the above command fails with a 500 Internal Server Error, that's fine; the following commands will still work. 
 ```sh
 python -m astool jp dl_master
 ```
-### - A package id of '%' will download everything.
+- A package id of '%' will download everything.
 
-Here the double spaces are VERY IMPORTANT for downloading, else it won't do much of anything.
+(Here the double spaces are VERY IMPORTANT for downloading, else it won't do much of anything.)
 ```sh
 python -m astool jp pkg_sync  %
 ```
