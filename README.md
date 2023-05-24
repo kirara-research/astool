@@ -1,5 +1,5 @@
 # astool: All Stars Utility Toolkit
-# forked for readme
+# forked for readme documentation additions
 # Original: https://github.com/kirara-research/astool
 
 Requires Python 3.7+.
@@ -56,7 +56,7 @@ Commands and their arguments:
 - `invalidate` - Removes fast resume data from the memo. This will force a relogin on the next API call.
 - `master_gc` - Deletes decrypted databases that can be recreated. The latest master will not be deleted.
 - `pkg_sync [flags] (groups...)` - Check the downloaded package cache and see if the named groups are
-  complete. If not, and you haven't told it to validate only, it will download the missing parts `%` will download all.
+  complete. If not, and you haven't told it to validate only, it will download the missing parts.
   Flags:
   - `-m/--master [version]` - Use the specified master databases. If this is not given, it'll use the 
     current version from the astool memo.
