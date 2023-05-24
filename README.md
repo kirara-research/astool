@@ -87,7 +87,7 @@ Common args can include:
 - `-l/--lang` - Tells astool what language to use (default: default for server region).
 - `-t/--table-list` - Comma-separated list of tables to extract (default: all). Pass 'list' to see available.
 - `-y/--skip-confirmation` - Don't ask before extracting
-
+##
 - `[output]` - Data output folder
 
 List of tables:
