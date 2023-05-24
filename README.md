@@ -1,6 +1,6 @@
 # astool: All Stars Utility Toolkit
-# forked for readme documentation additions
-# Original: https://github.com/kirara-research/astool
+## forked for readme documentation additions
+## Original: https://github.com/kirara-research/astool
 
 Requires Python 3.7+.
 
@@ -74,8 +74,9 @@ Commands and their arguments:
 ### astool_extra (Data Extraction)
 
 ```sh
-python -m astool_extra.unpack_fs [common args]
+python -m astool_extra.unpack_fs [common args] [output]
 ```
+
 Common args can include:
 
 - `-h (--help)` - Shows the help menu.
@@ -85,7 +86,7 @@ Common args can include:
 - `-t (--table-list) `- Comma-separated list of tables to extract (default: all). Pass 'list' to see available.
 - `-y (--skip-confirmation)` - Don't ask before extracting
 
-`[output]`: Output folder
+- `[output]` - Data output folder
 
 List of tables:
 
