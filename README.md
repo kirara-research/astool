@@ -168,7 +168,7 @@ pip install virtualenv
 - Download hwdecrypt binary for win_32 or win_amd64: https://github.com/kirara-research/astool/releases/tag/v1.2.6.0
 - Save hwdecrypt somewhere for later
 
-# - Set up workspace in the "astool-ws" directory, which gets put in C:/Users/[User] folder
+### - Set up workspace in the "astool-ws" directory, which gets put in C:/Users/[User] folder
 ```sh
 mkdir astool-ws && cd astool-ws
 ```
@@ -184,7 +184,7 @@ python3 -m venv .env
 ```
 ### - Install scripts
 ```sh
-pip install -e C:\Users\[Userfolder]\astool-ws\astool-dist\
+pip install -e C:/Users/[Userfolder]/astool-ws/astool-dist/
 ```
 - pip install and copy hwdecrypt path
 Example:
