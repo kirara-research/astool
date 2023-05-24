@@ -112,6 +112,107 @@ List of tables:
 - `stage_effect`
 - `texture`
 
+## Guide
+
+## Mac/Linux/WSL
+### - Set up workspace in the "astool-ws" directory (located in the $home folder)
+```sh
+mkdir astool-ws && cd astool-ws`
+mkdir data
+```
+### - Clone repo
+```sh
+git clone https://github.com/kirara-research/astool.git astool-dist
+```
+### - Create and activate virtual environment
+```sh
+python3 -m venv .env
+source .env/bin/activate
+```
+### - Install packages
+```sh
+pip install -e './astool-dist[async_pkg]'
+pip install './astool-dist/hwdecrypt_src'
+```
+
+### - Run every time you want to use the workspace
+```sh
+source .env/bin/activate
+export ASTOOL_STORAGE=$(pwd)/data
+export LIVE_MASTER_CHECK_ALLOWED=1
+```
+
+### - Now you can run your commands - replace "jp" with "en" for global server
+```sh
+python -m astool jp bootstrap
+```
+### -  If the above command fails with a 500 Internal Server Error, that's fine; the following commands will still work. 
+```sh
+python -m astool jp dl_master
+```
+### - A package id of '%' will download everything
+```sh
+python -m astool jp pkg_sync '%'
+```
+
+## Windows (Native)
+### Prerequisites:
+- Upgrade pip
+```sh
+pip install --upgrade pip
+```
+- Install virtualenv
+```sh
+pip install virtualenv
+```
+- Download hwdecrypt binary for win_32 or win_amd64: https://github.com/kirara-research/astool/releases/tag/v1.2.6.0
+- Save hwdecrypt somewhere for later
+
+# - Set up workspace in the "astool-ws" directory, which gets put in C:/Users/[User] folder
+```sh
+mkdir astool-ws && cd astool-ws
+```
+Alternatively, you could make astool-ws on the desktop, then do cd C:/Users/[User]/Desktop/astool-ws
+### - Clone repo
+```sh
+git clone https://github.com/kirara-research/astool.git astool-dist
+```
+# - Create and activate virtual environment
+```sh
+python3 -m venv .env
+.env\scripts\activate
+```
+### - Install scripts
+```sh
+pip install -e C:\Users\[Userfolder]\astool-ws\astool-dist\
+```
+- pip install and copy hwdecrypt path
+Example:
+```sh
+pip install C:/Users/[Userfolder]/Downloads/hwdecrypt-1.1.0-cp311-cp311-win_amd64.whl
+```
+
+### - Run every time you want to use the workspace
+```sh
+.env\scripts\activate
+SET ASTOOL_STORAGE=$(pwd)/data
+SET LIVE_MASTER_CHECK_ALLOWED=1
+```
+You can replace $(pwd)/data with a path of your choice
+
+### - Now you can run your commands - replace "jp" with "en" for global server
+```sh
+python -m astool jp bootstrap
+```
+### -  If the above command fails with a 500 Internal Server Error, that's fine; the following commands will still work. 
+```sh
+python -m astool jp dl_master
+```
+### - A package id of '%' will download everything (here the double spaces are VERY IMPORTANT for downloading, else it won't do much of anything)
+```sh
+python -m astool jp pkg_sync '%'
+```
+
 ## Programmatic Usage
 
 Most APIs in the astool.pkg, astool.ctx, astool.masters, and astool.iceapi modules are available
