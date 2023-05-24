@@ -56,7 +56,7 @@ Commands and their arguments:
 - `invalidate` - Removes fast resume data from the memo. This will force a relogin on the next API call.
 - `master_gc` - Deletes decrypted databases that can be recreated. The latest master will not be deleted.
 - `pkg_sync [flags] (groups...)` - Check the downloaded package cache and see if the named groups are
-  complete. If not, and you haven't told it to validate only, it will download the missing parts.
+  complete. If not, and you haven't told it to validate only, it will download the missing parts `%` will download all.
   Flags:
   - `-m/--master [version]` - Use the specified master databases. If this is not given, it'll use the 
     current version from the astool memo.
@@ -71,17 +71,45 @@ Commands and their arguments:
   - `-n/--dry-run` - Don't delete anything. Note that this is a different long option from pkg_sync.
   - `-g/--lang [language]`: Use the specified language's asset database.
 
-### astool_extra 
+### astool_extra (Data Extraction)
 
 ```sh
-python -m astool_extra.unpack_fs [common args] [server] [command args...]
+python -m astool_extra.unpack_fs [-h] [-r None] [-m None] [-l None] [-t None] [-y] [output]
 ```
 Common args can include:
 
 - `-h (--help)`: Shows the help menu.
 - `-r (--region)`: Tells astool what region to use (`en` or `jp`).
-- `-t (--table-list)` Comma-separated list of tables to extract (default: all). Pass 'list' to see available.
-- `-t (--table-list)` Comma-separated list of tables to extract (default: all). Pass 'list' to see available.
+- `-m None, --master`: Master version (default: latest known via dl_master)
+- `-l (--lang)`: Tells astool what language to use (default: default for server region).
+- `-t (--table-list)`: Comma-separated list of tables to extract (default: all). Pass 'list' to see available.
+- `-y (--skip-confirmation)`: Don't ask before extracting
+
+`[output]`: Output folder
+
+List of tables:
+
+- `adv_script`
+- `background`
+- `gacha_performance`
+- `live2d_sd_model`
+- `live_prop_skeleton`
+- `live_timeline`
+- `m_asset_sound`
+- `m_movie`
+- `member_facial`
+- `member_facial_animation`
+- `member_model`
+- `member_sd_model`
+- `navi_motion`
+- `navi_timeline`
+- `shader`
+- `skill_effect`
+- `skill_timeline`
+- `skill_wipe`
+- `stage`
+- `stage_effect`
+- `texture`
 
 ## Programmatic Usage
 
