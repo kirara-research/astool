@@ -211,7 +211,9 @@ python -m astool jp bootstrap
 ```sh
 python -m astool jp dl_master
 ```
-### - A package id of '%' will download everything (here the double spaces are VERY IMPORTANT for downloading, else it won't do much of anything)
+### - A package id of '%' will download everything.
+
+Here the double spaces are VERY IMPORTANT for downloading, else it won't do much of anything.
 ```sh
 python -m astool jp pkg_sync '%'
 ```
