@@ -13,6 +13,8 @@ if you have a high bandwidth internet connection), do `pip install '.[async_pkg]
 You also need to install the hwdecrypt extension module the same way
 (`pip install ./hwdecrypt_src`), unless you're arposandra and include your own copy.
 
+### Easy guide: [here](#guide)
+
 ## Storage
 
 You can set the `ASTOOL_STORAGE` environment variable to change where data gets
@@ -196,10 +198,10 @@ pip install C:/Users/[Userfolder]/Downloads/hwdecrypt-1.1.0-cp311-cp311-win_amd6
 ### - Run every time you want to use the workspace
 ```sh
 .env\scripts\activate
-SET ASTOOL_STORAGE=aallstars-datafolder/data
+SET ASTOOL_STORAGE=allstars-data/data
 SET LIVE_MASTER_CHECK_ALLOWED=1
 ```
-You can replace `allstars-datafolder/data` with a path of your choice, which gets created after running one of the commnands below.
+You can replace `allstars-data/data` with a path of your choice, which gets created after running one of the commnands below.
 
 ### - Now you can run your commands - replace "jp" with "en" for global server
 ```sh
