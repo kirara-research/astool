@@ -11,6 +11,8 @@ if you have a high bandwidth internet connection), do `pip install '.[async_pkg]
 You also need to install the hwdecrypt extension module the same way
 (`pip install ./hwdecrypt_src`), unless you're arposandra and include your own copy.
 
+### An easy usage guide can be found [here](#guide).
+
 ## Storage
 
 You can set the `ASTOOL_STORAGE` environment variable to change where data gets
@@ -67,11 +69,152 @@ Commands and their arguments:
   - `-m/--master [version]` - Use the specified master databases. If this is not given, it'll use the 
     current version from the astool memo.
   - `-n/--dry-run` - Don't delete anything. Note that this is a different long option from pkg_sync.
-  - `-g/--lang [language]`: Use the specified language's asset database.
+  - `-g/--lang [language]` - Use the specified language's asset database.
 
-### astool_extra 
+### astool_extra (Data Extraction)
 
-To be documented. See the scripts in the package for usage instructions.
+```sh
+python -m astool_extra.unpack_fs [common args] [output]
+```
+
+Common args can include:
+
+- `-h/--help` - Shows the help menu.
+- `-r/--region` - Tells astool what region to use (`en` or `jp`).
+- `-m/--master` - Master version (default: latest known via dl_master)
+- `-l/--lang` - Tells astool what language to use (default: default for server region).
+- `-t/--table-list` - Comma-separated list of tables to extract (default: all). Pass 'list' to see available.
+- `-y/--skip-confirmation` - Don't ask before extracting
+##
+- `[output]` - Data output folder
+
+List of tables:
+
+- `adv_script`
+- `background`
+- `gacha_performance`
+- `live2d_sd_model`
+- `live_prop_skeleton`
+- `live_timeline`
+- `m_asset_sound`
+- `m_movie`
+- `member_facial`
+- `member_facial_animation`
+- `member_model`
+- `member_sd_model`
+- `navi_motion`
+- `navi_timeline`
+- `shader`
+- `skill_effect`
+- `skill_timeline`
+- `skill_wipe`
+- `stage`
+- `stage_effect`
+- `texture`
+
+## Guide
+
+## Mac/Linux/Windows Subsystem for Linux
+- Set up workspace in the `astool-ws` directory (located in the `$home` folder)
+```sh
+mkdir astool-ws && cd astool-ws`
+mkdir data
+```
+- Clone repo
+```sh
+git clone https://github.com/kirara-research/astool.git astool-dist
+```
+- Create and activate virtual environment
+```sh
+python3 -m venv .env
+source .env/bin/activate
+```
+- Install packages
+```sh
+pip install -e './astool-dist[async_pkg]'
+pip install './astool-dist/hwdecrypt_src'
+```
+
+- Run every time you want to use the workspace
+```sh
+source .env/bin/activate
+export ASTOOL_STORAGE=$(pwd)/data
+export LIVE_MASTER_CHECK_ALLOWED=1
+```
+
+- Now you can run your commands - replace `jp` with `en` for global server
+```sh
+python -m astool jp bootstrap
+```
+-  If the above command fails with a 500 Internal Server Error, that's fine; the following commands will still work. 
+```sh
+python -m astool jp dl_master
+```
+- A package id of `'%'` will download everything
+```sh
+python -m astool jp pkg_sync '%'
+```
+
+## Windows (Native)
+### Prerequisites:
+- Upgrade pip
+```sh
+pip install --upgrade pip
+```
+- Install virtualenv
+```sh
+pip install virtualenv
+```
+- Download hwdecrypt binary for win_32 or win_amd64: https://github.com/kirara-research/astool/releases/tag/v1.2.6.0
+- Save hwdecrypt somewhere for later
+
+- Set up workspace in the `astool-ws` directory, which gets put in `C:/Users/[User]` folder
+```sh
+mkdir astool-ws && cd astool-ws
+```
+Alternatively, you could make astool-ws on the desktop, then do `cd C:/Users/[User]/Desktop/astool-ws`
+- Clone repo
+```sh
+git clone https://github.com/kirara-research/astool.git astool-dist
+```
+- Create and activate virtual environment
+```sh
+python3 -m venv .env
+.env\scripts\activate
+```
+- Install scripts
+```sh
+pip install -e C:/Users/[Userfolder]/astool-ws/astool-dist/
+```
+- pip install and copy hwdecrypt path
+
+Example:
+```sh
+pip install C:/Users/[Userfolder]/Downloads/hwdecrypt-1.1.0-cp311-cp311-win_amd64.whl
+```
+
+- Run every time you want to use the workspace
+```sh
+.env\scripts\activate
+SET ASTOOL_STORAGE=allstars-data/data
+SET LIVE_MASTER_CHECK_ALLOWED=1
+```
+You can replace `allstars-data/data` with a path of your choice, which gets created after running one of the commnands below.
+
+- Now you can run your commands - replace `jp` with `en` for global server
+```sh
+python -m astool jp bootstrap
+```
+-  If the above command fails with a 500 Internal Server Error, that's fine; the following commands will still work. 
+```sh
+python -m astool jp dl_master
+```
+- A package id of `  %` will download everything.
+
+(Here the double spaces are VERY IMPORTANT for downloading, else it won't do much of anything.)
+```sh
+python -m astool jp pkg_sync  %
+```
 
 ## Programmatic Usage
 
