@@ -114,10 +114,11 @@ List of tables:
 
 ## Guide
 
-## Mac/Linux/Windows Subsystem for Linux
-- Set up workspace in the `astool-ws` directory (located in the `$home` folder)
+### Mac/Linux/Windows Subsystem for Linux
+
+- Set up workspace in the `astool-ws` directory
 ```sh
-mkdir astool-ws && cd astool-ws`
+mkdir astool-ws && cd astool-ws
 mkdir data
 ```
 - Clone repo
@@ -155,8 +156,12 @@ python -m astool jp dl_master
 python -m astool jp pkg_sync '%'
 ```
 
-## Windows (Native)
-### Prerequisites:
+### Windows (Native)
+
+The commands here are for the cmd.exe shell. If you're using PowerShell, they may need adapting.
+
+#### Prerequisites:
+
 - Upgrade pip
 ```sh
 pip install --upgrade pip
