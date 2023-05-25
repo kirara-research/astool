@@ -11,7 +11,7 @@ if you have a high bandwidth internet connection), do `pip install '.[async_pkg]
 You also need to install the hwdecrypt extension module the same way
 (`pip install ./hwdecrypt_src`), unless you're arposandra and include your own copy.
 
-### An easy guide can be found [here](#guide).
+### An easy usage guide can be found [here](#guide).
 
 ## Storage
 
