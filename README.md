@@ -1,6 +1,4 @@
 # astool: All Stars Utility Toolkit
-### forked for readme documentation additions
-### Original: https://github.com/kirara-research/astool
 
 Requires Python 3.7+.
 
@@ -13,7 +11,7 @@ if you have a high bandwidth internet connection), do `pip install '.[async_pkg]
 You also need to install the hwdecrypt extension module the same way
 (`pip install ./hwdecrypt_src`), unless you're arposandra and include your own copy.
 
-### Easy guide: [here](#guide)
+### An easy guide can be found [here](#guide).
 
 ## Storage
 
