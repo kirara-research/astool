@@ -69,7 +69,7 @@ Commands and their arguments:
   - `-m/--master [version]` - Use the specified master databases. If this is not given, it'll use the 
     current version from the astool memo.
   - `-n/--dry-run` - Don't delete anything. Note that this is a different long option from pkg_sync.
-  - `-g/--lang [language]`: Use the specified language's asset database.
+  - `-g/--lang [language]` - Use the specified language's asset database.
 
 ### astool_extra (Data Extraction)
 
@@ -182,7 +182,7 @@ git clone https://github.com/kirara-research/astool.git astool-dist
 python3 -m venv .env
 .env\scripts\activate
 ```
-### - Install scripts
+- Install scripts
 ```sh
 pip install -e C:/Users/[Userfolder]/astool-ws/astool-dist/
 ```
