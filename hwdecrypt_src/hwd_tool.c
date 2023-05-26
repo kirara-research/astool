@@ -1,12 +1,4 @@
-#include <stdio.h>
 #include <stdint.h>
-#include <unistd.h>
-#include <fcntl.h>
-#include <errno.h>
-#include <stdlib.h>
-#include <string.h>
-
-__attribute__((used)) static const char __rcsid[] = "@(#)kars/hwd_tool";
 
 struct hwd_keyset {
     uint32_t k1;
@@ -19,13 +11,15 @@ void hwd_decrypt_buf(struct hwd_keyset *initp, uint8_t *buf, int size) {
     uint32_t mul1 = initp->k1;       // esi
     uint32_t mul2 = initp->k2;       // edi
     uint32_t mul_static = initp->k3; // ecx
+    uint32_t k1, k2, k3;
+    uint8_t op;
 
     while (size-- > 0) {
-        uint32_t k1 = mul1 >> 0x18; // eax
-        uint32_t k2 = mul2 >> 0x18; // ebp
-        uint32_t k3 = mul_static >> 0x18;
+        k1 = mul1 >> 0x18; // eax
+        k2 = mul2 >> 0x18; // ebp
+        k3 = mul_static >> 0x18;
 
-        uint8_t op = *buf;
+        op = *buf;
         op ^= k1;
         op ^= k2;
         op ^= k3;
