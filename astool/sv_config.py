@@ -118,9 +118,19 @@ KEY_TABLE = {
     "3.8.0": [0x4F553D30, 0x2857F23D, 0x122EE25C],
     "3.9.0": [0x3DC6BEBD, 0x75E86326, 0x42894211],
     "3.10.0": [0x5985b108, 0x631de4eb, 0x4db5aaf9],
+    "3.11.0": [0x06856c49, 0x3aa19541, 0x5f13a7c1],
 }
 
 SERVER_CONFIG["jp"] = [
+    {
+        "root": "https://jp-real-prod-v4tadlicuqeeumke.llas.bushimo.jp/ep3110",
+        "bootstrap_key": "uWabor56EHkM30qI",
+        "session_mixkey": MIXKEY_1_7_0_ONWARD,
+        "public_key": PUBLIC_KEY_DEFAULT_JP,
+        "user_agent": "allstars/37572 CFNetwork/1197 Darwin/20.0.0",
+        "master_keys": KEY_TABLE["3.11.0"],
+        "bundle_version": "3.11.0",
+    },
     {
         "root": "https://jp-real-prod-v4tadlicuqeeumke.llas.bushimo.jp/ep3100",
         "bootstrap_key": "3SmPj6YdLTuNA28C",
@@ -566,6 +576,17 @@ SERVER_CONFIG["jp"] = [
 
 
 SERVER_CONFIG["en"] = [
+    {
+        "root": "https://gl-real-prod-8f2jln5l4evlw5l1.llas.bushimo.jp/ep3110",
+        "bootstrap_key": "Q3YasOdwAkNh2GmZ",
+        "session_mixkey": MIXKEY_1_7_0_ONWARD,
+        "public_key": PUBLIC_KEY_DEFAULT_EN,
+        "user_agent": "global/7346 CFNetwork/1107.1 Darwin/19.0.0",
+        "master_keys": KEY_TABLE["3.11.0"],
+        "bundle_version": "3.11.0",
+        "language": "en",
+        "additional_languages": ["ko", "zh"],
+    },
     {
         "root": "https://gl-real-prod-8f2jln5l4evlw5l1.llas.bushimo.jp/ep3100",
         "bootstrap_key": "Q2JLmCfoMqcbsVhX",
